@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ajman.university.grad.project.eventshare.admin"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="our.project.eventshare.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="our.project.eventshare.AddEventActivity"
+            android:label="" >
+        </activity>
+        <activity
+            android:name="our.project.eventshare.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="our.project.eventshare.MainActivity" >
+        </activity>
+        <activity
+            android:name="our.project.eventshare.WriteToTagActivity"
+            android:label="@string/title_activity_write_to_tag"
+            android:parentActivityName="our.project.eventshare.MainActivity" >
+        </activity>
+        <activity
+            android:name="our.project.eventshare.EraseTagActivity"
+            android:label="@string/title_erase"
+            android:parentActivityName="our.project.eventshare.MainActivity" >
+        </activity>
+        <activity
+            android:name="our.project.eventshare.ChangePasswordActivity"
+            android:label=""
+            android:parentActivityName="our.project.eventshare.MainActivity" >
+        </activity>
+        <activity
+            android:name="our.project.eventshare.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="our.project.eventshare.MainActivity" >
+        </activity>
+        <activity
+            android:name="our.project.eventshare.PasswordTagActivity"
+            android:label="@string/title_activity_password_tag"
+            android:parentActivityName="our.project.eventshare.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="our.project.eventshare.MainActivity" />
+        </activity>
+        <activity
+            android:name="our.project.eventshare.EventDetailsActivity"
+            android:label=""
+            android:parentActivityName="our.project.eventshare.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="our.project.eventshare.MainActivity" />
+        </activity>
+    </application>
+    
+        <application>
+        <activity android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            >
+        </activity>
+    </application>
+
+</manifest>
