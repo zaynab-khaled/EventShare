@@ -3,7 +3,7 @@ package ajman.university.grad.project.eventshare.common.services;
 import java.util.List;
 
 import ajman.university.grad.project.eventshare.common.contracts.ITagService;
-import ajman.university.grad.project.eventshare.common.shared.models.Event;
+import ajman.university.grad.project.eventshare.common.models.Event;
 
 public class TagService implements ITagService{
 

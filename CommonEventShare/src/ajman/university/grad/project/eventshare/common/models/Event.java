@@ -1,4 +1,4 @@
-package ajman.university.grad.project.eventshare.common.shared.models;
+package ajman.university.grad.project.eventshare.common.models;
 
 public class Event {
 	private int id;
@@ -16,6 +16,9 @@ public class Event {
 	private int toMonth;
 	private int toDay;
 	
+	public Event () {
+		
+	}
 
 	public Event(int id, String title, String description, String location,
 			int fromDayHour, int fromMinute, int fromYear, int fromMonth,
