@@ -3,9 +3,12 @@ package ajman.university.grad.project.eventshare.admin;
 
 
 import java.util.Calendar;
+import java.util.List;
 
-import ajman.university.grad.project.eventshare.common.repositories.RepositoriesFactory;
-import ajman.university.grad.project.eventshare.common.shared.models.Event;
+import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
@@ -32,17 +35,15 @@ import android.widget.Toast;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class AddEventActivity extends Activity {
 	
-	 private EditText _eventName;
-	 private EditText _eventLocation;
-	 private EditText _eventDesc;
+	private EditText _etEventName;
+	private EditText _eventLocation;
+	private EditText _eventDesc;
 	 
-	 static Button btnD1;
-	 static Button btnT1;
-	 static Button btnD2;
-	 static Button btnT2;
+	static Button btnD1;
+	static Button btnT1;
+	static Button btnD2;
+	static Button btnT2;
 
-	 
-	
 	//Start code for TimePickerDialog
 	public static class StartTimePickerFragment extends DialogFragment
     implements TimePickerDialog.OnTimeSetListener {
@@ -177,7 +178,7 @@ public class AddEventActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_event);
 		
-		_eventName = (EditText) findViewById(R.id.editText_eventName);
+		_etEventName = (EditText) findViewById(R.id.editText_eventName);
 		_eventLocation = (EditText) findViewById(R.id.editText_eventLoc);
 		_eventDesc = (EditText) findViewById(R.id.editText_eventDesc);
 		
@@ -258,27 +259,31 @@ public class AddEventActivity extends Activity {
 	}
 
 	private void actionDone() {
+		IErrorService errorService = ServicesFactory.getErrorService();
+
 		//TODO: Some validation to make sure that the event data is actually provided:
-		if (_eventName.getText().length() > 0 && 
+		if (_etEventName.getText().length() > 0 && 
 			_eventDesc.getText().length() > 0 &&
 			_eventLocation.getText().length() > 0) {
 
 			// Transition to the main activity and remove this activity from the stack
-			RepositoriesFactory.getEventsRepository().addEvent(new Event(_eventName.getText().toString(), _eventDesc.getText().toString(), _eventLocation.getText().toString()));
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-			finish();
+			// Get the events from the events repository
+			ILocalStorageService service = ServicesFactory.getLocalStorageService();
+			Event event = new Event();
+			event.setTitle(_etEventName.getText().toString());
+			event.setDescription( _eventDesc.getText().toString());
+			event.setLocation(_eventLocation.getText().toString());
+			//TODO: Add from and to date and time
+			try {
+				service.addEvent(event);
+				Intent intent = new Intent(this, MainActivity.class);
+				startActivity(intent);
+				finish();
+			} catch (Exception e) {
+				errorService.log(e);
+			}
 		} else {
-			new AlertDialog.Builder(this)
-			.setTitle("Empty Field")
-			.setMessage("You cannot keep some fields empty, please fill them out!")
-			.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					
-		           }
-
-			})
-			.show();
+			errorService.log("You cannot keep some fields empty, please fill them out!");
 		}
 	}
 

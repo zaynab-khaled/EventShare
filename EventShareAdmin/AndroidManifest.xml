@@ -9,12 +9,13 @@
         android:targetSdkVersion="19" />
 
     <application
+        android:name="ajman.university.grad.project.eventshare.admin.AdminApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="our.project.eventshare.MainActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,57 +24,44 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="our.project.eventshare.AddEventActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.AddEventActivity"
             android:label="" >
         </activity>
         <activity
-            android:name="our.project.eventshare.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName="our.project.eventshare.MainActivity" >
-        </activity>
-        <activity
-            android:name="our.project.eventshare.WriteToTagActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.WriteToTagActivity"
             android:label="@string/title_activity_write_to_tag"
-            android:parentActivityName="our.project.eventshare.MainActivity" >
+            android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
         </activity>
         <activity
-            android:name="our.project.eventshare.EraseTagActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.EraseTagActivity"
             android:label="@string/title_erase"
-            android:parentActivityName="our.project.eventshare.MainActivity" >
+            android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
         </activity>
         <activity
-            android:name="our.project.eventshare.ChangePasswordActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.ChangePasswordActivity"
             android:label=""
-            android:parentActivityName="our.project.eventshare.MainActivity" >
+            android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
         </activity>
         <activity
-            android:name="our.project.eventshare.AboutActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName="our.project.eventshare.MainActivity" >
+            android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
         </activity>
         <activity
-            android:name="our.project.eventshare.PasswordTagActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.PasswordTagActivity"
             android:label="@string/title_activity_password_tag"
-            android:parentActivityName="our.project.eventshare.MainActivity" >
+            android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="our.project.eventshare.MainActivity" />
+                android:value="ajman.university.grad.project.eventshare.admin.MainActivity" />
         </activity>
         <activity
-            android:name="our.project.eventshare.EventDetailsActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.EventDetailsActivity"
             android:label=""
-            android:parentActivityName="our.project.eventshare.MainActivity" >
+            android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="our.project.eventshare.MainActivity" />
+                android:value="ajman.university.grad.project.eventshare.admin.MainActivity" />
         </activity>
     </application>
-    
-        <application>
-        <activity android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            >
-        </activity>
-    </application>
-
 </manifest>

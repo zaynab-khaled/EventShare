@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ajman.university.grad.project.eventshare.admin.R;
-import ajman.university.grad.project.eventshare.common.repositories.RepositoriesFactory;
-import ajman.university.grad.project.eventshare.common.shared.models.Event;
+import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -23,9 +25,16 @@ public class EventsAdapter extends BaseAdapter {
 		events = new ArrayList<Event>();
 		 
 		// Get the events from the events repository
-		List<Event> storedEvents = RepositoriesFactory.getEventsRepository().getAllEvents();
-		for(Event event : storedEvents) {
-			events.add(event);
+		ILocalStorageService service = ServicesFactory.getLocalStorageService();
+		try {
+			List<Event> storedEvents = service.getAllEvents();
+			for(Event event : storedEvents) {
+				events.add(event);
+			}
+		} catch (Exception e) {
+			// TODO: Error service
+			IErrorService eService = ServicesFactory.getErrorService();
+			eService.log(e);
 		}
 	}
 	 

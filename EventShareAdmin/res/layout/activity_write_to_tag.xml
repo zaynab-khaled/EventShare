@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:text="@string/pic_writetotag"
         android:layout_gravity="center"
-        android:textAlignment="center"
-        android:drawableTop="@drawable/nfc_tag" />
+        android:textAlignment="center" />
 
 </LinearLayout>

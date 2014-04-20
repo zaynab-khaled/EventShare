@@ -6,8 +6,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -130,8 +128,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 
 	private void actionSettings() {
-		Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-		startActivity(intent);
 	}
 
 

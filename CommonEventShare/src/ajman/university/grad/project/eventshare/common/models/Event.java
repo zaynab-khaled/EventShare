@@ -1,6 +1,10 @@
 package ajman.university.grad.project.eventshare.common.models;
 
-public class Event {
+import java.io.Serializable;
+
+public class Event implements Serializable {
+	private static final long serialVersionUID = 4861948165540136263L;
+
 	private int id;
 	private String title;
 	private String description;
