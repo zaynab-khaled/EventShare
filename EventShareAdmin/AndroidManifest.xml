@@ -8,6 +8,12 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
     <application
         android:name="ajman.university.grad.project.eventshare.admin.AdminApp"
         android:allowBackup="true"
@@ -31,6 +37,13 @@
             android:name="ajman.university.grad.project.eventshare.admin.WriteToTagActivity"
             android:label="@string/title_activity_write_to_tag"
             android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/filter_nfc" />
         </activity>
         <activity
             android:name="ajman.university.grad.project.eventshare.admin.EraseTagActivity"
