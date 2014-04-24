@@ -24,8 +24,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ajman.university.grad.project.eventshare.admin.AddEventActivity"
-            android:label="" >
+            android:name="ajman.university.grad.project.eventshare.admin.EventActivity"
+            android:label="@string/title_activity_edit" >
         </activity>
         <activity
             android:name="ajman.university.grad.project.eventshare.admin.WriteToTagActivity"
@@ -56,7 +56,7 @@
                 android:value="ajman.university.grad.project.eventshare.admin.MainActivity" />
         </activity>
         <activity
-            android:name="ajman.university.grad.project.eventshare.admin.EventDetailsActivity"
+            android:name="ajman.university.grad.project.eventshare.admin.DetailEventActivity"
             android:label=""
             android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
             <meta-data
@@ -64,4 +64,5 @@
                 android:value="ajman.university.grad.project.eventshare.admin.MainActivity" />
         </activity>
     </application>
+
 </manifest>

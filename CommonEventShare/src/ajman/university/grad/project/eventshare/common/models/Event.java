@@ -21,7 +21,20 @@ public class Event implements Serializable {
 	private int toDay;
 	
 	public Event () {
-		
+		this.setId(-1);
+		this.setTitle("");
+		this.setDescription("");
+		this.setLocation("");
+		this.setFromDayHour(-1);
+		this.setFromDay(-1);
+		this.setFromMinute(-1);
+		this.setFromMonth(-1);
+		this.setFromYear(-1);
+		this.setToDayHour(-1);
+		this.setToDay(-1);
+		this.setToMinute(-1);
+		this.setToMonth(-1);
+		this.setToYear(-1);
 	}
 
 	public Event(int id, String title, String description, String location,

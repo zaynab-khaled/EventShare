@@ -1,6 +1,10 @@
 package ajman.university.grad.project.eventshare.admin;
 
 import ajman.university.grad.project.eventshare.adapters.EventsAdapter;
+import ajman.university.grad.project.eventshare.admin.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,6 +21,8 @@ import android.widget.ListView;
 public class MainActivity extends Activity implements OnItemClickListener {
 
 	ListView list;
+	EventsAdapter adapter;
+	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,21 +31,18 @@ public class MainActivity extends Activity implements OnItemClickListener {
         
         //Code for list
         list = (ListView) findViewById(android.R.id.list);
-        list.setAdapter(new EventsAdapter(this));
+        adapter = new EventsAdapter(this);
+        list.setAdapter(adapter);
         list.setOnItemClickListener(this);
     }
 
-
-
-
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		Intent intent = new Intent(MainActivity.this, EventDetailsActivity.class);
+		Intent intent = new Intent(MainActivity.this, DetailEventActivity.class);
+		Event event = (Event) adapter.getItem(arg2);
+		intent.putExtra(Constants.CLICKED_EVENT, event);
 		startActivity(intent);
-		
 	}
-
-
 
 	// From here on is the code for the action bar buttons and menu
     @Override
@@ -67,16 +70,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			actionDeleteDeclined();
 			return true;
 			
-		case R.id.action_changePassword:
-			actionChangePassword();
-			return true;
-			
 		case R.id.action_erase:
 			actionErase();
-			return true;
-			
-		case R.id.action_settings:
-			actionSettings();
 			return true;
 			
 		case R.id.action_about:
@@ -90,19 +85,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
     }
 
 	private void actionAbout() {
-		Intent intent = new Intent(MainActivity.this, EventDetailsActivity.class);
+		Intent intent = new Intent(MainActivity.this, DetailEventActivity.class);
 		startActivity(intent);
 	}
 
 
 	private void actionErase() {
 		Intent intent = new Intent(MainActivity.this, EraseTagActivity.class);
-		startActivity(intent);
-	}
-
-
-	private void actionChangePassword() {
-		Intent intent = new Intent(MainActivity.this, PasswordTagActivity.class);
 		startActivity(intent);
 	}
 
@@ -119,20 +108,20 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		})
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				// Remove all events having date less than present from list
+				ILocalStorageService service = ServicesFactory.getLocalStorageService();
+				try {
+					service.deleteExpiredEvents();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	           }
-
 		})
 		.show();
 	}
 
-
-	private void actionSettings() {
-	}
-
-
 	private void addNewEvent() {
-		Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
+		Intent intent = new Intent(MainActivity.this, EventActivity.class);
 		startActivity(intent);
 	}
 
@@ -140,10 +129,4 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Intent intent = new Intent(MainActivity.this, WriteToTagActivity.class);
 		startActivity(intent);
 	}
-
-
-
-
-
-    
 }

@@ -70,7 +70,7 @@ public class EventsDataSource {
 			
 			long insertId = database.insert(EventsSqlLiteHelper.TABLE_EVENTS, null, values);
 			Log.d(LOG_TAG, "inserted id: " + insertId);
-			cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, EventsSqlLiteHelper.COLUMN_ID + " = " + insertId, null, null, null, null);
+			cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, EventsSqlLiteHelper.COLUMN_ID + " = " + insertId, null, null, null , null);
 			cursor.moveToFirst();
 			newEvent = cursorToEvent(cursor);
 			Log.d(LOG_TAG, "inserted name: " + newEvent.getTitle());
@@ -94,15 +94,16 @@ public class EventsDataSource {
 			
 		}
 	}
-
+	
 	// Expects the database to be open!!
 	public List<Event> retrieveAll(int records) {
 		Log.d(LOG_TAG, "retrieveAll: " + Environment.getDataDirectory());
 		List<Event> events = new ArrayList<Event> ();
 		Cursor cursor = null;
+		String orderBy = EventsSqlLiteHelper.COLUMN_FROM_YEAR + "," + EventsSqlLiteHelper.COLUMN_FROM_MONTH + "," + EventsSqlLiteHelper.COLUMN_FROM_DAY + "," + EventsSqlLiteHelper.COLUMN_FROM_DAY_HOUR + "," + EventsSqlLiteHelper.COLUMN_FROM_MINUTE + "," + EventsSqlLiteHelper.COLUMN_TO_YEAR + "," + EventsSqlLiteHelper.COLUMN_TO_MONTH + "," + EventsSqlLiteHelper.COLUMN_TO_DAY + "," + EventsSqlLiteHelper.COLUMN_TO_DAY_HOUR + "," + EventsSqlLiteHelper.COLUMN_TO_MINUTE;
 		
 		try {
-			cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, null, null, EventsSqlLiteHelper.COLUMN_TITLE, "" + records);
+			cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, orderBy, null, EventsSqlLiteHelper.COLUMN_TITLE, "" + records);
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
 				events.add(cursorToEvent(cursor));

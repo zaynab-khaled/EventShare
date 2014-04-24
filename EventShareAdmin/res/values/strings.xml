@@ -26,11 +26,11 @@
     <!-- For 'Cancel Done Menu' -->
     <string name="title_cancel">Cancel</string>
     <string name="title_done">Done</string>
-    
+
     <!-- For 'Edit Delete Menu' -->
     <string name="title_edit">Edit</string>
-    <string name="title_delete">Delete</string>    
-    
+    <string name="title_delete">Delete</string>
+
     <!-- For Text Field hints -->
     <string name="hint_name">Event Name</string>
     <string name="hint_loc">Event Location</string>
@@ -38,35 +38,33 @@
     <string name="hint_cuPass">Current Password</string>
     <string name="hint_nPass">New Password</string>
     <string name="hint_coPass">Confirm Password</string>
-    
+
     <!-- Add Event Labels -->
     <string name="label_from">From</string>
     <string name="label_to">To</string>
-    
-	<!-- Sections on Add Event Activity -->
-	<string name="section_EventDetails">Event Details</string>
-	<string name="section_EventTime">Event Date and Time</string>
-    
-	<!-- Add Event Buttons -->
-	<string name="btn_Time">Time</string>
+
+    <!-- Sections on Add Event Activity -->
+    <string name="section_EventDetails">Event Details</string>
+    <string name="section_EventTime">Event Date and Time</string>
+
+    <!-- Add Event Buttons -->
+    <string name="btn_Time">Time</string>
     <string name="btn_Date">Date</string>
-    
     <string name="button">Test</string>
-    
+
     <!-- For single row list -->
     <string name="lText">Large Text</string>
     <string name="sText">Small Text</string>
 
-    
     <!-- For Event Details -->
-    
-    
-    
+
+
     <!-- Automatic for manifest, change title on screen -->
     <string name="title_activity_add_event">Add Event</string>
     <string name="title_activity_write_to_tag">Write to tag</string>
     <string name="title_activity_about">About</string>
     <string name="title_activity_password_tag">Change Password</string>
     <string name="title_activity_event_details">Event Details</string>
+    <string name="title_activity_edit">Edit</string>
 
 </resources>

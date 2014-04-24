@@ -60,8 +60,9 @@ public class EventsAdapter extends BaseAdapter {
 		View row = inflater.inflate(R.layout.single_row_list, viewGroup,false); // contains a reference to the Relative layout
 		
 		TextView title = (TextView) row.findViewById(R.id.textView1);
-		TextView description = (TextView) row.findViewById(R.id.textView2);
-		TextView location = (TextView) row.findViewById(R.id.textView3);
+		TextView location = (TextView) row.findViewById(R.id.textView2);
+		TextView description = (TextView) row.findViewById(R.id.textView3);
+		
 		
 		Event event = events.get(i);
 		
