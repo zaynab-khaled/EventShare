@@ -14,12 +14,12 @@ public class NfcTagService implements ITagService{
 	}
 
 	@Override
-	public void writeEvents(List<Event> events, boolean isSecure) {
+	public void writeEvents(List<Event> events) {
 		// TODO Auto-generated method stub
-		if (isSecure)
-			writeEventsWithSecurity(events);
-		else 
-			writeEventsWithoutSecurity(events);
+//		if (isSecure)
+//			writeEventsWithSecurity(events);
+//		else 
+//			writeEventsWithoutSecurity(events);
 		
 	}
 	

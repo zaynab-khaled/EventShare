@@ -6,5 +6,5 @@ import ajman.university.grad.project.eventshare.common.models.Event;
 
 public interface ITagService {
 	public List<Event> readEvents();
-	public void writeEvents(List<Event> events, boolean isSecure);
+	public void writeEvents(List<Event> events);
 }
