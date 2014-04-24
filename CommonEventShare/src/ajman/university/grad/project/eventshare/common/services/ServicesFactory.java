@@ -19,7 +19,7 @@ public class ServicesFactory {
 
 	public static ITagService getTagService() {
 		if (_tagService == null) {
-			_tagService = new TagService();
+			_tagService = new NfcTagService();
 		}
 		
 		return _tagService;

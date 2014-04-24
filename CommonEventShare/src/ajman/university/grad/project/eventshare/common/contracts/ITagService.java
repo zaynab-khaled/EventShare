@@ -5,5 +5,6 @@ import java.util.List;
 import ajman.university.grad.project.eventshare.common.models.Event;
 
 public interface ITagService {
-	public List<Event> getAllEvents();
+	public List<Event> readEvents();
+	public void writeEvents(List<Event> events, boolean isSecure);
 }
