@@ -34,12 +34,21 @@ public class MainActivity extends Activity implements OnItemClickListener {
         adapter = new EventsAdapter(this);
         list.setAdapter(adapter);
         list.setOnItemClickListener(this);
+        
+        System.out.println("count: " + adapter.getCount());
+        
     }
-
+    
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Intent intent = new Intent(MainActivity.this, DetailEventActivity.class);
 		Event event = (Event) adapter.getItem(arg2);
+		
+		System.out.println("arg2: " + arg2);
+		System.out.println("toDay: " + ((Event) adapter.getItem(arg2)).getToDay());
+		System.out.println("toYear: " + ((Event) adapter.getItem(arg2)).getToYear());
+		System.out.println("toMonth: " + ((Event) adapter.getItem(arg2)).getToMonth());
+		
 		intent.putExtra(Constants.CLICKED_EVENT, event);
 		startActivity(intent);
 	}
@@ -127,6 +136,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	private void writeToTag() {
 		Intent intent = new Intent(MainActivity.this, WriteToTagActivity.class);
+		intent.putExtra(Constants.ICALENDAR, adapter.toString());
 		startActivity(intent);
 	}
 }

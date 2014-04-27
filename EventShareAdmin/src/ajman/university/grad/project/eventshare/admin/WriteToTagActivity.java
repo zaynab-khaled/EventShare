@@ -2,6 +2,8 @@ package ajman.university.grad.project.eventshare.admin;
 
 import java.io.IOException;
 
+import ajman.university.grad.project.eventshare.admin.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.models.Event;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
@@ -17,6 +19,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
 
 public class WriteToTagActivity extends Activity {
 
@@ -77,6 +80,11 @@ public class WriteToTagActivity extends Activity {
 
 		nfcPreferences = getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
 
+		// Get bundled data
+		calString = (String) getIntent().getSerializableExtra(Constants.ICALENDAR);
+
+		System.out.println(calString);
+
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
 		// create an intent with tag data and deliver to this activity
@@ -104,7 +112,16 @@ public class WriteToTagActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
+
+		// Ensure that the device supports NFC
+		ensureNfcIsAvailable();
+
+		if (mNfcAdapter != null) {
+			// Ensure that the device's NFC sensor is on
+			ensureSensorIsOn();
+
+			mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
+		}
 	}
 
 	@Override
@@ -226,6 +243,51 @@ public class WriteToTagActivity extends Activity {
 			hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
 		}
 		return hex.toString();
+	}
+
+	private void ensureNfcIsAvailable() {
+
+		if (mNfcAdapter == null) {
+			// Stop here, we definitely need NFC
+			Toast.makeText(this, "This device doesn't support NFC.",
+					Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+	}
+
+	private void ensureSensorIsOn() {
+		if (mNfcAdapter != null && !mNfcAdapter.isEnabled()) {
+			// Alert the user that NFC is off
+			new AlertDialog.Builder(this)
+					.setTitle("NFC Sensor Turned Off")
+					.setMessage(
+							"In order to use this application, the NFC sensor must be turned on. Do you wish to turn it on?")
+					.setPositiveButton("Go to Settings",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(
+										DialogInterface dialogInterface, int i) {
+									// Send the user to the settings page and
+									// hope they turn it on
+									if (android.os.Build.VERSION.SDK_INT >= 16) {
+										startActivity(new Intent(
+												android.provider.Settings.ACTION_NFC_SETTINGS));
+									} else {
+										startActivity(new Intent(
+												android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+									}
+								}
+							})
+					.setNegativeButton("Do Nothing",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(
+										DialogInterface dialogInterface, int i) {
+									// Do nothing
+								}
+							}).show();
+		}
 	}
 
 }

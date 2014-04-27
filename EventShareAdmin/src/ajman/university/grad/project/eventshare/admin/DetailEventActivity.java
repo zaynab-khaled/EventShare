@@ -60,7 +60,7 @@ public class DetailEventActivity extends Activity {
 		Calendar toCal = Calendar.getInstance();
 		toCal.set(Calendar.YEAR, _event.getToYear());
 		toCal.set(Calendar.MONTH, _event.getToMonth());
-		toCal.set(Calendar.DAY_OF_WEEK, _event.getToDay());
+		toCal.set(Calendar.DAY_OF_MONTH, _event.getToDay());
 		toCal.set(Calendar.HOUR_OF_DAY, _event.getToDayHour());
 		toCal.set(Calendar.MINUTE, _event.getToMinute());
 		

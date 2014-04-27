@@ -23,12 +23,12 @@ public class EventsAdapter extends BaseAdapter {
 	public EventsAdapter(Context c) {
 		context = c;
 		events = new ArrayList<Event>();
-		 
+
 		// Get the events from the events repository
 		ILocalStorageService service = ServicesFactory.getLocalStorageService();
 		try {
 			List<Event> storedEvents = service.getAllEvents();
-			for(Event event : storedEvents) {
+			for (Event event : storedEvents) {
 				events.add(event);
 			}
 		} catch (Exception e) {
@@ -37,7 +37,7 @@ public class EventsAdapter extends BaseAdapter {
 			eService.log(e);
 		}
 	}
-	 
+
 	@Override
 	public int getCount() {
 		return events.size();
@@ -55,21 +55,73 @@ public class EventsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int i, View view, ViewGroup viewGroup) {
-		
+
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View row = inflater.inflate(R.layout.single_row_list, viewGroup,false); // contains a reference to the Relative layout
 		
+		// contains a reference to the Relative layout
+		View row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
+
 		TextView title = (TextView) row.findViewById(R.id.textView1);
 		TextView location = (TextView) row.findViewById(R.id.textView2);
 		TextView description = (TextView) row.findViewById(R.id.textView3);
-		
-		
+
 		Event event = events.get(i);
-		
+
 		title.setText(event.getTitle());
 		description.setText(event.getDescription());
 		location.setText(event.getLocation());
 
-		return row; //return the rootView of the single_row_list.xml
+		return row; // return the rootView of the single_row_list.xml
+	}
+
+	// Final format should be 20140924T185545Z
+	private String formatToDate(Event event) {
+		String date = "";
+		date += event.getToYear();
+		date += (event.getToMonth() < 10 ? "0" + event.getToMonth() + 1 : event.getToMonth() + 1);
+		date += (event.getToDay() < 10 ? "0" + event.getToDay() : event.getToDay());
+		date += "T";
+		date += (event.getToDayHour() < 10 ? "0" + event.getToDayHour() : event.getToDayHour());
+		date += (event.getToMinute() < 10 ? "0" + event.getToMinute() : event.getToMinute());
+		date += "00Z";
+		return date;
+	}
+
+	private String formatFromDate(Event event) {
+		String date = "";
+		date += event.getFromYear();
+		date += (event.getFromMonth() < 10 ? "0" + event.getFromMonth() + 1 : event.getFromMonth() + 1);
+		date += (event.getFromDay() < 10 ? "0" + event.getFromDay() : event.getFromDay());
+		date += "T";
+		date += (event.getFromDayHour() < 10 ? "0" + event.getFromDayHour() : event.getFromDayHour());
+		date += (event.getFromMinute() < 10 ? "0" + event.getFromMinute() : event.getFromMinute());
+		date += "00Z";
+		return date;
+	}
+
+	@Override
+	public String toString() {
+		String sep = System.getProperty("line.separator");
+		String vCal = "";
+		String vEvent = "";
+		vCal += "BEGIN:VCALENDAR" + sep +
+				"VERSION:2.0" + sep +
+				"PRODID:-//yusra/cal//TEST //EN" + sep;
+
+		for (int i = 0; i < events.size(); i++) {
+			vEvent = "BEGIN:VEVENT" + sep;
+			vEvent += "DTSTART:" + formatFromDate(events.get(i)) + sep;
+			vEvent += "DTEND:" + formatToDate(events.get(i)) + sep;
+			vEvent += "SUMMARY:" + events.get(i).getTitle() + sep;
+			vEvent += "DESCRIPTION:" + events.get(i).getDescription() + sep;
+			vEvent += "UID:" + events.get(i).getId() + sep;
+			vEvent += "LOCATION:" + events.get(i).getLocation() + sep;
+			vEvent += "END:VEVENT" + sep;
+
+			vCal += vEvent;
+		}
+
+		vCal += "END:VCALENDAR";
+		return vCal;
 	}
 }

@@ -131,10 +131,16 @@ public class EventsDataSource {
 		event.setFromMonth(cursor.getInt(7));
 		event.setFromDay(cursor.getInt(8));
 		event.setToDayHour(cursor.getInt(9));
-		event.setToMinute(cursor.getInt(9));
-		event.setToYear(cursor.getInt(9));
-		event.setToMonth(cursor.getInt(10));
-		event.setToDay(cursor.getInt(11));
+		event.setToMinute(cursor.getInt(10));
+		event.setToYear(cursor.getInt(11));
+		event.setToMonth(cursor.getInt(12));
+		event.setToDay(cursor.getInt(13));
+		
+		String st = "";
+		for (int i = 0; i < 14; i++) {
+			st += cursor.getString(i) + " | ";
+		}
+		System.out.println(st);
 		return event;
 	}
 }
