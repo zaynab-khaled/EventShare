@@ -27,7 +27,9 @@ public class WriteToTagActivity extends Activity {
 	static String separator = System.getProperty("line.separator");
 	public static String calString;
 
-	private TextView tv;
+	private TextView tvWriteToTag;
+	private TextView tvCalSize;
+	private int nrOfEvents;
 	private SharedPreferences nfcPreferences;
 	private NfcAdapter mNfcAdapter;
 	private PendingIntent mPendingIntent;
@@ -54,11 +56,19 @@ public class WriteToTagActivity extends Activity {
 		nfcPreferences = getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
 
 		// Get bundled data
-		calString = (String) getIntent().getSerializableExtra(Constants.ICALENDAR);
-
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			nrOfEvents = extras.getInt(Constants.EVENTCOUNT);
+		}
+		
+		calString = (String) getIntent().getSerializableExtra(Constants.ICALENDAR);				
+		
 		System.out.println(calString);
 
-		tv = (TextView) findViewById(R.id.tv_write_to_tag);
+		tvWriteToTag = (TextView) findViewById(R.id.tv_write_to_tag);
+		tvCalSize = (TextView) findViewById(R.id.tv_calendar_size);
+		tvCalSize.setText("Calendar size: " + calString.getBytes().length + " bytes");
+		
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
 		// create an intent with tag data and deliver to this activity
@@ -113,7 +123,6 @@ public class WriteToTagActivity extends Activity {
 	}
 
 	private void processIntent(Intent intent) {
-
 		if ((int) Math.ceil(calString.getBytes().length / (double) MifareClassic.BLOCK_SIZE) > 216) {
 			System.out.println("Message is too big to be written to tag!");
 			return;
@@ -140,9 +149,9 @@ public class WriteToTagActivity extends Activity {
 			String metaInfo = "";
 			int msgCount = 0;
 			mfc.connect();
-
+			
 			for (int j = 0; j < mfc.getSectorCount(); j++) {
-
+				
 				if (msgCount >= nfcPreferences.getInt("prevCalendarBlocks", 216) && msgCount > calBlocks) {
 					System.out.println("Stopped writing because prev calendar size was: " + nfcPreferences.getInt("prevCalendarBlocks", 216));
 					break;
@@ -184,7 +193,7 @@ public class WriteToTagActivity extends Activity {
 					System.out.println("Sector " + j + " could not be authenticated");
 				}
 			}
-			tv.setText(metaInfo);
+			tvWriteToTag.setText(metaInfo);
 			System.out.println(metaInfo);
 			System.out.println("Write count = " + msgCount);
 
@@ -195,7 +204,8 @@ public class WriteToTagActivity extends Activity {
 			System.out.println("sharedPrefernces: " + nfcPreferences.getInt("prevCalendarBlocks", 216));
 			mfc.close();
 			write = true;
-			new AlertDialog.Builder(this).setMessage("Tag successfully written!").setCancelable(false)
+			
+			new AlertDialog.Builder(this).setMessage(nrOfEvents + " events successfully written to tag!").setCancelable(false)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialogInterface, int i) {

@@ -137,6 +137,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private void writeToTag() {
 		Intent intent = new Intent(MainActivity.this, WriteToTagActivity.class);
 		intent.putExtra(Constants.ICALENDAR, adapter.toString());
+		intent.putExtra(Constants.EVENTCOUNT, adapter.getValidCount());
 		startActivity(intent);
 	}
 }

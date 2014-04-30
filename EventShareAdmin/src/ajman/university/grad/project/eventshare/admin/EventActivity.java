@@ -12,10 +12,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -223,6 +225,7 @@ public class EventActivity extends Activity {
 			}
 		} else {
 			errorService.log("You cannot keep some fields empty, please fill them out!");
+			Toast.makeText(this, "Some fields cannot be empty!", Toast.LENGTH_LONG).show();
 		}
 	}
 
