@@ -68,8 +68,8 @@ public class DetailEventActivity extends Activity {
 		tvEventName.setText(_event.getTitle());
 		tvEventLoc.setText(_event.getLocation());
 		tvEventDesc.setText(_event.getDescription());
-		tvEventFromDate.setText(new SimpleDateFormat("EEE,dd MMM yyyy HH:mm").format(fromCal.getTime()));
-		tvEventToDate.setText(new SimpleDateFormat("EEE,dd MMM yyyy HH:mm").format(toCal.getTime()));
+		tvEventFromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm").format(fromCal.getTime()));
+		tvEventToDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm").format(toCal.getTime()));
 		// Setting them wrong here
 		Log.d(LOG_TAG, "from cal: " + fromCal.getTime() + " to cal: " +  toCal.getTime());
 	}

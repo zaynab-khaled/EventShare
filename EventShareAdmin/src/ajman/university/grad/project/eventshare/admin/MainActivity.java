@@ -111,7 +111,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		.setMessage("Are you sure you want to delete declined events?")
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-	               //Already just closes the dialog
+	               
 	           }
 
 		})

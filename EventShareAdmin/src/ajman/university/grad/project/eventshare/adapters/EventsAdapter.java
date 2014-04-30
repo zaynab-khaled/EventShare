@@ -1,6 +1,8 @@
 package ajman.university.grad.project.eventshare.adapters;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ajman.university.grad.project.eventshare.admin.R;
@@ -10,6 +12,7 @@ import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,19 +60,32 @@ public class EventsAdapter extends BaseAdapter {
 	public View getView(int i, View view, ViewGroup viewGroup) {
 
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
 		// contains a reference to the Relative layout
 		View row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
 
 		TextView title = (TextView) row.findViewById(R.id.textView1);
 		TextView location = (TextView) row.findViewById(R.id.textView2);
-		TextView description = (TextView) row.findViewById(R.id.textView3);
-
+		TextView fromDate = (TextView) row.findViewById(R.id.textView3);
+			
 		Event event = events.get(i);
-
+		Calendar fromCal = Calendar.getInstance();
+		fromCal.set(Calendar.YEAR, event.getFromYear());
+		fromCal.set(Calendar.MONTH, event.getFromMonth());
+		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
+		fromCal.set(Calendar.MINUTE, event.getFromMinute());
+		
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.YEAR, event.getToYear());
+		toCal.set(Calendar.MONTH, event.getToMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		
 		title.setText(event.getTitle());
-		description.setText(event.getDescription());
 		location.setText(event.getLocation());
+		fromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + " ~ " + new SimpleDateFormat("EEE, dd MMM yyyy").format(toCal.getTime()));
+		
 
 		return row; // return the rootView of the single_row_list.xml
 	}
