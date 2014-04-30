@@ -23,11 +23,6 @@
 			        android:id="@+id/action_deleteDeclined"
 			        android:title="@string/title_deleteDeclined"
 			        android:showAsAction="never" />
-				
-				<item
-			        android:id="@+id/action_changePassword"
-			        android:title="@string/title_changePassword"
-			        android:showAsAction="never" />
 			        
 				<item
 			        android:id="@+id/action_erase"

@@ -19,42 +19,15 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class WriteToTagActivity extends Activity {
 
 	static String separator = System.getProperty("line.separator");
-	public static String calString =
-			"BEGIN:VCALENDAR" + separator
-					+ "PRODID:-//AT Content Types//AT Event//EN" + separator
-					+ "VERSION:2.0" + separator
-					+ "METHOD:PUBLISH" + separator
-					+ "BEGIN:VEVENT" + separator
-					+ "DTSTAMP:20140320T070804Z" + separator
-					+ "CREATED:20111007T042948Z" + separator
-					+ "UID:ATEvent-17dfbd0146a309fd6f48b50a79c9cdcf" + separator
-					+ "LAST-MODIFIED:20111007T043003Z" + separator
-					+ "SUMMARY:Yusra Test" + separator
-					+ "DTSTART:20111101T000000Z" + separator
-					+ "DTEND:20111108T000000Z" + separator
-					+ "LOCATION:San Francisco\\, CA" + separator
-					+ "URL:http://ploneconf.org" + separator
-					+ "CLASS:PUBLIC" + separator
-					+ "END:VEVENT" + separator
-					+ "BEGIN:VEVENT" + separator
-					+ "DTSTAMP:20140320T070804Z" + separator
-					+ "CREATED:20111007T042948Z" + separator
-					+ "UID:ATEvent-17dfbd0136a309fd6f48b50a79c9cdcf" + separator
-					+ "LAST-MODIFIED:20111007T043003Z" + separator
-					+ "SUMMARY:Amina Test" + separator
-					+ "DTSTART:20131101T000000Z" + separator
-					+ "DTEND:20131108T000000Z" + separator
-					+ "LOCATION:San Francisco\\, CA" + separator
-					+ "URL:http://ploneconf.org" + separator
-					+ "CLASS:PUBLIC" + separator
-					+ "END:VEVENT" + separator
-					+ "END:VCALENDAR";
+	public static String calString;
 
+	private TextView tv;
 	private SharedPreferences nfcPreferences;
 	private NfcAdapter mNfcAdapter;
 	private PendingIntent mPendingIntent;
@@ -85,6 +58,7 @@ public class WriteToTagActivity extends Activity {
 
 		System.out.println(calString);
 
+		tv = (TextView) findViewById(R.id.tv_write_to_tag);
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
 		// create an intent with tag data and deliver to this activity
@@ -210,7 +184,7 @@ public class WriteToTagActivity extends Activity {
 					System.out.println("Sector " + j + " could not be authenticated");
 				}
 			}
-
+			tv.setText(metaInfo);
 			System.out.println(metaInfo);
 			System.out.println("Write count = " + msgCount);
 
@@ -225,7 +199,8 @@ public class WriteToTagActivity extends Activity {
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialogInterface, int i) {
-							finish();
+							write = false;
+							//finish();
 						}
 					}).show();
 

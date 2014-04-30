@@ -94,7 +94,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
     }
 
 	private void actionAbout() {
-		Intent intent = new Intent(MainActivity.this, DetailEventActivity.class);
+		Intent intent = new Intent(MainActivity.this, AboutActivity.class);
 		startActivity(intent);
 	}
 
