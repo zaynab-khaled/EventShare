@@ -50,7 +50,7 @@ public class WriteToTagActivity extends Activity {
 		setContentView(R.layout.activity_write_to_tag);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		
 		nfcPreferences = getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
 
 		// Get bundled data
