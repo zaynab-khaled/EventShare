@@ -19,6 +19,7 @@ public class Event implements Serializable {
 	private int toYear;
 	private int toMonth;
 	private int toDay;
+	private boolean expired;
 	
 	public Event () {
 		this.setId(-1);
@@ -35,12 +36,13 @@ public class Event implements Serializable {
 		this.setToMinute(-1);
 		this.setToMonth(-1);
 		this.setToYear(-1);
+		this.setExpired(false);
 	}
 
 	public Event(int id, String title, String description, String location,
 			int fromDayHour, int fromMinute, int fromYear, int fromMonth,
 			int fromDay, int toDayHour, int toMinute, int toYear, int toMonth,
-			int toDay) {
+			int toDay, int isExpired) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -56,6 +58,7 @@ public class Event implements Serializable {
 		this.toYear = toYear;
 		this.toMonth = toMonth;
 		this.toDay = toDay;
+		this.expired = expired;
 	}
 
 	public int getId() {
@@ -169,4 +172,14 @@ public class Event implements Serializable {
 	public void setToDay(int toDay) {
 		this.toDay = toDay;
 	}
+
+	public boolean isExpired() {
+		return expired;
+	}
+
+	public void setExpired(boolean expired) {
+		this.expired = expired;
+	}
+	
+
 }

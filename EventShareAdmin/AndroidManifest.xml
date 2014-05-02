@@ -33,7 +33,7 @@
         <activity
             android:name="ajman.university.grad.project.eventshare.admin.EventActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_edit" >
+            android:label="" >
         </activity>
         <activity
             android:name="ajman.university.grad.project.eventshare.admin.WriteToTagActivity"
@@ -45,12 +45,6 @@
             android:name="ajman.university.grad.project.eventshare.admin.EraseTagActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_erase"
-            android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
-        </activity>
-        <activity
-            android:name="ajman.university.grad.project.eventshare.admin.ChangePasswordActivity"
-            android:configChanges="orientation|screenSize"
-            android:label=""
             android:parentActivityName="ajman.university.grad.project.eventshare.admin.MainActivity" >
         </activity>
         <activity

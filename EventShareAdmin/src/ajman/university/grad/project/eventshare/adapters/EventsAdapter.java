@@ -11,7 +11,6 @@ import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageSe
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,16 +57,12 @@ public class EventsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int i, View view, ViewGroup viewGroup) {
-
+		
+		String LOG_TAG = "getView List";
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		// contains a reference to the Relative layout
-		View row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
 
-		TextView title = (TextView) row.findViewById(R.id.textView1);
-		TextView location = (TextView) row.findViewById(R.id.textView2);
-		TextView fromDate = (TextView) row.findViewById(R.id.textView3);
-			
 		Event event = events.get(i);
+		Calendar currentCal = Calendar.getInstance();
 		Calendar fromCal = Calendar.getInstance();
 		fromCal.set(Calendar.YEAR, event.getFromYear());
 		fromCal.set(Calendar.MONTH, event.getFromMonth());
@@ -81,10 +76,25 @@ public class EventsAdapter extends BaseAdapter {
 		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
+		View row;
 		
+		if (toCal.compareTo(currentCal) == -1) {
+			// contains a reference to the Linear layout
+			Log.d(LOG_TAG, "Event: " + event);
+			row = inflater.inflate(R.layout.expired_row_list, viewGroup, false);
+			event.setExpired(true); }
+		else {
+			row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
+			event.setExpired(false); }
+		
+		TextView title = (TextView) row.findViewById(R.id.textView1);
+		TextView location = (TextView) row.findViewById(R.id.textView2);
+		TextView fromDate = (TextView) row.findViewById(R.id.textView3);
+		
+		Log.d(LOG_TAG, "Title: " + title + " Event: " + event);
 		title.setText(event.getTitle());
 		location.setText(event.getLocation());
-		fromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + " ~ " + new SimpleDateFormat("EEE, dd MMM yyyy").format(toCal.getTime()));
+		fromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + " - " + new SimpleDateFormat("EEE, dd MMM yyyy").format(toCal.getTime()));
 		
 
 		return row; // return the rootView of the single_row_list.xml

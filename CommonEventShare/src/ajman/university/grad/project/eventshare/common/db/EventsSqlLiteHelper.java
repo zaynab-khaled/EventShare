@@ -23,9 +23,10 @@ public class EventsSqlLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_TO_YEAR = "to_year";
 	public static final String COLUMN_TO_MONTH = "to_month";
 	public static final String COLUMN_TO_DAY = "to_day";
+	public static final String COLUMN_EXPIRED = "is_expired";
 	
 	public static final String DATABASE_NAME = "events.db";
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 3;
 	
 	private static final String DATABSASE_CREATE_SQL = "create table " 
 	+ TABLE_EVENTS 
@@ -43,7 +44,8 @@ public class EventsSqlLiteHelper extends SQLiteOpenHelper {
 	+ COLUMN_TO_MINUTE + " integer, "
 	+ COLUMN_TO_YEAR + " integer, "
 	+ COLUMN_TO_MONTH + " integer, "
-	+ COLUMN_TO_DAY + " integer "
+	+ COLUMN_TO_DAY + " integer, "
+	+ COLUMN_EXPIRED + " integer "
 	+ ");";
 	
 	public EventsSqlLiteHelper(Context context) {
