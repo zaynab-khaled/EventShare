@@ -8,6 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:isScrollContainer="true"
+    android:background="#c5e26d"
     tools:context=".AddEventActivity" >
 
 <ScrollView
@@ -25,14 +26,18 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="15sp"
+		    android:textColor="#669900"
+		    android:divider="#669900"
+		    android:dividerHeight="2dp"
 		    android:text="@string/section_EventDetails"/>
         
 	    <EditText
 	        android:id="@+id/editText_eventName"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:maxLines="2"
 	        android:maxLength="32"
+	        android:textColorHint="#f0f8db"
+	        android:inputType="textCapSentences|textNoSuggestions"
 	        android:hint="@string/hint_name" />
 	
 	
@@ -40,15 +45,19 @@
 	        android:id="@+id/editText_eventLoc"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:maxLines="2"
 	        android:maxLength="32"
+	        android:textColorHint="#f0f8db"
+	        android:inputType="textCapSentences|textNoSuggestions"
 	        android:hint="@string/hint_loc" />
 	    
 	    <EditText
 		    android:id="@+id/editText_eventDesc"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:inputType="textMultiLine"
+			android:inputType="textCapSentences|textNoSuggestions"
+			android:maxLength="65"
+			android:maxLines="2"
+			android:textColorHint="#f0f8db"
 		    android:hint="@string/hint_desc" />
 
 		<TextView
@@ -58,6 +67,9 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="15sp"
 		    android:layout_marginBottom="15sp"
+		    android:textColor="#669900"
+		    android:divider="#669900"
+		    android:dividerHeight="2dp"
 		    android:text="@string/section_EventTime" />
 		
 	    <TextView

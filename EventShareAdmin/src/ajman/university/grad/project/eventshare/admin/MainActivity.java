@@ -1,5 +1,8 @@
 package ajman.university.grad.project.eventshare.admin;
 
+import java.util.Calendar;
+import java.util.List;
+
 import ajman.university.grad.project.eventshare.adapters.EventsAdapter;
 import ajman.university.grad.project.eventshare.admin.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
@@ -10,11 +13,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -22,7 +27,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	ListView list;
 	EventsAdapter adapter;
-	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
         
         System.out.println("count: " + adapter.getCount());
         
+    }
+    
+    @Override
+    public void onBackPressed() {
     }
     
 	@Override
@@ -75,8 +83,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			writeToTag();
 			return true;
 			
-		case R.id.action_deleteDeclined:
-			actionDeleteDeclined();
+		case R.id.action_deleteExpired:
+			actionDeleteExpired();
 			return true;
 			
 		case R.id.action_erase:
@@ -105,10 +113,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 
-	private void actionDeleteDeclined() {
+	private void actionDeleteExpired() {
 		new AlertDialog.Builder(this)
 		.setTitle("Delete Event")
-		.setMessage("Are you sure you want to delete declined events?")
+		.setMessage("Are you sure you want to delete all expired events?")
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 	               
@@ -120,6 +128,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				ILocalStorageService service = ServicesFactory.getLocalStorageService();
 				try {
 					service.deleteExpiredEvents();
+					//Refreshes the activity
+					onCreate(null);
+					// TODO Need to check if there are any expired events first .. if yes delete them
+					//and show this message. If not show message "No expired events"
+					Toast.makeText(getApplicationContext(), "Expired events have been deleted!",
+							   Toast.LENGTH_SHORT).show();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -128,6 +142,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		})
 		.show();
 	}
+
 
 	private void addNewEvent() {
 		Intent intent = new Intent(MainActivity.this, EventActivity.class);

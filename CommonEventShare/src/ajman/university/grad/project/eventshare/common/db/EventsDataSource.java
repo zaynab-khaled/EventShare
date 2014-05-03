@@ -31,7 +31,8 @@ public class EventsDataSource {
 			EventsSqlLiteHelper.COLUMN_TO_MINUTE,
 			EventsSqlLiteHelper.COLUMN_TO_YEAR,
 			EventsSqlLiteHelper.COLUMN_TO_MONTH,
-			EventsSqlLiteHelper.COLUMN_TO_DAY
+			EventsSqlLiteHelper.COLUMN_TO_DAY,
+			EventsSqlLiteHelper.COLUMN_EXPIRED
 	};
 	
 	public EventsDataSource(Context context) {
@@ -67,6 +68,7 @@ public class EventsDataSource {
 			values.put(EventsSqlLiteHelper.COLUMN_TO_YEAR, event.getToYear());
 			values.put(EventsSqlLiteHelper.COLUMN_TO_MONTH, event.getToMonth());
 			values.put(EventsSqlLiteHelper.COLUMN_TO_DAY, event.getToDay());
+			values.put(EventsSqlLiteHelper.COLUMN_EXPIRED, (event.isExpired() ? 1 : 0));
 			
 			long insertId = database.insert(EventsSqlLiteHelper.TABLE_EVENTS, null, values);
 			Log.d(LOG_TAG, "inserted id: " + insertId);
@@ -100,10 +102,11 @@ public class EventsDataSource {
 		Log.d(LOG_TAG, "retrieveAll: " + Environment.getDataDirectory());
 		List<Event> events = new ArrayList<Event> ();
 		Cursor cursor = null;
-		String orderBy = EventsSqlLiteHelper.COLUMN_FROM_YEAR + "," + EventsSqlLiteHelper.COLUMN_FROM_MONTH + "," + EventsSqlLiteHelper.COLUMN_FROM_DAY + "," + EventsSqlLiteHelper.COLUMN_FROM_DAY_HOUR + "," + EventsSqlLiteHelper.COLUMN_FROM_MINUTE + "," + EventsSqlLiteHelper.COLUMN_TO_YEAR + "," + EventsSqlLiteHelper.COLUMN_TO_MONTH + "," + EventsSqlLiteHelper.COLUMN_TO_DAY + "," + EventsSqlLiteHelper.COLUMN_TO_DAY_HOUR + "," + EventsSqlLiteHelper.COLUMN_TO_MINUTE;
+		String orderBy = EventsSqlLiteHelper.COLUMN_FROM_YEAR + "," + EventsSqlLiteHelper.COLUMN_FROM_MONTH + "," +  EventsSqlLiteHelper.COLUMN_FROM_DAY + "," +  EventsSqlLiteHelper.COLUMN_FROM_DAY_HOUR + "," +  EventsSqlLiteHelper.COLUMN_FROM_MINUTE;
 		
 		try {
-			cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, orderBy, null, EventsSqlLiteHelper.COLUMN_TITLE, "" + records);
+			//cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, orderBy, null, EventsSqlLiteHelper.COLUMN_TITLE, "" + records);
+			cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, null, null, orderBy, null);
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
 				events.add(cursorToEvent(cursor));
@@ -135,9 +138,10 @@ public class EventsDataSource {
 		event.setToYear(cursor.getInt(11));
 		event.setToMonth(cursor.getInt(12));
 		event.setToDay(cursor.getInt(13));
+		event.setExpired((cursor.getInt(14) == 0 ? false : true));
 		
 		String st = "";
-		for (int i = 0; i < 14; i++) {
+		for (int i = 0; i < 15; i++) {
 			st += cursor.getString(i) + " | ";
 		}
 		System.out.println(st);

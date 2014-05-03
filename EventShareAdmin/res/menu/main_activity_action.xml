@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
         android:id="@+id/addNewEvent"
-        android:icon="@drawable/ic_action_new"
+        android:icon="@drawable/ic_action_new_event"
         android:title="@string/new_event"
         android:showAsAction="always"
     />
     
     <item
         android:id="@+id/writeToTag"
-        android:icon="@drawable/ic_action_network_wifi"
+        android:icon="@drawable/icon_nfc_write"
         android:title="@string/write_tag"
         android:showAsAction="always" />
 	<group android:id="@+id/group1" > 
@@ -20,24 +20,19 @@
 	        android:showAsAction="always" >
 		    <menu>
 			    <item
-			        android:id="@+id/action_deleteDeclined"
-			        android:title="@string/title_deleteDeclined"
+			        android:id="@+id/action_deleteExpired"
+			        android:title="@string/title_deleteExpired"
 			        android:showAsAction="never" />
 			        
 				<item
 			        android:id="@+id/action_erase"
 			        android:title="@string/title_erase"
 			        android:showAsAction="never" />
-			 
-				<item
-			        android:id="@+id/action_settings"
-			        android:title="@string/title_settings"
-			        android:showAsAction="ifRoom" />
 				
 				<item
 			        android:id="@+id/action_about"
 			        android:title="@string/title_about"
-			        android:showAsAction="ifRoom" />
+			        android:showAsAction="never" />
 			</menu>
 		</item>	
 	</group>

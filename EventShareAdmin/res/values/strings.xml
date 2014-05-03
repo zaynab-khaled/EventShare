@@ -11,8 +11,7 @@
     <string name="overflow_icon">Open Menu</string>
 
     <!-- Menu list -->
-    <string name="title_deleteDeclined">Delete Declined Events</string>
-    <string name="title_changePassword">Change Tag Password</string>
+    <string name="title_deleteExpired">Delete Expired Events</string>
     <string name="title_erase">Erase Tag</string>
     <string name="title_settings">Settings</string>
     <string name="title_about">About</string>

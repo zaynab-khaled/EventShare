@@ -3,6 +3,9 @@ package ajman.university.grad.project.eventshare.admin;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+
 import ajman.university.grad.project.eventshare.admin.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
@@ -21,11 +24,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -33,7 +38,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-public class EventActivity extends Activity {
+public class EventActivity extends SherlockActivity {
 
 	private static String LOG_TAG = "EventActivity SetDate";
 	private EditText etEventName;
@@ -63,32 +68,37 @@ public class EventActivity extends Activity {
 			mode = 1;
 			populateFields();
 		}
+		
+		// BEGIN_INCLUDE (inflate_set_custom_view)
+				//Inflate a "Done/Cancel" custom action bar view.
+				final LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
+			    .getThemedContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+				final View customActionBarView = inflater.inflate(R.layout.actionbar_custom_view_done_discard,
+				    null);
+				customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(
+				    new View.OnClickListener() {
+				      @Override
+				      public void onClick(View v) {
+				    	  actionDone();
+				      }
+				    });
+				customActionBarView.findViewById(R.id.actionbar_discard).setOnClickListener(
+				    new View.OnClickListener() {
+				      @Override
+				      public void onClick(View v) {
+				    	  actionCancel();
+				      }
+				    });
+
+				// Show the custom action bar view and hide the normal Home icon and title.
+				final ActionBar bar = getSupportActionBar();;
+				bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM
+				    | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
+				bar.setCustomView(customActionBarView, new ActionBar.LayoutParams(
+				    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+				// END_INCLUDE (inflate_set_custom_view)
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.cancel_done, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// return super.onOptionsItemSelected(item);
-		switch (item.getItemId()) {
-		case R.id.action_cancel:
-			actionCancel();
-			return true;
-
-		case R.id.action_done:
-			actionDone();
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 
 	public void showStartTimePickerDialog(View v) {
 		DialogFragment newFragment = new EventStartTimePickerFragment(event, mode, btnT1);
@@ -212,13 +222,18 @@ public class EventActivity extends Activity {
 			Log.d(LOG_TAG, "DateSet ToYear: " + event.getToYear() + " DateSet ToMonth: " + event.getToMonth());
 
 			try {
-				if (mode == 0)
+				if (mode == 0){
 					service.addEvent(event);
-				else
+					Toast.makeText(getApplicationContext(), "Event Created",
+						   Toast.LENGTH_SHORT).show(); }
+				else {
 					service.updateEvent(event);
+				Toast.makeText(getApplicationContext(), "Event Saved",
+						   Toast.LENGTH_SHORT).show(); }
 
 				Intent intent = new Intent(this, MainActivity.class);
 				startActivity(intent);
+				
 				finish();
 			} catch (Exception e) {
 				errorService.log(e);
