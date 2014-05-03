@@ -64,13 +64,12 @@ public class EventsAdapter extends BaseAdapter {
 		String LOG_TAG = "getView List";
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-<<<<<<< HEAD
+
 		TextView title = (TextView) row.findViewById(R.id.textView1);
 		TextView location = (TextView) row.findViewById(R.id.textView2);
 		TextView fromDate = (TextView) row.findViewById(R.id.textView3);
 
-=======
->>>>>>> 0777aaa897532e86a260cbdce2fac1d602ce019d
+
 		Event event = events.get(i);
 		Calendar currentCal = Calendar.getInstance();
 		Calendar fromCal = Calendar.getInstance();
@@ -86,13 +85,13 @@ public class EventsAdapter extends BaseAdapter {
 		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
-<<<<<<< HEAD
+
 
 		title.setText(event.getTitle());
 		location.setText(event.getLocation());
 		fromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + " ~ "
 				+ new SimpleDateFormat("EEE, dd MMM yyyy").format(toCal.getTime()));
-=======
+
 		View row;
 		
 		if (toCal.compareTo(currentCal) == -1) {
@@ -113,7 +112,7 @@ public class EventsAdapter extends BaseAdapter {
 		location.setText(event.getLocation());
 		fromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + " - " + new SimpleDateFormat("EEE, dd MMM yyyy").format(toCal.getTime()));
 		
->>>>>>> 0777aaa897532e86a260cbdce2fac1d602ce019d
+
 
 		return row; // return the rootView of the single_row_list.xml
 	}
