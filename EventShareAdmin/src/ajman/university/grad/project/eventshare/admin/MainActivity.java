@@ -126,11 +126,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				ILocalStorageService service = ServicesFactory.getLocalStorageService();
-				
 				try {
 					service.deleteExpiredEvents();
 					//Refreshes the activity
 					onCreate(null);
+					// TODO Need to check if there are any expired events first .. if yes delete them
+					//and show this message. If not show message "No expired events"
 					Toast.makeText(getApplicationContext(), "Expired events have been deleted!",
 							   Toast.LENGTH_SHORT).show();
 				} catch (Exception e) {
@@ -141,6 +142,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		})
 		.show();
 	}
+
 
 	private void addNewEvent() {
 		Intent intent = new Intent(MainActivity.this, EventActivity.class);

@@ -96,6 +96,8 @@ public class LocalStorageService implements ILocalStorageService {
 			eventCal.set(Calendar.YEAR, event.getToYear());
 			eventCal.set(Calendar.MONTH, event.getToMonth());
 			eventCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
+			eventCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+			eventCal.set(Calendar.MINUTE, event.getToMinute());
 			Log.d(LOG_TAG, "Event year: " + event.getToYear() + " - month: " + event.getToMonth() + " - day: " + event.getToDay());
 			if (eventCal.compareTo(currentCal) == -1) {
 				Log.d(LOG_TAG, "Event name: " + event.getTitle() + " will be deleted!");
