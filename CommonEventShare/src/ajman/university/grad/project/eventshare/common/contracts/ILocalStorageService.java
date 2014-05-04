@@ -9,5 +9,5 @@ public interface ILocalStorageService {
 	public void updateEvent(Event event) throws Exception;
 	public void removeEvent(Event event) throws Exception;
 	public List<Event> getAllEvents() throws Exception;
-	public void deleteDeclinedEvents() throws Exception;
+	public int deleteDeclinedEvents() throws Exception;
 }

@@ -112,7 +112,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private void actionDeleteExpired() {
 		new AlertDialog.Builder(this)
 		.setTitle("Delete Event")
-		.setMessage("Are you sure you want to delete all expired events?")
+		.setMessage("Are you sure you want to delete all declined events?")
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 	               
@@ -123,12 +123,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			public void onClick(DialogInterface dialog, int id) {
 				ILocalStorageService service = ServicesFactory.getLocalStorageService();
 				try {
-					service.deleteDeclinedEvents();
+					int count = service.deleteDeclinedEvents();
 					//Refreshes the activity
 					onCreate(null);
 					// TODO Need to check if there are any expired events first .. if yes delete them
 					//and show this message. If not show message "No expired events"
-					Toast.makeText(getApplicationContext(), "Declined events have been deleted!",
+					Toast.makeText(getApplicationContext(), count + " declined " +  ((count == 1) ? "event" : "events") + " have been deleted!",
 							   Toast.LENGTH_SHORT).show();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
