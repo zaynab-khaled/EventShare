@@ -65,7 +65,7 @@ public class EventsAdapter extends BaseAdapter {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		Event event = events.get(i);
-		Calendar currentCal = Calendar.getInstance();
+
 		Calendar fromCal = Calendar.getInstance();
 		fromCal.set(Calendar.YEAR, event.getFromYear());
 		fromCal.set(Calendar.MONTH, event.getFromMonth());
@@ -81,7 +81,7 @@ public class EventsAdapter extends BaseAdapter {
 		toCal.set(Calendar.MINUTE, event.getToMinute());
 		View row;
 		
-		if (toCal.compareTo(currentCal) == -1) {
+		if (isDeclined(event)) {
 			// contains a reference to the Linear layout
 			Log.d(LOG_TAG, "Event: " + event);
 			row = inflater.inflate(R.layout.expired_row_list, viewGroup, false);

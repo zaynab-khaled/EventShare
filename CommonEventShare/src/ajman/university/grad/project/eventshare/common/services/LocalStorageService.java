@@ -85,7 +85,7 @@ public class LocalStorageService implements ILocalStorageService {
 		return events;
 	}
 
-	public void deleteExpiredEvents() throws Exception {
+	public void deleteDeclinedEvents() throws Exception {
 		List<Event> events = getAllEvents();
 
 		// Compare each event, compare the event's from date to current
