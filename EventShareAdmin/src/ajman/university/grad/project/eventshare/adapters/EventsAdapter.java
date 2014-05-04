@@ -141,7 +141,7 @@ public class EventsAdapter extends BaseAdapter {
 				"PRODID:-//yusra/cal//TEST //EN" + sep;
 
 		for (int i = 0; i < events.size(); i++) {
-			if (!isExpired(events.get(i))) {
+			if (!isDeclined(events.get(i))) {
 				vEvent = "BEGIN:VEVENT" + sep;
 				vEvent += "DTSTART:" + formatFromDate(events.get(i)) + sep;
 				vEvent += "DTEND:" + formatToDate(events.get(i)) + sep;
@@ -170,7 +170,7 @@ public class EventsAdapter extends BaseAdapter {
 		return vCal;
 	}
 
-	private boolean isExpired(Event event) {
+	private boolean isDeclined(Event event) {
 		
 		Calendar toCal = Calendar.getInstance();
 		toCal.set(Calendar.YEAR, event.getToYear());

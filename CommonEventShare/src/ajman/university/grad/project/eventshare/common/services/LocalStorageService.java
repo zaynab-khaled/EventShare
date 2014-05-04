@@ -15,99 +15,107 @@ import ajman.university.grad.project.eventshare.common.helpers.ApplicationContex
 
 public class LocalStorageService implements ILocalStorageService {
 	private static String LOG_TAG = "LocalStorageService";
-	
+
 	@Override
 	public void addEvent(Event event) throws Exception {
 		EventsDataSource ds = null;
-				
-    	try {
-	    	ds = new EventsDataSource(getApplicationContext());
-	    	ds.open();
-	    	ds.insert(event);
-    	} catch (Exception e) {
-	    	throw new Exception (e.getMessage());
-    	} finally {
-    		if (ds != null)
-    			ds.close();
-    	}
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			ds.insert(event);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
 	}
 
 	@Override
 	public void updateEvent(Event event) throws Exception {
 		EventsDataSource ds = null;
-		
-    	try {
-	    	ds = new EventsDataSource(getApplicationContext());
-	    	ds.open();
-	    	ds.delete(event);
-	    	ds.insert(event);
-    	} catch (Exception e) {
-	    	throw new Exception (e.getMessage());
-    	} finally {
-    		if (ds != null)
-    			ds.close();
-    	}
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			ds.delete(event);
+			ds.insert(event);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
 	}
 
 	@Override
 	public void removeEvent(Event event) throws Exception {
 		EventsDataSource ds = null;
-		
-    	try {
-	    	ds = new EventsDataSource(getApplicationContext());
-	    	ds.open();
-	    	ds.delete(event);
-    	} catch (Exception e) {
-	    	throw new Exception (e.getMessage());
-    	} finally {
-    		if (ds != null)
-    			ds.close();
-    	}
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			ds.delete(event);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
 	}
 
 	@Override
 	public List<Event> getAllEvents() throws Exception {
-		List<Event> events = new ArrayList <Event>();
-	    
-    	EventsDataSource ds = null;
-    	
-    	try {
-	    	ds = new EventsDataSource(getApplicationContext());
-	    	ds.open();
-	    	events = ds.retrieveAll(1000);
-    	} catch (Exception e) {
-	    	throw new Exception (e.getMessage());
-    	} finally {
-    		if (ds != null)
-    			ds.close();
-    	}
-	    
-	    return events;
+		List<Event> events = new ArrayList<Event>();
+
+		EventsDataSource ds = null;
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			events = ds.retrieveAll(1000);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
+
+		return events;
 	}
-	
+
 	public void deleteExpiredEvents() throws Exception {
 		List<Event> events = getAllEvents();
 
-		Calendar currentCal = Calendar.getInstance(); 
-		
-		//Compare each event, compare the event's from date to current 
+		// Compare each event, compare the event's from date to current
 		for (Event event : events) {
-			Calendar eventCal = Calendar.getInstance(); 
-			eventCal.set(Calendar.YEAR, event.getToYear());
-			eventCal.set(Calendar.MONTH, event.getToMonth());
-			eventCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
-			eventCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
-			eventCal.set(Calendar.MINUTE, event.getToMinute());
-			Log.d(LOG_TAG, "Event year: " + event.getToYear() + " - month: " + event.getToMonth() + " - day: " + event.getToDay());
-			if (eventCal.compareTo(currentCal) == -1) {
+			if (isDeclined(event)) {
 				Log.d(LOG_TAG, "Event name: " + event.getTitle() + " will be deleted!");
 				removeEvent(event);
 			}
 		}
 	}
 
+	private boolean isDeclined(Event event) {
+
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.YEAR, event.getToYear());
+		toCal.set(Calendar.MONTH, event.getToMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+
+		Calendar c = Calendar.getInstance();
+
+		if (toCal.getTimeInMillis() < c.getTimeInMillis()) {
+			return true;
+		}
+		return false;
+	}
+
 	/*** PRIVATE METHODS */
 	private Context getApplicationContext() {
-		return ApplicationContextProvider.getContext();		
+		return ApplicationContextProvider.getContext();
 	}
 }

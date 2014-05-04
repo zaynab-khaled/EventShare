@@ -1,8 +1,5 @@
 package ajman.university.grad.project.eventshare.admin;
 
-import java.util.Calendar;
-import java.util.List;
-
 import ajman.university.grad.project.eventshare.adapters.EventsAdapter;
 import ajman.university.grad.project.eventshare.admin.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
@@ -13,7 +10,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

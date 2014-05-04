@@ -195,7 +195,25 @@ public class EventActivity extends SherlockActivity {
 
 		// TODO: Some validation to make sure that the event data is actually
 		// provided:
-		if (etEventName.getText().length() > 0 &&
+		
+		Calendar fromCal = Calendar.getInstance();
+		fromCal.set(Calendar.YEAR, event.getFromYear());
+		fromCal.set(Calendar.MONTH, event.getFromMonth());
+		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
+		fromCal.set(Calendar.MINUTE, event.getFromMinute());
+		
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.YEAR, event.getToYear());
+		toCal.set(Calendar.MONTH, event.getToMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		
+		if (toCal.before(fromCal)) {	
+			Toast.makeText(this, "TO date should be later that " + new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()) + " " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()), Toast.LENGTH_LONG).show();
+		}
+		else if (etEventName.getText().length() > 0 &&
 				etEventDesc.getText().length() > 0 &&
 				etEventLocation.getText().length() > 0 &&
 				event.getFromDay() != -1 &&
@@ -429,9 +447,9 @@ class EventEndDatePickerFragment extends DialogFragment
 		// Use the current date as the default date in the picker
 
 		if (mode == 1) {
-			year = _innerEvent.getFromYear();
-			month = _innerEvent.getFromMonth();
-			day = _innerEvent.getFromDay();
+			year = _innerEvent.getToYear();
+			month = _innerEvent.getToMonth();
+			day = _innerEvent.getToDay();
 		}
 		else {
 			final Calendar c = Calendar.getInstance();
