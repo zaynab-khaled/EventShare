@@ -21,6 +21,9 @@ import android.widget.TextView;
 public class EventsAdapter extends BaseAdapter {
 	private List<Event> events = new ArrayList<Event>();
 	private Context context;
+	private int nrOfValidEvents;
+	private final static int tagSize = (256 - 40) * 16;
+	//(nr of block - trailer blocks) * block size = 3456 bytes;
 
 	public EventsAdapter(Context c) {
 		context = c;
@@ -104,7 +107,7 @@ public class EventsAdapter extends BaseAdapter {
 	private String formatToDate(Event event) {
 		String date = "";
 		date += event.getToYear();
-		date += (event.getToMonth() < 10 ? "0" + event.getToMonth() + 1 : event.getToMonth() + 1);
+		date += (event.getToMonth() < 10 ? "0" + (event.getToMonth() + 1) : event.getToMonth() + 1);
 		date += (event.getToDay() < 10 ? "0" + event.getToDay() : event.getToDay());
 		date += "T";
 		date += (event.getToDayHour() < 10 ? "0" + event.getToDayHour() : event.getToDayHour());
@@ -116,7 +119,7 @@ public class EventsAdapter extends BaseAdapter {
 	private String formatFromDate(Event event) {
 		String date = "";
 		date += event.getFromYear();
-		date += (event.getFromMonth() < 10 ? "0" + event.getFromMonth() + 1 : event.getFromMonth() + 1);
+		date += (event.getFromMonth() < 10 ? "0" + (event.getFromMonth() + 1) : event.getFromMonth() + 1);
 		date += (event.getFromDay() < 10 ? "0" + event.getFromDay() : event.getFromDay());
 		date += "T";
 		date += (event.getFromDayHour() < 10 ? "0" + event.getFromDayHour() : event.getFromDayHour());
@@ -129,25 +132,62 @@ public class EventsAdapter extends BaseAdapter {
 	public String toString() {
 		String sep = System.getProperty("line.separator");
 		String vCal = "";
+		String vCalPrev = "";
 		String vEvent = "";
+		nrOfValidEvents = 0;
+
 		vCal += "BEGIN:VCALENDAR" + sep +
 				"VERSION:2.0" + sep +
 				"PRODID:-//yusra/cal//TEST //EN" + sep;
 
 		for (int i = 0; i < events.size(); i++) {
-			vEvent = "BEGIN:VEVENT" + sep;
-			vEvent += "DTSTART:" + formatFromDate(events.get(i)) + sep;
-			vEvent += "DTEND:" + formatToDate(events.get(i)) + sep;
-			vEvent += "SUMMARY:" + events.get(i).getTitle() + sep;
-			vEvent += "DESCRIPTION:" + events.get(i).getDescription() + sep;
-			vEvent += "UID:" + events.get(i).getId() + sep;
-			vEvent += "LOCATION:" + events.get(i).getLocation() + sep;
-			vEvent += "END:VEVENT" + sep;
+			if (!isExpired(events.get(i))) {
+				vEvent = "BEGIN:VEVENT" + sep;
+				vEvent += "DTSTART:" + formatFromDate(events.get(i)) + sep;
+				vEvent += "DTEND:" + formatToDate(events.get(i)) + sep;
+				vEvent += "SUMMARY:" + events.get(i).getTitle() + sep;
+				vEvent += "DESCRIPTION:" + events.get(i).getDescription() + sep;
+				vEvent += "UID:" + events.get(i).getId() + sep;
+				vEvent += "LOCATION:" + events.get(i).getLocation() + sep;
+				vEvent += "END:VEVENT" + sep;
 
-			vCal += vEvent;
+				vCal += vEvent;
+
+				if (vCal.getBytes().length < (tagSize - "END:VCALENDAR".getBytes().length)) {
+					vCalPrev = vCal;
+					nrOfValidEvents++;
+					System.out.println("nrofevents = " + nrOfValidEvents);
+					System.out.println("size = " + vCal.getBytes().length + " bytes");
+				}
+				else {
+					vCal = vCalPrev;
+					break;
+				}
+			}
 		}
 
 		vCal += "END:VCALENDAR";
 		return vCal;
+	}
+
+	private boolean isExpired(Event event) {
+		
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.YEAR, event.getToYear());
+		toCal.set(Calendar.MONTH, event.getToMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+	
+		Calendar c = Calendar.getInstance();
+
+		if (toCal.getTimeInMillis() < c.getTimeInMillis()) { 
+			return true;
+		}
+		return false;
+	}
+	
+	public int getValidCount() {
+		return nrOfValidEvents;
 	}
 }

@@ -238,6 +238,7 @@ public class EventActivity extends SherlockActivity {
 			}
 		} else {
 			errorService.log("You cannot keep some fields empty, please fill them out!");
+			Toast.makeText(this, "Some fields cannot be empty!", Toast.LENGTH_LONG).show();
 		}
 	}
 
