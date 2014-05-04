@@ -99,6 +99,18 @@ public class LocalStorageService implements ILocalStorageService {
 		return count;
 	}
 
+	public int deleteAllEvents() throws Exception {
+		List<Event> events = getAllEvents();
+		int count = 0;
+		// Compare each event, compare the event's from date to current
+		for (Event event : events) {
+				Log.d(LOG_TAG, "Event name: " + event.getTitle() + " will be deleted!");
+				removeEvent(event);
+				count++;
+		}
+		return count;
+	}
+	
 	private boolean isDeclined(Event event) {
 
 		Calendar toCal = Calendar.getInstance();
