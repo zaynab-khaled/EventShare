@@ -1,3 +1,4 @@
+
 package ajman.university.grad.project.eventshare.admin;
 
 import java.io.IOException;
@@ -234,7 +235,7 @@ public class WriteToTagActivity extends Activity {
 		if (mNfcAdapter == null) {
 			// Stop here, we definitely need NFC
 			Toast.makeText(this, "This device doesn't support NFC.",
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}

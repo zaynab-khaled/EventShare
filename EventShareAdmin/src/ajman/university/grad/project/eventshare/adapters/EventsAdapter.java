@@ -22,7 +22,7 @@ public class EventsAdapter extends BaseAdapter {
 	private List<Event> events = new ArrayList<Event>();
 	private Context context;
 	private int nrOfValidEvents;
-	private final static int tagSize = (256 - 40) * 16;
+	//private final static int tagSize = (256 - 40) * 16;
 	//(nr of block - trailer blocks) * block size = 3456 bytes;
 
 	public EventsAdapter(Context c) {
@@ -74,9 +74,6 @@ public class EventsAdapter extends BaseAdapter {
 		fromCal.set(Calendar.MINUTE, event.getFromMinute());
 		
 		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.YEAR, event.getToYear());
-		toCal.set(Calendar.MONTH, event.getToMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
 		View row;
@@ -92,85 +89,81 @@ public class EventsAdapter extends BaseAdapter {
 		
 		TextView title = (TextView) row.findViewById(R.id.textView1);
 		TextView location = (TextView) row.findViewById(R.id.textView2);
-		TextView fromDate = (TextView) row.findViewById(R.id.textView3);
+		TextView dateTime = (TextView) row.findViewById(R.id.textView3);
 		
 		Log.d(LOG_TAG, "Title: " + title + " Event: " + event);
 		title.setText(event.getTitle());
 		location.setText(event.getLocation());
-		fromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + " - " + new SimpleDateFormat("EEE, dd MMM yyyy").format(toCal.getTime()));
-		
+		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "/" + new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + "-" + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 
 		return row; // return the rootView of the single_row_list.xml
 	}
 
-	// Final format should be 20140924T185545Z
-	private String formatToDate(Event event) {
-		String date = "";
-		date += event.getToYear();
-		date += (event.getToMonth() < 10 ? "0" + (event.getToMonth() + 1) : event.getToMonth() + 1);
-		date += (event.getToDay() < 10 ? "0" + event.getToDay() : event.getToDay());
-		date += (event.getToDayHour() < 10 ? "0" + event.getToDayHour() : event.getToDayHour());
-		date += (event.getToMinute() < 10 ? "0" + event.getToMinute() : event.getToMinute());
-		date += "00";
-		return date;
-	}
-
-	private String formatFromDate(Event event) {
-		String date = "";
-		date += event.getFromYear();
-		date += (event.getFromMonth() < 10 ? "0" + (event.getFromMonth() + 1) : event.getFromMonth() + 1);
-		date += (event.getFromDay() < 10 ? "0" + event.getFromDay() : event.getFromDay());
-		date += (event.getFromDayHour() < 10 ? "0" + event.getFromDayHour() : event.getFromDayHour());
-		date += (event.getFromMinute() < 10 ? "0" + event.getFromMinute() : event.getFromMinute());
-		date += "00";
-		return date;
-	}
-
-	@Override
-	public String toString() {
-		String vCal = "";
-		String vCalPrev = "";
-		String vEvent = "";
-		nrOfValidEvents = 0;
-
-		vCal += "<vcalendar>";
-
-		for (int i = 0; i < events.size(); i++) {
-			if (!isDeclined(events.get(i))) {
-				vEvent = "<event>";
-				vEvent += "<dtstart>" + formatFromDate(events.get(i)) + "</dtstart>";
-				vEvent += "<dtend>" + formatToDate(events.get(i)) + "</dtend>";
-				vEvent += "<summary>" + events.get(i).getTitle() + "</summary>";
-				vEvent += "<description>" + events.get(i).getDescription() + "</description>";
-				vEvent += "<uid>" + events.get(i).getId() + "</uid>";
-				vEvent += "<location>" + events.get(i).getLocation() + "</location>";
-				vEvent += "</event>";
-
-				vCal += vEvent;
-
-				if (vCal.getBytes().length < (tagSize - "</vcalendar>".getBytes().length)) {
-					vCalPrev = vCal;
-					nrOfValidEvents++;
-					System.out.println("nrofevents = " + nrOfValidEvents);
-					System.out.println("size = " + vCal.getBytes().length + " bytes");
-				}
-				else {
-					vCal = vCalPrev;
-					break;
-				}
-			}
-		}
-
-		vCal += "</vcalendar>";
-		return vCal;
-	}
+//	// Final format should be 20140924T185545Z
+//	private String formatToDate(Event event) {
+//		String date = "";
+//		date += event.getToYear();
+//		date += (event.getToMonth() < 10 ? "0" + (event.getToMonth() + 1) : event.getToMonth() + 1);
+//		date += (event.getToDay() < 10 ? "0" + event.getToDay() : event.getToDay());
+//		date += (event.getToDayHour() < 10 ? "0" + event.getToDayHour() : event.getToDayHour());
+//		date += (event.getToMinute() < 10 ? "0" + event.getToMinute() : event.getToMinute());
+//		date += "00";
+//		return date;
+//	}
+//
+//	private String formatFromDate(Event event) {
+//		String date = "";
+//		date += event.getFromYear();
+//		date += (event.getFromMonth() < 10 ? "0" + (event.getFromMonth() + 1) : event.getFromMonth() + 1);
+//		date += (event.getFromDay() < 10 ? "0" + event.getFromDay() : event.getFromDay());
+//		date += (event.getFromDayHour() < 10 ? "0" + event.getFromDayHour() : event.getFromDayHour());
+//		date += (event.getFromMinute() < 10 ? "0" + event.getFromMinute() : event.getFromMinute());
+//		date += "00";
+//		return date;
+//	}
+//
+//	@Override
+//	public String toString() {
+//		String vCal = "";
+//		String vCalPrev = "";
+//		String vEvent = "";
+//		nrOfValidEvents = 0;
+//
+//		vCal += "<vcalendar>";
+//
+//		for (int i = 0; i < events.size(); i++) {
+//			if (!isDeclined(events.get(i))) {
+//				vEvent = "<event>";
+//				vEvent += "<dtstart>" + formatFromDate(events.get(i)) + "</dtstart>";
+//				vEvent += "<dtend>" + formatToDate(events.get(i)) + "</dtend>";
+//				vEvent += "<summary>" + events.get(i).getTitle() + "</summary>";
+//				vEvent += "<description>" + events.get(i).getDescription() + "</description>";
+//				vEvent += "<uid>" + events.get(i).getId() + "</uid>";
+//				vEvent += "<location>" + events.get(i).getLocation() + "</location>";
+//				vEvent += "</event>";
+//
+//				vCal += vEvent;
+//
+//				if (vCal.getBytes().length < (tagSize - "</vcalendar>".getBytes().length)) {
+//					vCalPrev = vCal;
+//					nrOfValidEvents++;
+//					System.out.println("nrofevents = " + nrOfValidEvents);
+//					System.out.println("size = " + vCal.getBytes().length + " bytes");
+//				}
+//				else {
+//					vCal = vCalPrev;
+//					break;
+//				}
+//			}
+//		}
+//
+//		vCal += "</vcalendar>";
+//		return vCal;
+//	}
 
 	private boolean isDeclined(Event event) {
 		
 		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.YEAR, event.getToYear());
-		toCal.set(Calendar.MONTH, event.getToMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
 	

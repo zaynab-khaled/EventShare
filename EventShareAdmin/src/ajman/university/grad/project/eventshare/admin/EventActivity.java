@@ -29,23 +29,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-public class EventActivity extends SherlockActivity {
+public class EventActivity extends SherlockActivity implements OnItemSelectedListener{
 
-	private static String LOG_TAG = "EventActivity SetDate";
-	private EditText etEventName;
+	private static String LOG_TAG = "EventActivity event details";
+	
+	private EditText etEventTitle;
 	private EditText etEventLocation;
 	private EditText etEventDesc;
-
+	private EditText etEventNamePat;
+	private Spinner spDoctors;
+	private Spinner spLocation;
+	
 	private Button btnD1;
 	private Button btnT1;
-	private Button btnD2;
 	private Button btnT2;
 
 	private Event event;
@@ -57,6 +65,14 @@ public class EventActivity extends SherlockActivity {
 		setContentView(R.layout.activity_add_event);
 		setUpViews();
 		getActionBar().setDisplayShowHomeEnabled(false);
+		
+		ArrayAdapter adapterdoctors = ArrayAdapter.createFromResource(this,R.array.doctors_array,android.R.layout.simple_spinner_item);
+		spDoctors.setAdapter(adapterdoctors);
+		spDoctors.setOnItemSelectedListener(this);
+		
+		ArrayAdapter adapterrooms = ArrayAdapter.createFromResource(this,R.array.rooms_array,android.R.layout.simple_spinner_item);
+		spLocation.setAdapter(adapterrooms);
+		spLocation.setOnItemSelectedListener(this);
 
 		if (getIntent().getSerializableExtra(Constants.EDIT_EVENT) == null) {
 			event = new Event();
@@ -108,39 +124,30 @@ public class EventActivity extends SherlockActivity {
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
-	public void showStartDatePickerDialog(View v) {
-		DialogFragment newFragment = new EventStartDatePickerFragment(event, mode, btnD1);
+	public void showDatePickerDialog(View v) {
+		DialogFragment newFragment = new EventDatePickerFragment(event, mode, btnD1);
 		newFragment.show(getFragmentManager(), "StartDatePicker");
 	}
 
-	public void showEndDatePickerDialog(View v) {
-		DialogFragment newFragment = new EventEndDatePickerFragment(event, mode, btnD2);
-		newFragment.show(getFragmentManager(), "EndDatePicker");
-	}
 
 	private void setUpViews() {
-		etEventName = (EditText) findViewById(R.id.editText_eventName);
-		etEventLocation = (EditText) findViewById(R.id.editText_eventLoc);
-		etEventDesc = (EditText) findViewById(R.id.editText_eventDesc);
-
+		etEventTitle = (EditText) findViewById(R.id.editText_operationTitle);
+		etEventNamePat = (EditText) findViewById(R.id.editText_patientName);
+		etEventDesc = (EditText) findViewById(R.id.editText_operationDesc);
+		
+		spDoctors = (Spinner) findViewById(R.id.sp_doctors);
+		spLocation = (Spinner) findViewById(R.id.sp_operationLoc);
+		
+		
 		btnD1 = (Button) findViewById(R.id.btnDate1);
 		btnT1 = (Button) findViewById(R.id.btnTime1);
-		btnD2 = (Button) findViewById(R.id.btnDate2);
 		btnT2 = (Button) findViewById(R.id.btnTime2);
 
 		btnD1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				showStartDatePickerDialog(v);
-			}
-		});
-
-		btnD2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				showEndDatePickerDialog(v);
+				showDatePickerDialog(v);
 			}
 		});
 
@@ -161,6 +168,31 @@ public class EventActivity extends SherlockActivity {
 		});
 
 	}
+	
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View view, int arg2,
+			long arg3) {
+		switch(arg0.getId()){
+        case R.id.sp_doctors:
+        	String doctorValue = spDoctors.getSelectedItem().toString();
+        	event.setNameDoc(doctorValue);
+        	//Log.d(LOG_TAG, "Event Name Doc: " + event.getNameDoc());
+            break;
+        case R.id.sp_operationLoc:
+        	String roomValue = spLocation.getSelectedItem().toString();
+        	event.setLocation(roomValue);
+        	//Log.d(LOG_TAG, "Event location: " + event.getLocation());
+        	break;
+    }
+		
+	}
+
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	private void populateFields() {
 		Calendar fromCal = Calendar.getInstance();
@@ -171,17 +203,14 @@ public class EventActivity extends SherlockActivity {
 		fromCal.set(Calendar.MINUTE, event.getFromMinute());
 
 		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.YEAR, event.getToYear());
-		toCal.set(Calendar.MONTH, event.getToMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
 
-		etEventName.setText(event.getTitle());
-		etEventLocation.setText(event.getLocation());
+		etEventTitle.setText(event.getTitle());
 		etEventDesc.setText(event.getDescription());
+		etEventNamePat.setText(event.getNamePat());
+		
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()));
-		btnD2.setText(new SimpleDateFormat("yyyy-MM-dd").format(toCal.getTime()));
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 	}
@@ -196,47 +225,39 @@ public class EventActivity extends SherlockActivity {
 		// TODO: Some validation to make sure that the event data is actually
 		// provided:
 		
-		Calendar fromCal = Calendar.getInstance();
-		fromCal.set(Calendar.YEAR, event.getFromYear());
-		fromCal.set(Calendar.MONTH, event.getFromMonth());
-		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
-		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
-		fromCal.set(Calendar.MINUTE, event.getFromMinute());
-		
-		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.YEAR, event.getToYear());
-		toCal.set(Calendar.MONTH, event.getToMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
-		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
-		toCal.set(Calendar.MINUTE, event.getToMinute());
-		
-		if (toCal.before(fromCal)) {	
-			Toast.makeText(this, "TO date should be later that " + new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()) + " " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()), Toast.LENGTH_LONG).show();
-		}
-		else if (etEventName.getText().length() > 0 &&
-				etEventDesc.getText().length() > 0 &&
-				etEventLocation.getText().length() > 0 &&
+//		Calendar fromCal = Calendar.getInstance();
+//		fromCal.set(Calendar.YEAR, event.getFromYear());
+//		fromCal.set(Calendar.MONTH, event.getFromMonth());
+//		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+//		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
+//		fromCal.set(Calendar.MINUTE, event.getFromMinute());
+//		
+//		Calendar toCal = Calendar.getInstance();
+//		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+//		toCal.set(Calendar.MINUTE, event.getToMinute());
+//		
+//		if (toCal.before(fromCal)) {	
+//			Toast.makeText(this, "TO date should be later that " + new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()) + " " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()), Toast.LENGTH_LONG).show();
+//		}
+		//else
+			if (etEventTitle.getText().length() > 0 &&
+				etEventNamePat.getText().length() > 0 &&
+				event.getNameDoc() != null &&
+				event.getNamePat() != null &&
 				event.getFromDay() != -1 &&
 				event.getFromDayHour() != -1 &&
 				event.getFromMinute() != -1 &&
 				event.getFromMonth() != -1 &&
 				event.getFromYear() != -1 &&
-				event.getToDay() != -1 &&
 				event.getToDayHour() != -1 &&
-				event.getToMinute() != -1 &&
-				event.getToMonth() != -1 &&
-				event.getToYear() != -1) {
+				event.getToMinute() != -1 ) {
 
-			// Transition to the main activity and remove this activity from the
-			// stack
 			// Get the events from the events repository
 			ILocalStorageService service = ServicesFactory.getLocalStorageService();
-			event.setTitle(etEventName.getText().toString());
+			event.setTitle(etEventTitle.getText().toString());
+			event.setNamePat(etEventNamePat.getText().toString());
 			event.setDescription(etEventDesc.getText().toString());
-			event.setLocation(etEventLocation.getText().toString());
-
-			Log.d(LOG_TAG, "DateSet ToYear: " + event.getToYear() + " DateSet ToMonth: " + event.getToMonth());
-
+			
 			try {
 				if (mode == 0){
 					service.addEvent(event);
@@ -246,8 +267,8 @@ public class EventActivity extends SherlockActivity {
 					service.updateEvent(event);
 				Toast.makeText(getApplicationContext(), "Event Saved",
 						   Toast.LENGTH_SHORT).show(); }
-
-				Intent intent = new Intent(this, MainActivity.class);
+				Log.d(LOG_TAG, "Event details: " + event.getDescription() + " location: " + event.getLocation() + " Doctor: " + event.getNameDoc() + " Patient: " + event.getNamePat() + " Title: " + event.getTitle());
+				Intent intent = new Intent(this, ListActivity.class);
 				startActivity(intent);
 				
 				finish();
@@ -367,7 +388,7 @@ class EventEndTimePickerFragment extends DialogFragment
 
 }
 
-class EventStartDatePickerFragment extends DialogFragment
+class EventDatePickerFragment extends DialogFragment
 		implements DatePickerDialog.OnDateSetListener {
 
 	private Event _innerEvent;
@@ -377,7 +398,7 @@ class EventStartDatePickerFragment extends DialogFragment
 	private int month;
 	private int day;
 
-	public EventStartDatePickerFragment(Event e, int m, Button b) {
+	public EventDatePickerFragment(Event e, int m, Button b) {
 		_innerEvent = e;
 		mode = m;
 		btnD1 = b;
@@ -424,61 +445,3 @@ class EventStartDatePickerFragment extends DialogFragment
 	}
 }
 
-class EventEndDatePickerFragment extends DialogFragment
-		implements DatePickerDialog.OnDateSetListener {
-
-	private static String LOG_TAG = "EventActivity SetDate";
-
-	private Event _innerEvent;
-	private int mode;
-	private Button btnD2;
-	private int year;
-	private int month;
-	private int day;
-
-	public EventEndDatePickerFragment(Event e, int m, Button b) {
-		_innerEvent = e;
-		mode = m;
-		btnD2 = b;
-	}
-
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// Use the current date as the default date in the picker
-
-		if (mode == 1) {
-			year = _innerEvent.getToYear();
-			month = _innerEvent.getToMonth();
-			day = _innerEvent.getToDay();
-		}
-		else {
-			final Calendar c = Calendar.getInstance();
-			year = (_innerEvent.getToYear() != -1 ? _innerEvent.getToYear() : c.get(Calendar.YEAR));
-			month = (_innerEvent.getToMonth() != -1 ? _innerEvent.getToMonth() : c.get(Calendar.MONTH));
-			day = (_innerEvent.getToDay() != -1 ? _innerEvent.getToDay() : c.get(Calendar.DAY_OF_MONTH));
-		}
-
-		// Create a new instance of DatePickerDialog and return it
-		DatePickerDialog dialogDate = new DatePickerDialog(getActivity(), this, year, month, day);
-		dialogDate.setTitle("Set Date");
-		return dialogDate;
-
-	}
-
-	public void onDateSet(DatePicker view, int year, int month, int day) {
-		//btnD2.setText(String.valueOf(day) + " " + String.valueOf(month + 1) + " " + String.valueOf(year));
-		// btnD2.setText(new SimpleDateFormat("EEE,dd MMM yyyy HH:mm").format();
-		_innerEvent.setToDay(day);
-		_innerEvent.setToMonth(month);
-		_innerEvent.setToYear(year);
-		
-		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.YEAR, _innerEvent.getToYear());
-		toCal.set(Calendar.MONTH, _innerEvent.getToMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, _innerEvent.getToDay());
-		
-		btnD2.setText(new SimpleDateFormat("yyyy-MM-dd").format(toCal.getTime()));
-		
-		Log.d(LOG_TAG, "DateSet ToYear: " + _innerEvent.getToYear() + " DateSet ToMonth: " + _innerEvent.getToMonth());
-	}
-}

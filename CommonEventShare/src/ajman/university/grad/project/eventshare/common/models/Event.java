@@ -6,9 +6,12 @@ public class Event implements Serializable {
 	private static final long serialVersionUID = 4861948165540136263L;
 
 	private int id;
+	private String department;
 	private String title;
 	private String description;
 	private String location;
+	private String nameDoc;
+	private String namePat;
 	private int fromDayHour;
 	private int fromMinute;
 	private int fromYear;
@@ -16,38 +19,37 @@ public class Event implements Serializable {
 	private int fromDay;
 	private int toDayHour;
 	private int toMinute;
-	private int toYear;
-	private int toMonth;
-	private int toDay;
 	private boolean expired;
 	
 	public Event () {
 		this.setId(-1);
+		this.setDepartment("");
 		this.setTitle("");
 		this.setDescription("");
 		this.setLocation("");
+		this.setNameDoc("");
+		this.setNamePat("");
 		this.setFromDayHour(-1);
 		this.setFromDay(-1);
 		this.setFromMinute(-1);
 		this.setFromMonth(-1);
 		this.setFromYear(-1);
 		this.setToDayHour(-1);
-		this.setToDay(-1);
 		this.setToMinute(-1);
-		this.setToMonth(-1);
-		this.setToYear(-1);
 		this.setExpired(false);
 	}
 
-	public Event(int id, String title, String description, String location,
-			int fromDayHour, int fromMinute, int fromYear, int fromMonth,
-			int fromDay, int toDayHour, int toMinute, int toYear, int toMonth,
-			int toDay, int isExpired) {
+	public Event(int id, String department, String title, String description, String location,
+			String nameDoc, String namePat, int fromDayHour, int fromMinute, int fromYear, 
+			int fromMonth, int fromDay, int toDayHour, int toMinute, int isExpired) {
 		super();
 		this.id = id;
+		this.department = department;
 		this.title = title;
 		this.description = description;
 		this.location = location;
+		this.nameDoc = nameDoc;
+		this.namePat = namePat;
 		this.fromDayHour = fromDayHour;
 		this.fromMinute = fromMinute;
 		this.fromYear = fromYear;
@@ -55,9 +57,6 @@ public class Event implements Serializable {
 		this.fromDay = fromDay;
 		this.toDayHour = toDayHour;
 		this.toMinute = toMinute;
-		this.toYear = toYear;
-		this.toMonth = toMonth;
-		this.toDay = toDay;
 		this.expired = expired;
 	}
 
@@ -68,7 +67,15 @@ public class Event implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public String getDepartment() {
+		return department;
+	}
 
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
@@ -91,6 +98,22 @@ public class Event implements Serializable {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	
+	public String getNameDoc() {
+		return nameDoc;
+	}
+
+	public void setNameDoc(String nameDoc) {
+		this.nameDoc = nameDoc;
+	}
+
+	public String getNamePat() {
+		return namePat;
+	}
+
+	public void setNamePat(String namePat) {
+		this.namePat = namePat;
 	}
 
 	public int getFromDayHour() {
@@ -149,30 +172,6 @@ public class Event implements Serializable {
 		this.toMinute = toMinute;
 	}
 
-	public int getToYear() {
-		return toYear;
-	}
-
-	public void setToYear(int toYear) {
-		this.toYear = toYear;
-	}
-
-	public int getToMonth() {
-		return toMonth;
-	}
-
-	public void setToMonth(int toMonth) {
-		this.toMonth = toMonth;
-	}
-
-	public int getToDay() {
-		return toDay;
-	}
-
-	public void setToDay(int toDay) {
-		this.toDay = toDay;
-	}
-
 	public boolean isExpired() {
 		return expired;
 	}
@@ -180,6 +179,4 @@ public class Event implements Serializable {
 	public void setExpired(boolean expired) {
 		this.expired = expired;
 	}
-	
-
 }

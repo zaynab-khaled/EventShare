@@ -223,14 +223,14 @@ public class ReadTagActivity extends Activity {
 					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("dtend").item(0);
 					cal.setTime(sdf.parse(getCharacterDataFromElement(attr)));
 
-					event.setToYear(cal.YEAR);
-					System.out.println("Toyear: " + cal.YEAR);
-
-					event.setToMonth(cal.MONTH);
-					System.out.println("ToMonth: " + cal.MONTH);
-
-					event.setToDay(cal.DAY_OF_MONTH);
-					System.out.println("ToDay: " + cal.DAY_OF_MONTH);
+//					event.setToYear(cal.YEAR);
+//					System.out.println("Toyear: " + cal.YEAR);
+//
+//					event.setToMonth(cal.MONTH);
+//					System.out.println("ToMonth: " + cal.MONTH);
+//
+//					event.setToDay(cal.DAY_OF_MONTH);
+//					System.out.println("ToDay: " + cal.DAY_OF_MONTH);
 
 					event.setToDayHour(cal.HOUR_OF_DAY);
 					System.out.println("ToHour: " + cal.HOUR_OF_DAY);

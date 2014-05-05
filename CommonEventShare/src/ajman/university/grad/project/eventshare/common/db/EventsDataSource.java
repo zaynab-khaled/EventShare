@@ -19,9 +19,12 @@ public class EventsDataSource {
 	private EventsSqlLiteHelper dbHelper;
 	private String [] allColumns = {
 			EventsSqlLiteHelper.COLUMN_ID,
+			EventsSqlLiteHelper.COLUMN_DEPARTMENT,
 			EventsSqlLiteHelper.COLUMN_TITLE,
 			EventsSqlLiteHelper.COLUMN_DESC,
 			EventsSqlLiteHelper.COLUMN_LOCATION,
+			EventsSqlLiteHelper.COLUMN_NAME_DOCTOR,
+			EventsSqlLiteHelper.COLUMN_NAME_PATIENT,
 			EventsSqlLiteHelper.COLUMN_FROM_DAY_HOUR,
 			EventsSqlLiteHelper.COLUMN_FROM_MINUTE,
 			EventsSqlLiteHelper.COLUMN_FROM_YEAR,
@@ -29,9 +32,6 @@ public class EventsDataSource {
 			EventsSqlLiteHelper.COLUMN_FROM_DAY,
 			EventsSqlLiteHelper.COLUMN_TO_DAY_HOUR,
 			EventsSqlLiteHelper.COLUMN_TO_MINUTE,
-			EventsSqlLiteHelper.COLUMN_TO_YEAR,
-			EventsSqlLiteHelper.COLUMN_TO_MONTH,
-			EventsSqlLiteHelper.COLUMN_TO_DAY,
 			EventsSqlLiteHelper.COLUMN_EXPIRED
 	};
 	
@@ -55,9 +55,12 @@ public class EventsDataSource {
 
 		try {
 			ContentValues  values = new ContentValues();
+			values.put(EventsSqlLiteHelper.COLUMN_DEPARTMENT, event.getDepartment());
 			values.put(EventsSqlLiteHelper.COLUMN_TITLE, event.getTitle());
 			values.put(EventsSqlLiteHelper.COLUMN_DESC, event.getDescription());
 			values.put(EventsSqlLiteHelper.COLUMN_LOCATION, event.getLocation());
+			values.put(EventsSqlLiteHelper.COLUMN_NAME_DOCTOR, event.getNameDoc());
+			values.put(EventsSqlLiteHelper.COLUMN_NAME_PATIENT, event.getNamePat());
 			values.put(EventsSqlLiteHelper.COLUMN_FROM_DAY_HOUR, event.getFromDayHour());
 			values.put(EventsSqlLiteHelper.COLUMN_FROM_MINUTE, event.getFromMinute());
 			values.put(EventsSqlLiteHelper.COLUMN_FROM_YEAR, event.getFromYear());
@@ -65,9 +68,6 @@ public class EventsDataSource {
 			values.put(EventsSqlLiteHelper.COLUMN_FROM_DAY, event.getFromDay());
 			values.put(EventsSqlLiteHelper.COLUMN_TO_DAY_HOUR, event.getToDayHour());
 			values.put(EventsSqlLiteHelper.COLUMN_TO_MINUTE, event.getToMinute());
-			values.put(EventsSqlLiteHelper.COLUMN_TO_YEAR, event.getToYear());
-			values.put(EventsSqlLiteHelper.COLUMN_TO_MONTH, event.getToMonth());
-			values.put(EventsSqlLiteHelper.COLUMN_TO_DAY, event.getToDay());
 			values.put(EventsSqlLiteHelper.COLUMN_EXPIRED, (event.isExpired() ? 1 : 0));
 			
 			long insertId = database.insert(EventsSqlLiteHelper.TABLE_EVENTS, null, values);
@@ -102,7 +102,7 @@ public class EventsDataSource {
 		Log.d(LOG_TAG, "retrieveAll: " + Environment.getDataDirectory());
 		List<Event> events = new ArrayList<Event> ();
 		Cursor cursor = null;
-		String orderBy = EventsSqlLiteHelper.COLUMN_TO_YEAR + "," + EventsSqlLiteHelper.COLUMN_TO_MONTH + "," +  EventsSqlLiteHelper.COLUMN_TO_DAY + "," +  EventsSqlLiteHelper.COLUMN_TO_DAY_HOUR + "," +  EventsSqlLiteHelper.COLUMN_TO_MINUTE;
+		String orderBy = EventsSqlLiteHelper.COLUMN_FROM_YEAR + "," + EventsSqlLiteHelper.COLUMN_FROM_MONTH + "," +  EventsSqlLiteHelper.COLUMN_FROM_DAY + "," +  EventsSqlLiteHelper.COLUMN_FROM_DAY_HOUR + "," +  EventsSqlLiteHelper.COLUMN_FROM_MINUTE;
 		
 		try {
 			//cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, orderBy, null, EventsSqlLiteHelper.COLUMN_TITLE, "" + records);
@@ -125,19 +125,19 @@ public class EventsDataSource {
 		Log.d(LOG_TAG, "cursorToEvent id: " + cursor.getInt(0));
 		Event event = new Event();
 		event.setId(cursor.getInt(0));
-		event.setTitle(cursor.getString(1));
-		event.setDescription(cursor.getString(2));
-		event.setLocation(cursor.getString(3));
-		event.setFromDayHour(cursor.getInt(4));
-		event.setFromMinute(cursor.getInt(5));
-		event.setFromYear(cursor.getInt(6));
-		event.setFromMonth(cursor.getInt(7));
-		event.setFromDay(cursor.getInt(8));
-		event.setToDayHour(cursor.getInt(9));
-		event.setToMinute(cursor.getInt(10));
-		event.setToYear(cursor.getInt(11));
-		event.setToMonth(cursor.getInt(12));
-		event.setToDay(cursor.getInt(13));
+		event.setDepartment(cursor.getString(1));
+		event.setTitle(cursor.getString(2));
+		event.setDescription(cursor.getString(3));
+		event.setLocation(cursor.getString(4));
+		event.setNameDoc(cursor.getString(5));
+		event.setNamePat(cursor.getString(6));
+		event.setFromDayHour(cursor.getInt(7));
+		event.setFromMinute(cursor.getInt(8));
+		event.setFromYear(cursor.getInt(9));
+		event.setFromMonth(cursor.getInt(10));
+		event.setFromDay(cursor.getInt(11));
+		event.setToDayHour(cursor.getInt(12));
+		event.setToMinute(cursor.getInt(13));
 		event.setExpired((cursor.getInt(14) == 0 ? false : true));
 		
 		String st = "";

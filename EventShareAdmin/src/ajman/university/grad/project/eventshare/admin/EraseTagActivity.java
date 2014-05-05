@@ -202,7 +202,7 @@ public class EraseTagActivity extends Activity {
 		if (mNfcAdapter == null) {
 			// Stop here, we definitely need NFC
 			Toast.makeText(this, "This device doesn't support NFC.",
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_SHORT).show();
 			finish();
 			return;
 		}

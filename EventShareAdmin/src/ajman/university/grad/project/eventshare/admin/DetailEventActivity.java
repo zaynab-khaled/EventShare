@@ -22,13 +22,16 @@ import android.widget.TextView;
 public class DetailEventActivity extends Activity {
 	
 	private static String LOG_TAG = "detailEventActivity";
-	private Event _event;
+	private Event event;
 	
-	private TextView tvEventName;
+	private TextView tvEventTitle;
+	private TextView tvEventDoc;
+	private TextView tvEventPat;
 	private TextView tvEventLoc;
 	private TextView tvEventDesc;
-	private TextView tvEventFromDate;
-	private TextView tvEventToDate;
+	private TextView tvEventDate;
+	private TextView tvEventTime;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +39,16 @@ public class DetailEventActivity extends Activity {
 		setContentView(R.layout.activity_event_details);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		tvEventName = (TextView) findViewById(R.id.edit_tvName);
+		tvEventTitle = (TextView) findViewById(R.id.edit_tvTitle);
+		tvEventDoc = (TextView) findViewById(R.id.edit_tvNameDoc);
+		tvEventPat = (TextView) findViewById(R.id.edit_tvNamePat);
 		tvEventLoc = (TextView) findViewById(R.id.edit_tvLoc);
 		tvEventDesc = (TextView) findViewById(R.id.edit_tvDescription);
-		tvEventFromDate = (TextView) findViewById(R.id.edit_tvSdate);
-		tvEventToDate = (TextView) findViewById(R.id.edit_tvEdate);
+		tvEventDate = (TextView) findViewById(R.id.edit_tvDate);
+		tvEventTime = (TextView) findViewById(R.id.edit_tvTime);
 		
 		// Get bundled data
-		_event = (Event) getIntent().getSerializableExtra(Constants.CLICKED_EVENT);
+		event = (Event) getIntent().getSerializableExtra(Constants.CLICKED_EVENT);
 		
 		// Bind the UI
 		populateFields();
@@ -51,27 +56,26 @@ public class DetailEventActivity extends Activity {
 
 	private void populateFields() {
 		Calendar fromCal = Calendar.getInstance();
-		fromCal.set(Calendar.YEAR, _event.getFromYear());
-		fromCal.set(Calendar.MONTH, _event.getFromMonth());
-		fromCal.set(Calendar.DAY_OF_MONTH, _event.getFromDay());
-		fromCal.set(Calendar.HOUR_OF_DAY, _event.getFromDayHour());
-		fromCal.set(Calendar.MINUTE, _event.getFromMinute());
+		fromCal.set(Calendar.YEAR, event.getFromYear());
+		fromCal.set(Calendar.MONTH, event.getFromMonth());
+		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
+		fromCal.set(Calendar.MINUTE, event.getFromMinute());
 		
 		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.YEAR, _event.getToYear());
-		toCal.set(Calendar.MONTH, _event.getToMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, _event.getToDay());
-		toCal.set(Calendar.HOUR_OF_DAY, _event.getToDayHour());
-		toCal.set(Calendar.MINUTE, _event.getToMinute());
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
 		
+		tvEventTitle.setText(event.getTitle());
+		tvEventDoc.setText(event.getNameDoc());
+		tvEventPat.setText(event.getNamePat());
+		tvEventLoc.setText(event.getLocation());
+		tvEventDesc.setText(event.getDescription());
+		tvEventDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()));
+		tvEventTime.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime())  + " - " + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 		
-		tvEventName.setText(_event.getTitle());
-		tvEventLoc.setText(_event.getLocation());
-		tvEventDesc.setText(_event.getDescription());
-		tvEventFromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm").format(fromCal.getTime()));
-		tvEventToDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm").format(toCal.getTime()));
 		// Setting them wrong here
-		Log.d(LOG_TAG, "from cal: " + fromCal.getTime() + " to cal: " +  toCal.getTime());
+		Log.d(LOG_TAG, "from cal: " + fromCal.getTime() + " to cal: " +  toCal.getTime() );
 	}
 
 
@@ -103,7 +107,7 @@ public class DetailEventActivity extends Activity {
 
 	private void actionEdit() {
 		Intent intent = new Intent(DetailEventActivity.this, EventActivity.class);
-		intent.putExtra(Constants.EDIT_EVENT, _event);
+		intent.putExtra(Constants.EDIT_EVENT, event);
 		startActivity(intent);
 	}
 
@@ -124,11 +128,11 @@ public class DetailEventActivity extends Activity {
 				IErrorService errorService = ServicesFactory.getErrorService();
 				ILocalStorageService service = ServicesFactory.getLocalStorageService();
 				try {
-					service.removeEvent(_event);
+					service.removeEvent(event);
 				} catch (Exception e) {
 					errorService.log(e);
 				}
-				Intent intent = new Intent(DetailEventActivity.this, MainActivity.class);
+				Intent intent = new Intent(DetailEventActivity.this, ListActivity.class);
 				startActivity(intent);
 	           }
 

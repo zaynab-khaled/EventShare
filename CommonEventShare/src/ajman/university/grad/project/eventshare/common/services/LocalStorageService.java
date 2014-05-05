@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
@@ -114,9 +113,6 @@ public class LocalStorageService implements ILocalStorageService {
 	private boolean isDeclined(Event event) {
 
 		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.YEAR, event.getToYear());
-		toCal.set(Calendar.MONTH, event.getToMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, event.getToDay());
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
 
