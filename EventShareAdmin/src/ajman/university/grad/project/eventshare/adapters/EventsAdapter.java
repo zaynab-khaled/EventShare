@@ -88,13 +88,16 @@ public class EventsAdapter extends BaseAdapter {
 			event.setExpired(false); }
 		
 		TextView title = (TextView) row.findViewById(R.id.textView1);
-		TextView location = (TextView) row.findViewById(R.id.textView2);
-		TextView dateTime = (TextView) row.findViewById(R.id.textView3);
+		TextView docname = (TextView) row.findViewById(R.id.textView2);
+		TextView location = (TextView) row.findViewById(R.id.textView3);
+		TextView dateTime = (TextView) row.findViewById(R.id.textView4);
+		
 		
 		Log.d(LOG_TAG, "Title: " + title + " Event: " + event);
 		title.setText(event.getTitle());
+		docname.setText(event.getNameDoc());
 		location.setText(event.getLocation());
-		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "/" + new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + "-" + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
+		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "  /  " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 
 		return row; // return the rootView of the single_row_list.xml
 	}
@@ -166,6 +169,9 @@ public class EventsAdapter extends BaseAdapter {
 		Calendar toCal = Calendar.getInstance();
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
+		toCal.set(Calendar.YEAR, event.getFromYear());
+		toCal.set(Calendar.MONTH, event.getFromMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
 	
 		Calendar c = Calendar.getInstance();
 

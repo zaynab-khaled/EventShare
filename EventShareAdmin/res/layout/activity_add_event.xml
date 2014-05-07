@@ -37,35 +37,46 @@
 	        android:layout_height="wrap_content"
 	        android:maxLength="32"
 	        android:textColorHint="#f0f8db"
-	        android:inputType="textCapSentences|textNoSuggestions"
+	        android:inputType="textCapWords|textNoSuggestions"
 	        android:hint="@string/hint_title" />
 	    
-	    <Spinner
-	        android:id="@+id/sp_doctors"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:prompt="@string/spinner_prompt_doc"/>
+        <Button
+            android:id="@+id/btn_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            style="?android:attr/spinnerStyle"
+            android:textColor="#f0f8db"
+            android:textSize="18sp"
+            android:textAlignment="gravity"
+            android:text="@string/btn_doctor" />
 	
 	    	    
 	    <EditText
 	        android:id="@+id/editText_patientName"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
+	        android:paddingTop="5dp"
 	        android:maxLength="32"
 	        android:textColorHint="#f0f8db"
-	        android:inputType="textCapSentences|textNoSuggestions"
+	        android:inputType="textCapWords|textNoSuggestions"
 	        android:hint="@string/hint_pName" />
 	
-	    <Spinner
-	        android:id="@+id/sp_operationLoc"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:prompt="@string/spinner_prompt_room" />
+        <Button
+            android:id="@+id/btn_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            style="?android:attr/spinnerStyle"
+            android:textColor="#f0f8db"
+            android:textSize="18sp"
+            android:text="@string/btn_location" />
 
 	    <EditText
 		    android:id="@+id/editText_operationDesc"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
 			android:inputType="textCapSentences|textNoSuggestions"
 			android:maxLength="65"
 			android:maxLines="2"
@@ -87,21 +98,16 @@
 		<Button
 		    android:id="@+id/btnDate1"
 		    style="?android:attr/spinnerStyle"
-		    android:layout_width="130dp"
+		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:text="@string/btn_Date" />
 		
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal" >
-		    
-	 	</LinearLayout>
 	 	
 		<LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal" >
+	        
 	    <Button
 	        android:id="@+id/btnTime1"
 	        style="?android:attr/spinnerStyle"
@@ -109,13 +115,6 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:text="@string/btn_Time" />
-
-	    <TextView
-	        android:id="@+id/textView_to"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/label_time"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	    <Button
 	        android:id="@+id/btnTime2"

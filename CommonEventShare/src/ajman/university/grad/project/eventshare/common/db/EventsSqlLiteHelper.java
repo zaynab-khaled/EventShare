@@ -10,7 +10,6 @@ public class EventsSqlLiteHelper extends SQLiteOpenHelper {
 	public static final String TABLE_EVENTS = "events";
 	
 	public static final String COLUMN_ID = "_id";
-	public static final String COLUMN_DEPARTMENT = "department";
 	public static final String COLUMN_TITLE = "title";
 	public static final String COLUMN_DESC = "description";
 	public static final String COLUMN_LOCATION = "location";
@@ -26,12 +25,11 @@ public class EventsSqlLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_EXPIRED = "is_expired";
 	
 	public static final String DATABASE_NAME = "events.db";
-	public static final int DATABASE_VERSION = 4;
+	public static final int DATABASE_VERSION = 5;
 	
 	private static final String DATABSASE_CREATE_SQL = "create table " 
 	+ TABLE_EVENTS 
 	+ "(" 
-	+ COLUMN_DEPARTMENT + " text not null, "
 	+ COLUMN_ID + " integer primary key autoincrement, " 
 	+ COLUMN_TITLE + " text not null, "
 	+ COLUMN_DESC + " text not null, "

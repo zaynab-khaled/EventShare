@@ -174,6 +174,9 @@ public class EventsAdapter extends BaseAdapter {
 		Calendar toCal = Calendar.getInstance();
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
+		toCal.set(Calendar.YEAR, event.getFromYear());
+		toCal.set(Calendar.MONTH, event.getFromMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
 
 		Calendar c = Calendar.getInstance();
 

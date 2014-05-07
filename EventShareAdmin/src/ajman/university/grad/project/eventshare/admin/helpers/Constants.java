@@ -7,4 +7,5 @@ public class Constants {
 	public static String ICALENDAR = "iCalendar";
 	public static String EVENTCOUNT = "eventCount";
 	public static String DEPARTMENT = "department";
+	public static String PASSWORD = "password";
 }

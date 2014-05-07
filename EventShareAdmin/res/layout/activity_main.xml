@@ -19,13 +19,17 @@
   		android:textSize="20sp"
   		android:padding="15dp"
   		android:background="#33b5e5"/>
+   	
 
-	    <Spinner
-	        android:id="@+id/sp_department"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:prompt="@string/spinner_prompt_dep"/>
+        <Button
+            android:id="@+id/btnDepartments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            style="?android:attr/spinnerStyle"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:text="@string/btnDepartment" />
 	    
 		<EditText
 		    android:id="@+id/editText_password"
@@ -39,7 +43,7 @@
 	        android:id="@+id/btn_okay"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/btn_okay"
+	        android:text="@string/btn_login"
 	        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

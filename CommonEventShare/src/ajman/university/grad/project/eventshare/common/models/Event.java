@@ -6,7 +6,6 @@ public class Event implements Serializable {
 	private static final long serialVersionUID = 4861948165540136263L;
 
 	private int id;
-	private String department;
 	private String title;
 	private String description;
 	private String location;
@@ -23,7 +22,6 @@ public class Event implements Serializable {
 	
 	public Event () {
 		this.setId(-1);
-		this.setDepartment("");
 		this.setTitle("");
 		this.setDescription("");
 		this.setLocation("");
@@ -39,12 +37,11 @@ public class Event implements Serializable {
 		this.setExpired(false);
 	}
 
-	public Event(int id, String department, String title, String description, String location,
+	public Event(int id, String title, String description, String location,
 			String nameDoc, String namePat, int fromDayHour, int fromMinute, int fromYear, 
 			int fromMonth, int fromDay, int toDayHour, int toMinute, int isExpired) {
 		super();
 		this.id = id;
-		this.department = department;
 		this.title = title;
 		this.description = description;
 		this.location = location;
@@ -66,14 +63,6 @@ public class Event implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-	
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
 	}
 	
 	public String getTitle() {

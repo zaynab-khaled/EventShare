@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:text="@string/lText"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
+    
+        <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,16 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/sText"
         android:layout_below="@id/textView2"
+        android:textSize="16sp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView3"
         android:text="@string/sText"
         android:textSize="16sp"
         android:textAppearance="?android:attr/textAppearanceSmall" />

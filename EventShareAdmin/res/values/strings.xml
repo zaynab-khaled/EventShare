@@ -47,6 +47,9 @@
     <!-- Add Event Buttons -->
     <string name="btn_Time">Time</string>
     <string name="btn_Date">Date</string>
+    <string name="btn_location">Select Location</string>
+    <string name="btn_doctor">Select Doctor</string>
+    <string name="btnDepartment">Select Department</string>
 
     <!-- For single row list -->
     <string name="lText">Large Text</string>
@@ -54,48 +57,48 @@
     
     <!-- For spinners -->
     
-    <string-array name="departments_array">
+    <string-array name="arrayDepartments">
         <item>Cardiology</item>
         <item>Cancer Care Unit</item>
         <item>Dermatology</item>
+        <item>Diabetology</item>
+        <item>Digestive Diseases</item>
+        <item>Medical ICU</item>
+        <item>Surgical ICU</item>
         <item>Neurology</item>
         <item>Orthopedics</item>
         <item>Pediatric</item>
-        <item>Plastic</item>
-        <item>Transplant</item>
+        <item>Plastic Surgery</item>
     </string-array>
     
-    <string name="spinner_prompt_dep">Select a department</string>
     
-    <string-array name="doctors_array">
-        <item>Doctor 1</item>
-        <item>Doctor 2</item>
-        <item>Doctor 3</item>
-        <item>Doctor 4</item>
-        <item>Doctor 5</item>
-        <item>Doctor 6</item>
-        <item>Doctor 7</item>
-        <item>Doctor 8</item>
+    <string-array name="arrayDoctors">
+        <item>Dr. Suhail Al Rukn</item>
+        <item>Dr. Abubaker Almadani</item>
+        <item>Dr. Mohammed Saadah</item>
+        <item>Dr. Suresh Nair</item>
+        <item>Dr. Ayman Alboudi</item>
+        <item>Dr. Hashim</item>
+        <item>Dr. Zulfa Omar Deesi</item>
+        <item>Dr. Fahad Omar Baslaib</item>
+    </string-array>
+   
+    
+    <string-array name="arrayLocation">
+        <item>Theatre E1</item>
+        <item>Theatre E2</item>
+        <item>Theatre E3</item>
+        <item>Theatre E4</item>
+        <item>Theatre G102</item>
+        <item>Theatre G103</item>
+        <item>Theatre B2</item>
+        <item>Theatre B3</item>
     </string-array>
     
-    <string name="spinner_prompt_doc">Select a doctor</string>
-    
-        <string-array name="rooms_array">
-        <item>Room 1</item>
-        <item>Room 2</item>
-        <item>Room 3</item>
-        <item>Room 4</item>
-        <item>Room 5</item>
-        <item>Room 6</item>
-        <item>Room 7</item>
-        <item>Room 8</item>
-    </string-array>
-    
-    <string name="spinner_prompt_room">Select a room</string>
     
     <!-- For Main Activity -->
 	<string name="enter_pass">Enter department password</string>
-	<string name="btn_okay">Okay</string>
+	<string name="btn_login">Login</string>
 	<string name="hint_pass">Enter password</string>
     
 	

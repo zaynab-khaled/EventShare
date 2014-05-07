@@ -15,10 +15,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -46,12 +48,11 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 	private static String LOG_TAG = "EventActivity event details";
 	
 	private EditText etEventTitle;
-	private EditText etEventLocation;
 	private EditText etEventDesc;
 	private EditText etEventNamePat;
-	private Spinner spDoctors;
-	private Spinner spLocation;
 	
+	private Button btnLocation;
+	private Button btnDoctor;
 	private Button btnD1;
 	private Button btnT1;
 	private Button btnT2;
@@ -65,14 +66,6 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 		setContentView(R.layout.activity_add_event);
 		setUpViews();
 		getActionBar().setDisplayShowHomeEnabled(false);
-		
-		ArrayAdapter adapterdoctors = ArrayAdapter.createFromResource(this,R.array.doctors_array,android.R.layout.simple_spinner_item);
-		spDoctors.setAdapter(adapterdoctors);
-		spDoctors.setOnItemSelectedListener(this);
-		
-		ArrayAdapter adapterrooms = ArrayAdapter.createFromResource(this,R.array.rooms_array,android.R.layout.simple_spinner_item);
-		spLocation.setAdapter(adapterrooms);
-		spLocation.setOnItemSelectedListener(this);
 
 		if (getIntent().getSerializableExtra(Constants.EDIT_EVENT) == null) {
 			event = new Event();
@@ -131,14 +124,16 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 
 
 	private void setUpViews() {
+		
+		final ArrayAdapter adapterLocation = ArrayAdapter.createFromResource(this,R.array.arrayLocation, android.R.layout.simple_spinner_dropdown_item);
+		final ArrayAdapter adapterDoctor = ArrayAdapter.createFromResource(this,R.array.arrayDoctors, android.R.layout.simple_spinner_dropdown_item);
+		
 		etEventTitle = (EditText) findViewById(R.id.editText_operationTitle);
 		etEventNamePat = (EditText) findViewById(R.id.editText_patientName);
 		etEventDesc = (EditText) findViewById(R.id.editText_operationDesc);
 		
-		spDoctors = (Spinner) findViewById(R.id.sp_doctors);
-		spLocation = (Spinner) findViewById(R.id.sp_operationLoc);
-		
-		
+		btnLocation = (Button) findViewById(R.id.btn_location);
+		btnDoctor = (Button) findViewById(R.id.btn_doctor);
 		btnD1 = (Button) findViewById(R.id.btnDate1);
 		btnT1 = (Button) findViewById(R.id.btnTime1);
 		btnT2 = (Button) findViewById(R.id.btnTime2);
@@ -166,32 +161,114 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 				showEndTimePickerDialog(v);
 			}
 		});
-
-	}
-	
-	@Override
-	public void onItemSelected(AdapterView<?> arg0, View view, int arg2,
-			long arg3) {
-		switch(arg0.getId()){
-        case R.id.sp_doctors:
-        	String doctorValue = spDoctors.getSelectedItem().toString();
-        	event.setNameDoc(doctorValue);
-        	//Log.d(LOG_TAG, "Event Name Doc: " + event.getNameDoc());
-            break;
-        case R.id.sp_operationLoc:
-        	String roomValue = spLocation.getSelectedItem().toString();
-        	event.setLocation(roomValue);
-        	//Log.d(LOG_TAG, "Event location: " + event.getLocation());
-        	break;
-    }
 		
-	}
+		btnLocation.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				new AlertDialog.Builder(EventActivity.this)
+				.setTitle("Select Operating Theatre")
+				.setAdapter(adapterLocation, new DialogInterface.OnClickListener() {
 
+				    @Override
+				    public void onClick(DialogInterface dialog, int which) {
 
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
+				    	switch(which) {
+				    	case 0:
+				    		event.setLocation("Theatre E1");
+				    		btnLocation.setText("Theatre E1");
+				    		break;
+				    	case 1:
+				    		event.setLocation("Theatre E2");
+				    		btnLocation.setText("Theatre E2");
+				    		break;
+				    	case 2:
+				    		event.setLocation("Theatre E3");
+				    		btnLocation.setText("Theatre E3");
+				    		break;
+				    	case 3:
+				    		event.setLocation("Theatre E4");
+				    		btnLocation.setText("Theatre E4");
+				    		break;
+				    	case 4:
+				    		event.setLocation("Theatre G102");
+				    		btnLocation.setText("Theatre G102");
+				    		break;
+				    	case 5:
+				    		event.setLocation("Theatre G103");
+				    		btnLocation.setText("Theatre G103");
+				    		break;
+				    	case 6:
+				    		event.setLocation("Theatre B2");
+				    		btnLocation.setText("Theatre B2");
+				    		break;
+				    	case 7:
+				    		event.setLocation("Theatre B3");
+				    		btnLocation.setText("Theatre B3");
+				    		break;
+				    	}
+
+				      dialog.dismiss();
+				    }
+				  }).create().show();
+				
+			}
+		});
 		
+		btnDoctor.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				new AlertDialog.Builder(EventActivity.this)
+				.setTitle("Select Doctor")
+				.setAdapter(adapterDoctor, new DialogInterface.OnClickListener() {
+
+				    @Override
+				    public void onClick(DialogInterface dialog, int which) {
+				    	
+				    	switch(which) {
+				    	case 0:
+				    		event.setNameDoc("Dr. Suhail Al Rukn");
+				    		btnDoctor.setText("Dr. Suhail Al Rukn");
+				    		break;
+				    	case 1:
+				    		event.setNameDoc("Dr. Abubaker Almadani");
+				    		btnDoctor.setText("Dr. Abubaker Almadani");
+				    		break;
+				    	case 2:
+				    		event.setNameDoc("Dr. Mohammed Saadah");
+				    		btnDoctor.setText("Dr. Mohammed Saadah");
+				    		break;
+				    	case 3:
+				    		event.setNameDoc("Dr. Suresh Nair");
+				    		btnDoctor.setText("Dr. Suresh Nair");
+				    		break;
+				    	case 4:
+				    		event.setNameDoc("Dr. Ayman Alboudi");
+				    		btnDoctor.setText("Dr. Ayman Alboudi");
+				    		break;
+				    	case 5:
+				    		event.setNameDoc("Dr. Hashim");
+				    		btnDoctor.setText("Dr. Hashim");
+				    		break;
+				    	case 6:
+				    		event.setNameDoc("Dr. Zulfa Omar Deesi");
+				    		btnDoctor.setText("Dr. Zulfa Omar Deesi");
+				    		break;
+				    	case 7:
+				    		event.setNameDoc("Dr. Fahad Omar Baslaib");
+				    		btnDoctor.setText("Dr. Fahad Omar Baslaib");
+				    		break;
+				    	}
+				      
+
+				      dialog.dismiss();
+				    }
+				  }).create().show();
+				
+			}
+		});
+
 	}
 
 	private void populateFields() {
@@ -209,6 +286,9 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 		etEventTitle.setText(event.getTitle());
 		etEventDesc.setText(event.getDescription());
 		etEventNamePat.setText(event.getNamePat());
+		btnDoctor.setText(event.getNameDoc());
+		btnLocation.setText(event.getLocation());
+		
 		
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()));
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
@@ -279,6 +359,21 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 			errorService.log("You cannot keep some fields empty, please fill them out!");
 			Toast.makeText(this, "Some fields cannot be empty!", Toast.LENGTH_LONG).show();
 		}
+	}
+
+
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

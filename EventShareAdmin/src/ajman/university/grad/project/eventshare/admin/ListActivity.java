@@ -4,6 +4,7 @@ import java.util.List;
 
 import ajman.university.grad.project.eventshare.adapters.EventsAdapter;
 import ajman.university.grad.project.eventshare.admin.helpers.Constants;
+import ajman.university.grad.project.eventshare.admin.helpers.SharedPref;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
@@ -12,7 +13,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,31 +28,24 @@ public class ListActivity extends Activity implements OnItemClickListener {
 	
 	ListView list;
 	EventsAdapter adapter;
-	private String dept;
-	private TextView tv_department;
-	private TextView tv_schedule;
+	private TextView tvDepartment;
+	private TextView tvSchedule;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         
-        Intent intent = getIntent();
-        dept = (String) intent.getSerializableExtra(Constants.DEPARTMENT);
-        tv_department = (TextView) findViewById(R.id.tv_department);
-        tv_schedule = (TextView) findViewById(R.id.tv_schedule);
+        tvSchedule = (TextView) findViewById(R.id.tv_schedule);
+        tvSchedule.setGravity(Gravity.CENTER);
         
-        tv_department.setText(dept + " Department");
-        tv_schedule.setText("Operation Schedule");
-        
-        tv_schedule.setGravity(Gravity.CENTER);
-        tv_department.setGravity(Gravity.CENTER);
+        tvDepartment = (TextView) findViewById(R.id.tv_department);
+        tvDepartment.setGravity(Gravity.CENTER);
         
         
-//         for(Event event : events){
-//        	 Log.d(LOG_TAG, "Evet dept: " + event.getDepartment());
-//        	 event.setDepartment(dept);
-//         }
+        String dept = SharedPref.getDefaults(Constants.DEPARTMENT, getApplicationContext());
+        tvDepartment.setText(dept == null ? "Unknown" : dept + " Department");
+        tvSchedule.setText("Operation Schedule");
         
         //Code for list
         list = (ListView) findViewById(android.R.id.list);
@@ -67,7 +60,7 @@ public class ListActivity extends Activity implements OnItemClickListener {
     @Override
     public void onBackPressed() {
     	this.finish();
-    	   return;
+    	  
     }
     
 	@Override
@@ -151,10 +144,7 @@ public class ListActivity extends Activity implements OnItemClickListener {
 				ILocalStorageService service = ServicesFactory.getLocalStorageService();
 				try {
 					int count = service.deleteDeclinedEvents();
-					//Refreshes the activity
 					onCreate(null);
-					// TODO Need to check if there are any expired events first .. if yes delete them
-					//and show this message. If not show message "No expired events"
 					Toast.makeText(getApplicationContext(), count + " declined " +  ((count == 1) ? "event" : "events") + " have been deleted!",
 							   Toast.LENGTH_SHORT).show();
 				} catch (Exception e) {

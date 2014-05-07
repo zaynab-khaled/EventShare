@@ -19,7 +19,6 @@ public class EventsDataSource {
 	private EventsSqlLiteHelper dbHelper;
 	private String [] allColumns = {
 			EventsSqlLiteHelper.COLUMN_ID,
-			EventsSqlLiteHelper.COLUMN_DEPARTMENT,
 			EventsSqlLiteHelper.COLUMN_TITLE,
 			EventsSqlLiteHelper.COLUMN_DESC,
 			EventsSqlLiteHelper.COLUMN_LOCATION,
@@ -55,7 +54,6 @@ public class EventsDataSource {
 
 		try {
 			ContentValues  values = new ContentValues();
-			values.put(EventsSqlLiteHelper.COLUMN_DEPARTMENT, event.getDepartment());
 			values.put(EventsSqlLiteHelper.COLUMN_TITLE, event.getTitle());
 			values.put(EventsSqlLiteHelper.COLUMN_DESC, event.getDescription());
 			values.put(EventsSqlLiteHelper.COLUMN_LOCATION, event.getLocation());
@@ -125,23 +123,22 @@ public class EventsDataSource {
 		Log.d(LOG_TAG, "cursorToEvent id: " + cursor.getInt(0));
 		Event event = new Event();
 		event.setId(cursor.getInt(0));
-		event.setDepartment(cursor.getString(1));
-		event.setTitle(cursor.getString(2));
-		event.setDescription(cursor.getString(3));
-		event.setLocation(cursor.getString(4));
-		event.setNameDoc(cursor.getString(5));
-		event.setNamePat(cursor.getString(6));
-		event.setFromDayHour(cursor.getInt(7));
-		event.setFromMinute(cursor.getInt(8));
-		event.setFromYear(cursor.getInt(9));
-		event.setFromMonth(cursor.getInt(10));
-		event.setFromDay(cursor.getInt(11));
-		event.setToDayHour(cursor.getInt(12));
-		event.setToMinute(cursor.getInt(13));
-		event.setExpired((cursor.getInt(14) == 0 ? false : true));
+		event.setTitle(cursor.getString(1));
+		event.setDescription(cursor.getString(2));
+		event.setLocation(cursor.getString(3));
+		event.setNameDoc(cursor.getString(4));
+		event.setNamePat(cursor.getString(5));
+		event.setFromDayHour(cursor.getInt(6));
+		event.setFromMinute(cursor.getInt(7));
+		event.setFromYear(cursor.getInt(8));
+		event.setFromMonth(cursor.getInt(9));
+		event.setFromDay(cursor.getInt(10));
+		event.setToDayHour(cursor.getInt(11));
+		event.setToMinute(cursor.getInt(12));
+		event.setExpired((cursor.getInt(13) == 0 ? false : true));
 		
 		String st = "";
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 14; i++) {
 			st += cursor.getString(i) + " | ";
 		}
 		System.out.println(st);
