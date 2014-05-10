@@ -39,11 +39,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Intent intent = new Intent(MainActivity.this, DetailEventActivity.class);
 		Event event = (Event) adapter.getItem(arg2);
 		
-		System.out.println("arg2: " + arg2);
-		System.out.println("toDay: " + ((Event) adapter.getItem(arg2)).getToDay());
-		System.out.println("toYear: " + ((Event) adapter.getItem(arg2)).getToYear());
-		System.out.println("toMonth: " + ((Event) adapter.getItem(arg2)).getToMonth());
-		
+//		System.out.println("arg2: " + arg2);
+//		System.out.println("toDay: " + ((Event) adapter.getItem(arg2)).getToDay());
+//		System.out.println("toYear: " + ((Event) adapter.getItem(arg2)).getToYear());
+//		System.out.println("toMonth: " + ((Event) adapter.getItem(arg2)).getToMonth());
+//		
 		intent.putExtra(Constants.CLICKED_EVENT, event);
 		startActivity(intent);
 	}

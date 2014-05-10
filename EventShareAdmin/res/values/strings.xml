@@ -31,30 +31,77 @@
     <string name="title_delete">Delete</string>
 
     <!-- For Text Field hints -->
-    <string name="hint_name">Event Name</string>
-    <string name="hint_loc">Event Location</string>
+    <string name="hint_title">Operation Title</string>
+    <string name="hint_room">Operation Room</string>
     <string name="hint_desc">Description</string>
-    <string name="hint_cuPass">Current Password</string>
-    <string name="hint_nPass">New Password</string>
-    <string name="hint_coPass">Confirm Password</string>
-
+	<string name="hint_pName">Patient Name</string>
+	
     <!-- Add Event Labels -->
-    <string name="label_from">From</string>
-    <string name="label_to">To</string>
+    <string name="label_date">Date</string>
+    <string name="label_time">Time</string>
 
     <!-- Sections on Add Event Activity -->
-    <string name="section_EventDetails">Event Details</string>
-    <string name="section_EventTime">Event Date and Time</string>
+    <string name="section_EventDetails">Surgery Details</string>
+    <string name="section_EventTime">Date and Time</string>
 
     <!-- Add Event Buttons -->
     <string name="btn_Time">Time</string>
     <string name="btn_Date">Date</string>
-    <string name="button">Test</string>
+    <string name="btn_location">Select Location</string>
+    <string name="btn_doctor">Select Doctor</string>
+    <string name="btnDepartment">Select Department</string>
 
     <!-- For single row list -->
     <string name="lText">Large Text</string>
     <string name="sText">Small Text</string>
-
+    
+    <!-- For spinners -->
+    
+    <string-array name="arrayDepartments">
+        <item>Cardiology</item>
+        <item>Cancer Care Unit</item>
+        <item>Dermatology</item>
+        <item>Diabetology</item>
+        <item>Digestive Diseases</item>
+        <item>Medical ICU</item>
+        <item>Surgical ICU</item>
+        <item>Neurology</item>
+        <item>Orthopedics</item>
+        <item>Pediatric</item>
+        <item>Plastic Surgery</item>
+    </string-array>
+    
+    
+    <string-array name="arrayDoctors">
+        <item>Dr. Suhail Al Rukn</item>
+        <item>Dr. Abubaker Almadani</item>
+        <item>Dr. Mohammed Saadah</item>
+        <item>Dr. Suresh Nair</item>
+        <item>Dr. Ayman Alboudi</item>
+        <item>Dr. Hashim</item>
+        <item>Dr. Zulfa Omar Deesi</item>
+        <item>Dr. Fahad Omar Baslaib</item>
+    </string-array>
+   
+    
+    <string-array name="arrayLocation">
+        <item>Theatre E1</item>
+        <item>Theatre E2</item>
+        <item>Theatre E3</item>
+        <item>Theatre E4</item>
+        <item>Theatre G102</item>
+        <item>Theatre G103</item>
+        <item>Theatre B2</item>
+        <item>Theatre B3</item>
+    </string-array>
+    
+    
+    <!-- For Main Activity -->
+	<string name="enter_pass">Enter department password</string>
+	<string name="btn_login">Login</string>
+	<string name="hint_pass">Enter password</string>
+    
+	
     <!-- For Event Details -->
 
 
@@ -65,5 +112,6 @@
     <string name="title_activity_password_tag">Change Password</string>
     <string name="title_activity_event_details">Event Details</string>
     <string name="title_activity_edit">Edit</string>
+    <string name="title_activity_main">Event Share</string>
 
 </resources>

@@ -8,7 +8,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:isScrollContainer="true"
-    android:background="#c5e26d"
+    android:background="#8ad5f0"
     tools:context=".AddEventActivity" >
 
 <ScrollView
@@ -26,34 +26,57 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="15sp"
-		    android:textColor="#669900"
-		    android:divider="#669900"
+		    android:textColor="#50c0e9"
+		    android:divider="#50c0e9"
 		    android:dividerHeight="2dp"
 		    android:text="@string/section_EventDetails"/>
         
 	    <EditText
-	        android:id="@+id/editText_eventName"
+	        android:id="@+id/editText_operationTitle"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:maxLength="32"
 	        android:textColorHint="#f0f8db"
-	        android:inputType="textCapSentences|textNoSuggestions"
-	        android:hint="@string/hint_name" />
-	
-	
-	    <EditText
-	        android:id="@+id/editText_eventLoc"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:maxLength="32"
-	        android:textColorHint="#f0f8db"
-	        android:inputType="textCapSentences|textNoSuggestions"
-	        android:hint="@string/hint_loc" />
+	        android:inputType="textCapWords|textNoSuggestions"
+	        android:hint="@string/hint_title" />
 	    
+        <Button
+            android:id="@+id/btn_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            style="?android:attr/spinnerStyle"
+            android:textColor="#f0f8db"
+            android:textSize="18sp"
+            android:textAlignment="gravity"
+            android:text="@string/btn_doctor" />
+	
+	    	    
 	    <EditText
-		    android:id="@+id/editText_eventDesc"
+	        android:id="@+id/editText_patientName"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingTop="5dp"
+	        android:maxLength="32"
+	        android:textColorHint="#f0f8db"
+	        android:inputType="textCapWords|textNoSuggestions"
+	        android:hint="@string/hint_pName" />
+	
+        <Button
+            android:id="@+id/btn_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            style="?android:attr/spinnerStyle"
+            android:textColor="#f0f8db"
+            android:textSize="18sp"
+            android:text="@string/btn_location" />
+
+	    <EditText
+		    android:id="@+id/editText_operationDesc"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
 			android:inputType="textCapSentences|textNoSuggestions"
 			android:maxLength="65"
 			android:maxLines="2"
@@ -67,69 +90,41 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="15sp"
 		    android:layout_marginBottom="15sp"
-		    android:textColor="#669900"
-		    android:divider="#669900"
+		    android:textColor="#50c0e9"
+		    android:divider="#50c0e9"
 		    android:dividerHeight="2dp"
 		    android:text="@string/section_EventTime" />
-		
-	    <TextView
-	        android:id="@+id/textView_from"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/label_from"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />
-		
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal" >
-	   
-			<Button
-			    android:id="@+id/btnDate1"
-			    style="?android:attr/spinnerStyle"
-			    android:layout_width="100dp"
-			    android:layout_height="wrap_content"
-			    android:layout_weight="1"
-			    android:text="@string/btn_Date" />
 
-			<Button
-			    android:id="@+id/btnTime1"
-			    style="?android:attr/spinnerStyle"
-			    android:layout_width="100dp"
-			    android:layout_height="wrap_content"
-			    android:layout_weight="1"
-			    android:text="@string/btn_Time" />
-		    
-	 	</LinearLayout>
+		<Button
+		    android:id="@+id/btnDate1"
+		    style="?android:attr/spinnerStyle"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/btn_Date" />
+		
 	 	
-	    <TextView
-	        android:id="@+id/textView_to"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/label_to"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />
-	    
 		<LinearLayout
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_horizontal" >
-		
-	   
-			<Button
-			    android:id="@+id/btnDate2"
-			    android:layout_width="100dp"
-			    android:layout_height="wrap_content"
-			    android:layout_weight="1"
-			    android:text="@string/btn_Date"
-			    style="?android:attr/spinnerStyle" />
-		
-			<Button
-			    android:id="@+id/btnTime2"
-			    android:layout_width="100dp"
-			    android:layout_height="wrap_content"
-			    android:layout_weight="1"
-			    android:text="@string/btn_Time"
-			    style="?android:attr/spinnerStyle" />
+	        
+	    <Button
+	        android:id="@+id/btnTime1"
+	        style="?android:attr/spinnerStyle"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/btn_Time" />
+
+	    <Button
+	        android:id="@+id/btnTime2"
+	        style="?android:attr/spinnerStyle"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/btn_Time" />
+	    
+
 		    
 	 	</LinearLayout>
 	
