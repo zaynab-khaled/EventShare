@@ -230,30 +230,10 @@ public class ReadTagActivity extends Activity {
 					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("dtend").item(0);
 					cal.setTime(sdf.parse(getCharacterDataFromElement(attr)));
 
-<<<<<<< HEAD
-					event.setToYear(cal.get(Calendar.YEAR));
-					System.out.println("Toyear: " + cal.get(Calendar.YEAR));
-
-					event.setToMonth(cal.get(Calendar.MONTH));
-					System.out.println("ToMonth: " + cal.get(Calendar.MONTH));
-
-					event.setToDay(cal.get(Calendar.DAY_OF_MONTH));
-					System.out.println("ToDay: " + cal.get(Calendar.DAY_OF_MONTH));
-=======
-//					event.setToYear(cal.YEAR);
-//					System.out.println("Toyear: " + cal.YEAR);
-//
-//					event.setToMonth(cal.MONTH);
-//					System.out.println("ToMonth: " + cal.MONTH);
-//
-//					event.setToDay(cal.DAY_OF_MONTH);
-//					System.out.println("ToDay: " + cal.DAY_OF_MONTH);
->>>>>>> cdeab9e1c9d40c67b6bc9f976606fe35ac94456d
-
 					event.setToDayHour(cal.get(Calendar.HOUR_OF_DAY));
 					System.out.println("ToHour: " + cal.get(Calendar.HOUR_OF_DAY));
 
-					event.setToDayHour(cal.get(Calendar.MINUTE));
+					event.setToMinute(cal.get(Calendar.MINUTE));
 					System.out.println("Tominute: " + cal.get(Calendar.MINUTE));
 
 					service.addEvent(event);
