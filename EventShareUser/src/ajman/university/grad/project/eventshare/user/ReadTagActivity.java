@@ -125,7 +125,7 @@ public class ReadTagActivity extends Activity {
 			String metaInfo = "";
 			mfc.connect();
 
-			for (int j = 0; j < mfc.getSectorCount(); j++) {
+			outer: for (int j = 0; j < mfc.getSectorCount(); j++) {
 
 				// Authenticate a sector with key.
 				auth = mfc.authenticateSectorWithKeyA(j, KEYA);
@@ -138,8 +138,19 @@ public class ReadTagActivity extends Activity {
 
 					for (int i = 0; i < bCount; i++) {
 
+						try {
+							byte[] data = mfc.readBlock(bIndex);
+							if (byteArrayToHexString(data).equals("00000000000000000000000000000000")) {
+								System.out.println("stopped reading");
+								break outer;
+							}
+
+						} catch (Exception e) {
+							System.out.println("Read error at: " + bIndex);
+						}
+						
 						// Read data blocks with key A
-						if ((bIndex + 1) % bCount != 0) {
+						if ((bIndex + 1) % bCount != 0 && bIndex != 0) {
 							try {
 								byte[] data = mfc.readBlock(bIndex);
 								metaInfo += byteArrayToHexString(data);
@@ -165,8 +176,6 @@ public class ReadTagActivity extends Activity {
 			IErrorService errorService = ServicesFactory.getErrorService();
 
 			try {
-				service.deleteAllEvents();
-				System.out.println("deleteallevents");
 
 				String xmlCalendar = hexToASCII(metaInfo);
 				System.out.println(xmlCalendar);
@@ -174,12 +183,11 @@ public class ReadTagActivity extends Activity {
 				InputSource is = new InputSource();
 				is.setCharacterStream(new StringReader(xmlCalendar));
 				Document doc = db.parse(is);
-				
-				System.out.println("5");
 
 				NodeList nodes = doc.getElementsByTagName("event");
 
-				System.out.println("before loop");
+				service.deleteAllEvents();
+				
 				for (int i = 0; i < nodes.getLength(); i++) {
 					event = new Event();
 
@@ -203,40 +211,39 @@ public class ReadTagActivity extends Activity {
 					Calendar cal = Calendar.getInstance();
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
 					cal.setTime(sdf.parse(getCharacterDataFromElement(attr)));
-					System.out.println("cal set");
 					
-					event.setFromYear(cal.YEAR);
-					System.out.println("Fromyear: " + cal.YEAR);
+					event.setFromYear(cal.get(Calendar.YEAR));
+					System.out.println("Fromyear: " + cal.get(Calendar.YEAR));
 
-					event.setFromMonth(cal.MONTH);
-					System.out.println("FromMonth: " + cal.MONTH);
+					event.setFromMonth(cal.get(Calendar.MONTH));
+					System.out.println("FromMonth: " + cal.get(Calendar.MONTH));
 
-					event.setFromDay(cal.DAY_OF_MONTH);
-					System.out.println("FromDay: " + cal.DAY_OF_MONTH);
+					event.setFromDay(cal.get(Calendar.DAY_OF_MONTH));
+					System.out.println("FromDay: " + cal.get(Calendar.DAY_OF_MONTH));
 
-					event.setFromDayHour(cal.HOUR_OF_DAY);
-					System.out.println("FromHour: " + cal.HOUR_OF_DAY);
+					event.setFromDayHour(cal.get(Calendar.HOUR_OF_DAY));
+					System.out.println("FromHour: " + cal.get(Calendar.HOUR_OF_DAY));
 
-					event.setFromDayHour(cal.MINUTE);
-					System.out.println("Fromminute: " + cal.MINUTE);
+					event.setFromDayHour(cal.get(Calendar.MINUTE));
+					System.out.println("Fromminute: " + cal.get(Calendar.MINUTE));
 
 					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("dtend").item(0);
 					cal.setTime(sdf.parse(getCharacterDataFromElement(attr)));
 
-					event.setToYear(cal.YEAR);
-					System.out.println("Toyear: " + cal.YEAR);
+					event.setToYear(cal.get(Calendar.YEAR));
+					System.out.println("Toyear: " + cal.get(Calendar.YEAR));
 
-					event.setToMonth(cal.MONTH);
-					System.out.println("ToMonth: " + cal.MONTH);
+					event.setToMonth(cal.get(Calendar.MONTH));
+					System.out.println("ToMonth: " + cal.get(Calendar.MONTH));
 
-					event.setToDay(cal.DAY_OF_MONTH);
-					System.out.println("ToDay: " + cal.DAY_OF_MONTH);
+					event.setToDay(cal.get(Calendar.DAY_OF_MONTH));
+					System.out.println("ToDay: " + cal.get(Calendar.DAY_OF_MONTH));
 
-					event.setToDayHour(cal.HOUR_OF_DAY);
-					System.out.println("ToHour: " + cal.HOUR_OF_DAY);
+					event.setToDayHour(cal.get(Calendar.HOUR_OF_DAY));
+					System.out.println("ToHour: " + cal.get(Calendar.HOUR_OF_DAY));
 
-					event.setToDayHour(cal.MINUTE);
-					System.out.println("Tominute: " + cal.MINUTE);
+					event.setToDayHour(cal.get(Calendar.MINUTE));
+					System.out.println("Tominute: " + cal.get(Calendar.MINUTE));
 
 					service.addEvent(event);
 				}

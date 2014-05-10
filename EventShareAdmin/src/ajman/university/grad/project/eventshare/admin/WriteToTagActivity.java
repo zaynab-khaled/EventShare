@@ -29,7 +29,6 @@ public class WriteToTagActivity extends Activity {
 	private TextView tvWriteToTag;
 	private TextView tvCalSize;
 	private int nrOfEvents;
-	private SharedPreferences nfcPreferences;
 	private NfcAdapter mNfcAdapter;
 	private PendingIntent mPendingIntent;
 	private IntentFilter[] mIntentFilters;
@@ -51,23 +50,21 @@ public class WriteToTagActivity extends Activity {
 		setContentView(R.layout.activity_write_to_tag);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		nfcPreferences = getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
 
 		// Get bundled data
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			nrOfEvents = extras.getInt(Constants.EVENTCOUNT);
 		}
-		
-		calString = (String) getIntent().getSerializableExtra(Constants.ICALENDAR);				
-		
+
+		calString = (String) getIntent().getSerializableExtra(Constants.ICALENDAR);
+
 		System.out.println(calString);
 
 		tvWriteToTag = (TextView) findViewById(R.id.tv_write_to_tag);
 		tvCalSize = (TextView) findViewById(R.id.tv_calendar_size);
 		tvCalSize.setText("Calendar size: " + calString.getBytes().length + " bytes");
-		
+
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
 		// create an intent with tag data and deliver to this activity
@@ -148,13 +145,14 @@ public class WriteToTagActivity extends Activity {
 			String metaInfo = "";
 			int msgCount = 0;
 			mfc.connect();
-			
-			for (int j = 0; j < mfc.getSectorCount(); j++) {
-				
-				if (msgCount >= nfcPreferences.getInt("prevCalendarBlocks", 216) && msgCount > calBlocks) {
-					System.out.println("Stopped writing because prev calendar size was: " + nfcPreferences.getInt("prevCalendarBlocks", 216));
-					break;
-				}
+			outer: for (int j = 0; j < mfc.getSectorCount(); j++) {
+
+				/*
+				 * if (msgCount >= nfcPreferences.getInt("prevCalendarBlocks",
+				 * 216) && msgCount > calBlocks) { System.out.println(
+				 * "Stopped writing because prev calendar size was: " +
+				 * nfcPreferences.getInt("prevCalendarBlocks", 216)); break; }
+				 */
 
 				// Authenticate a sector with key.
 				auth = mfc.authenticateSectorWithKeyA(j, KEYA);
@@ -167,8 +165,19 @@ public class WriteToTagActivity extends Activity {
 
 					for (int i = 0; i < bCount; i++) {
 
+						try {
+							byte[] data = mfc.readBlock(bIndex);
+							if (byteArrayToHexString(data).equals("00000000000000000000000000000000") && msgCount > calBlocks) {
+								System.out.println("stopped writing");
+								break outer;
+							}
+
+						} catch (Exception e) {
+							System.out.println("Read error at: " + bIndex);
+						}
+
 						// Write to data blocks with key A
-						if ((bIndex + 1) % bCount != 0) {
+						if ((bIndex + 1) % bCount != 0 && bIndex != 0) {
 							try {
 								mfc.writeBlock(bIndex, msg[msgCount]);
 								msgCount++;
@@ -196,20 +205,15 @@ public class WriteToTagActivity extends Activity {
 			System.out.println(metaInfo);
 			System.out.println("Write count = " + msgCount);
 
-			Editor editor = nfcPreferences.edit();
-			editor.putInt("prevCalendarBlocks", calBlocks);
-			editor.commit();
-
-			System.out.println("sharedPrefernces: " + nfcPreferences.getInt("prevCalendarBlocks", 216));
 			mfc.close();
 			write = true;
-			
+
 			new AlertDialog.Builder(this).setMessage(nrOfEvents + " events successfully written to tag!").setCancelable(false)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialogInterface, int i) {
 							write = false;
-							//finish();
+							// finish();
 						}
 					}).show();
 

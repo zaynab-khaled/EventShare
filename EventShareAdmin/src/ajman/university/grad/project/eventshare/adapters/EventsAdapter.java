@@ -22,6 +22,7 @@ public class EventsAdapter extends BaseAdapter {
 	private List<Event> events = new ArrayList<Event>();
 	private Context context;
 	private int nrOfValidEvents;
+	private int size;
 	private final static int tagSize = (256 - 40) * 16;
 	//(nr of block - trailer blocks) * block size = 3456 bytes;
 
@@ -133,7 +134,7 @@ public class EventsAdapter extends BaseAdapter {
 		String vEvent = "";
 		nrOfValidEvents = 0;
 
-		vCal += "<vcalendar>";
+		//vCal += "<vcalendar>";
 
 		for (int i = 0; i < events.size(); i++) {
 			if (!isDeclined(events.get(i))) {
@@ -148,7 +149,7 @@ public class EventsAdapter extends BaseAdapter {
 
 				vCal += vEvent;
 
-				if (vCal.getBytes().length < (tagSize - "</vcalendar>".getBytes().length)) {
+				if (vCal.getBytes().length < (tagSize - "</vcalendar>".getBytes().length - "<vcalendar>".getBytes().length)) {
 					vCalPrev = vCal;
 					nrOfValidEvents++;
 					System.out.println("nrofevents = " + nrOfValidEvents);
@@ -160,8 +161,12 @@ public class EventsAdapter extends BaseAdapter {
 				}
 			}
 		}
-
-		vCal += "</vcalendar>";
+		size = "<vcalendar><size>9999</size>".getBytes().length + vCal.getBytes().length + "</vcalendar>".getBytes().length;
+		vCal = "<vcalendar><size>" + size + "</size>" + vCal + "</vcalendar>";
+		
+		System.out.println("size = " + size);
+		System.out.println("vcal = " + vCal);
+		
 		return vCal;
 	}
 
@@ -184,5 +189,9 @@ public class EventsAdapter extends BaseAdapter {
 	
 	public int getValidCount() {
 		return nrOfValidEvents;
+	}
+	
+	public int getCalendarSize() {
+		return size;
 	}
 }

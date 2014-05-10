@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 public class EraseTagActivity extends Activity {
 
-	private SharedPreferences nfcPreferences;
 	private NfcAdapter mNfcAdapter;
 	private PendingIntent mPendingIntent;
 	private IntentFilter[] mIntentFilters;
@@ -30,7 +29,6 @@ public class EraseTagActivity extends Activity {
 
 	public static final String MIME_TEXT_CALENDAR = "text/x-vcalendar";
 	private static final String HEXES = "0123456789ABCDEF";
-	private static final String preferenceName = "NFC_PREFERENCES";
 
 	private static final byte[] KEYA = { (byte) 0xd3, (byte) 0xf7, (byte) 0xd3,
 			(byte) 0xf7, (byte) 0xd3, (byte) 0xf7 };
@@ -43,8 +41,6 @@ public class EraseTagActivity extends Activity {
 		setContentView(R.layout.activity_erase);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		nfcPreferences = getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
 		
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -113,13 +109,13 @@ public class EraseTagActivity extends Activity {
 			String metaInfo = "";
 			int msgCount = 0;
 			mfc.connect();
-
+			outer:
 			for (int j = 0; j < mfc.getSectorCount(); j++) {
 
-				if (msgCount >= nfcPreferences.getInt("prevCalendarBlocks", 216)) {
+				/*if (msgCount >= nfcPreferences.getInt("prevCalendarBlocks", 216)) {
 					System.out.println("Stopped writing because prev calendar size was: " + nfcPreferences.getInt("prevCalendarBlocks", 216));
 					break;
-				}
+				}*/
 
 				// Authenticate a sector with key.
 				auth = mfc.authenticateSectorWithKeyA(j, KEYA);
@@ -132,8 +128,19 @@ public class EraseTagActivity extends Activity {
 
 					for (int i = 0; i < bCount; i++) {
 
+						try {
+							byte[] data = mfc.readBlock(bIndex);
+							if (byteArrayToHexString(data).equals("00000000000000000000000000000000")) {
+								System.out.println("stopped writing");
+								break outer;
+							}
+
+						} catch (Exception e) {
+							System.out.println("Read error at: " + bIndex);
+						}
+						
 						// Write to data blocks with key A
-						if ((bIndex + 1) % bCount != 0) {
+						if ((bIndex + 1) % bCount != 0 && bIndex != 0) {
 							try {
 								mfc.writeBlock(bIndex, CLEANDATACONTENT);
 								msgCount++;
@@ -159,10 +166,6 @@ public class EraseTagActivity extends Activity {
 			}
 			System.out.println(metaInfo);
 			System.out.println("Write count = " + msgCount);
-
-			Editor editor = nfcPreferences.edit();
-			editor.putInt("prevCalendarBlocks", 0);
-			editor.commit();
 
 			System.out.println(metaInfo);
 			mfc.close();
