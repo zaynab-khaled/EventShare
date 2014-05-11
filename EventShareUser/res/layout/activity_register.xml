@@ -2,24 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity"
     android:background="@drawable/gradient"
-    android:layout_gravity="center_vertical">
-   	
-	    <TextView 
-	        android:background="#33b5e5" 
-	        android:layout_height="wrap_content" 
-	        android:layout_width="match_parent" 
-	        android:padding="15dp" 
-	        android:textSize="20sp" 
-	        android:id="@+id/tv_schedule"/>
-	    
-	    <Button 
+    android:orientation="vertical"
+    tools:context=".RegisterActivity" >
+
+		<Button 
 	        android:paddingTop="5dp" 
 	        android:layout_height="wrap_content" 
 	        android:layout_width="match_parent" 
@@ -29,8 +20,8 @@
 	        android:textStyle="normal" 
 	        android:textAlignment="center"
 	        android:layout_gravity="center_horizontal" 
-	        style="?android:attr/spinnerStyle" />
-	    
+	        style="?android:attr/spinnerStyle" />	
+    
 		<EditText
 		    android:id="@+id/editText_password"
 		    android:layout_width="match_parent"
@@ -40,10 +31,10 @@
 		    android:layout_gravity="center_horizontal" />
 	
 	    <Button
-	        android:id="@+id/btn_okay"
-	        android:layout_width="wrap_content"
+	        android:id="@+id/btn_register"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/btn_login"
+	        android:text="@string/btn_register"
 	        android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

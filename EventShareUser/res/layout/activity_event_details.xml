@@ -26,13 +26,25 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="15sp"
-		    android:textColor="#669900"
-		    android:divider="#669900"
+		    android:textColor="#50c0e9"
+		    android:divider="#50c0e9"
 		    android:dividerHeight="2dp"
 		    android:text="@string/section_EventDetails"/>
         
 	    <TextView
-	        android:id="@+id/edit_tvName"
+	        android:id="@+id/edit_tvTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp" />
+	    
+	    <TextView
+	        android:id="@+id/edit_tvNameDoc"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp" />
+	    
+	    <TextView
+	        android:id="@+id/edit_tvNamePat"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:textSize="16sp" />
@@ -56,28 +68,29 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="15sp"
 		    android:layout_marginBottom="15sp"
-		    android:textColor="#669900"
-		    android:divider="#669900"
+		    android:textColor="#50c0e9"
+		    android:divider="#50c0e9"
 		    android:text="@string/section_EventTime" />
+		
 		<RelativeLayout
 	 	    android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
 	    <TextView
-	        android:id="@+id/textView_from"
+	        android:id="@+id/textView_date"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/label_from"
+	        android:text="@string/label_date"
 	        android:textSize="16sp"
 		    android:paddingRight="10dp"
 		    android:textAppearance="?android:attr/absListViewStyle"/>
 		
 		<TextView
-	        android:id="@+id/edit_tvSdate"
+	        android:id="@+id/edit_tvDate"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/textView_from"
+	        android:layout_toRightOf="@id/textView_date"
 	        android:textSize="16sp" />
 		</RelativeLayout>
 		
@@ -87,19 +100,19 @@
         	android:orientation="horizontal">
         	
 		    <TextView
-		        android:id="@+id/textView_to"
+		        android:id="@+id/textView_time"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="@string/label_to"
+		        android:text="@string/label_time"
 		        android:textSize="16sp"
 		        android:paddingRight="10dp"
 		        android:textAppearance="?android:attr/absListViewStyle" />
 		    
 			<TextView
-		        android:id="@+id/edit_tvEdate"
+		        android:id="@+id/edit_tvTime"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_toRightOf="@id/textView_to"
+		        android:layout_toRightOf="@id/textView_time"
 		        android:textSize="16sp" />
 		</RelativeLayout>
 

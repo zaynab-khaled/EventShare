@@ -26,8 +26,8 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginBottom="15sp"
-		    android:textColor="#669900"
-		    android:divider="#669900"
+		    android:textColor="#50c0e9"
+		    android:divider="#50c0e9"
 		    android:dividerHeight="2dp"
 		    android:text="@string/section_EventDetails"/>
         
@@ -68,8 +68,8 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="15sp"
 		    android:layout_marginBottom="15sp"
-		    android:textColor="#669900"
-		    android:divider="#669900"
+		    android:textColor="#50c0e9"
+		    android:divider="#50c0e9"
 		    android:text="@string/section_EventTime" />
 		
 		<RelativeLayout

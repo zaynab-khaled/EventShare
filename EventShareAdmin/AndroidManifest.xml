@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.NFC" />
 
@@ -22,6 +22,7 @@
         android:theme="@style/AppTheme" >
        <activity
             android:name="ajman.university.grad.project.eventshare.admin.MainActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

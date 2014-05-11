@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Event Share</string>
+    <string name="app_name">NFC Share</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
@@ -11,7 +11,8 @@
     <string name="overflow_icon">Open Menu</string>
 
     <!-- Menu list -->
-    <string name="title_deleteExpired">Delete Declined Events</string>
+    <string name="title_filter">Filter Events</string>
+    <string name="title_deleteExpired">Delete Expired Events</string>
     <string name="title_erase">Erase Tag</string>
     <string name="title_settings">Settings</string>
     <string name="title_about">About</string>
@@ -33,7 +34,7 @@
     <!-- For Text Field hints -->
     <string name="hint_title">Operation Title</string>
     <string name="hint_room">Operation Room</string>
-    <string name="hint_desc">Description</string>
+    <string name="hint_addInfo">Additional Information</string>
 	<string name="hint_pName">Patient Name</string>
 	
     <!-- Add Event Labels -->
@@ -47,8 +48,8 @@
     <!-- Add Event Buttons -->
     <string name="btn_Time">Time</string>
     <string name="btn_Date">Date</string>
-    <string name="btn_location">Select Location</string>
-    <string name="btn_doctor">Select Doctor</string>
+    <string name="btn_location">Select OR</string>
+    <string name="btn_doctor">Select Surgeon</string>
     <string name="btnDepartment">Select Department</string>
 
     <!-- For single row list -->
@@ -78,11 +79,19 @@
         <item>Dr. Mohammed Saadah</item>
         <item>Dr. Suresh Nair</item>
         <item>Dr. Ayman Alboudi</item>
-        <item>Dr. Hashim</item>
+        <item>Dr. Mohamed Hamdy Ibrahim</item>
         <item>Dr. Zulfa Omar Deesi</item>
         <item>Dr. Fahad Omar Baslaib</item>
     </string-array>
    
+    <string-array name="arrayDoctors2">
+        <item>Dr. Moosa Kunhi</item>
+        <item>Dr. Ehab Moheyeldin</item>
+        <item>Dr. Ani Purushothaman</item>
+        <item>Dr. Mais M Mauwfak</item>
+        <item>Dr. Mohamed Ahmed</item>
+        <item>Dr. Omaia Siddig Bashir</item>
+    </string-array>
     
     <string-array name="arrayLocation">
         <item>Theatre E1</item>
@@ -93,6 +102,17 @@
         <item>Theatre G103</item>
         <item>Theatre B2</item>
         <item>Theatre B3</item>
+    </string-array>
+ 
+    <string-array name="arrayLocation2">
+        <item>OR 1</item>
+        <item>OR 2</item>
+        <item>OR 3</item>
+        <item>OR 4</item>
+        <item>Theatre G104</item>
+        <item>Theatre G105</item>
+        <item>Theatre B3</item>
+        <item>Theatre B4</item>
     </string-array>
     
     

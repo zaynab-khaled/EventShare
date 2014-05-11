@@ -22,8 +22,6 @@ public class EventsAdapter extends BaseAdapter {
 	private List<Event> events = new ArrayList<Event>();
 	private Context context;
 	private int nrOfValidEvents;
-
-	private int size;
 	private final static int tagSize = (256 - 40) * 16;
 	//(nr of block - trailer blocks) * block size = 3456 bytes;
 
@@ -35,6 +33,24 @@ public class EventsAdapter extends BaseAdapter {
 		ILocalStorageService service = ServicesFactory.getLocalStorageService();
 		try {
 			List<Event> storedEvents = service.getAllEvents();
+			for (Event event : storedEvents) {
+				events.add(event);
+			}
+		} catch (Exception e) {
+			// TODO: Error service
+			IErrorService eService = ServicesFactory.getErrorService();
+			eService.log(e);
+		}
+	}
+	
+	public EventsAdapter(Context c, String docName) {
+		context = c;
+		events = new ArrayList<Event>();
+
+		// Get the events from the events repository
+		ILocalStorageService service = ServicesFactory.getLocalStorageService();
+		try {
+			List<Event> storedEvents = service.filterByDoctorName(docName);
 			for (Event event : storedEvents) {
 				events.add(event);
 			}
@@ -104,7 +120,7 @@ public class EventsAdapter extends BaseAdapter {
 		return row; // return the rootView of the single_row_list.xml
 	}
 
-	// Final format should be 20140924T185545Z
+	// Final format should be 20140924185545
 	private String formatToDate(Event event) {
 		String date = "";
 		date += event.getFromYear();
@@ -134,22 +150,24 @@ public class EventsAdapter extends BaseAdapter {
 		String vEvent = "";
 		nrOfValidEvents = 0;
 
-		//vCal += "<vcalendar>";
+		vCal += "<c>";
 
 		for (int i = 0; i < events.size(); i++) {
 			if (!isDeclined(events.get(i))) {
-				vEvent = "<event>";
-				vEvent += "<dtstart>" + formatFromDate(events.get(i)) + "</dtstart>";
-				vEvent += "<dtend>" + formatToDate(events.get(i)) + "</dtend>";
-				vEvent += "<summary>" + events.get(i).getTitle() + "</summary>";
-				vEvent += "<description>" + events.get(i).getDescription() + "</description>";
-				vEvent += "<uid>" + events.get(i).getId() + "</uid>";
-				vEvent += "<location>" + events.get(i).getLocation() + "</location>";
-				vEvent += "</event>";
+				vEvent = "<e>";
+				vEvent += "<s>" + formatFromDate(events.get(i)) + "</s>";
+				vEvent += "<f>" + formatToDate(events.get(i)) + "</f>";
+				vEvent += "<t>" + events.get(i).getTitle() + "</t>";
+				vEvent += "<d>" + events.get(i).getDescription() + "</d>";
+				vEvent += "<o>" + events.get(i).getNameDoc() + "</o>";
+				vEvent += "<p>" + events.get(i).getNamePat() + "</p>";
+				vEvent += "<i>" + events.get(i).getId() + "</i>";
+				vEvent += "<l>" + events.get(i).getLocation() + "</l>";
+				vEvent += "</e>";
 
 				vCal += vEvent;
 
-				if (vCal.getBytes().length < (tagSize - "</vcalendar>".getBytes().length - "<vcalendar>".getBytes().length)) {
+				if (vCal.getBytes().length < (tagSize - "</c>".getBytes().length)) {
 					vCalPrev = vCal;
 					nrOfValidEvents++;
 					System.out.println("nrofevents = " + nrOfValidEvents);
@@ -161,12 +179,8 @@ public class EventsAdapter extends BaseAdapter {
 				}
 			}
 		}
-		size = "<vcalendar><size>9999</size>".getBytes().length + vCal.getBytes().length + "</vcalendar>".getBytes().length;
-		vCal = "<vcalendar><size>" + size + "</size>" + vCal + "</vcalendar>";
-		
-		System.out.println("size = " + size);
-		System.out.println("vcal = " + vCal);
-		
+
+		vCal += "</c>";
 		return vCal;
 	}
 
@@ -189,9 +203,5 @@ public class EventsAdapter extends BaseAdapter {
 	
 	public int getValidCount() {
 		return nrOfValidEvents;
-	}
-	
-	public int getCalendarSize() {
-		return size;
 	}
 }

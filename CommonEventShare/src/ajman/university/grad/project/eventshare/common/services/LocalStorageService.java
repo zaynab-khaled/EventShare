@@ -5,12 +5,15 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.db.*;
 import ajman.university.grad.project.eventshare.common.helpers.ApplicationContextProvider;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 
 public class LocalStorageService implements ILocalStorageService {
 	private static String LOG_TAG = "LocalStorageService";
@@ -110,6 +113,102 @@ public class LocalStorageService implements ILocalStorageService {
 		return count;
 	}
 	
+	@Override
+	public List<Event> filterByDoctorName(String docName) throws Exception {
+		List<Event> events = new ArrayList<Event>();
+
+		EventsDataSource ds = null;
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			events = ds.retrieveByDoctorName(docName);
+			System.out.println("Local Storage filterByDoctorName [" + docName + "] " + events);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
+
+		return events;
+	}
+
+	@Override
+	public void setUserPassword(String pwd) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.USER_PASSWORD, pwd);
+        editor.commit();
+	}
+
+	@Override
+	public String getUserPassword() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getString(Constants.USER_PASSWORD, "");
+	}
+
+	@Override
+	public void setAdminPassword(String pwd) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.ADMIN_PASSWORD, pwd);
+        editor.commit();
+	}
+
+	@Override
+	public String getAdminPassword() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getString(Constants.ADMIN_PASSWORD, "");
+	}
+	
+	@Override
+	public void setRegistered(boolean reg) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(Constants.REGISTERED, reg);
+        editor.commit();
+	}
+
+	@Override
+	public boolean isRegistered() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getBoolean(Constants.REGISTERED, false);
+	}
+	
+	@Override
+	public void setUserDepartment(String dept) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.USER_DEPARTMENT, dept);
+        editor.commit();
+	}
+
+	@Override
+	public String getUserDepartment() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getString(Constants.USER_DEPARTMENT, "");
+	}
+	
+	@Override
+	public void setAdminDepartment(String dept) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.ADMIN_DEPARTMENT, dept);
+        editor.commit();	
+	}
+
+	@Override
+	public String getAdminDepartment() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getString(Constants.ADMIN_DEPARTMENT, "");
+	}
+	
+	/*** PRIVATE METHODS */
+	private Context getApplicationContext() {
+		return ApplicationContextProvider.getContext();
+	}
+	
 	private boolean isDeclined(Event event) {
 
 		Calendar toCal = Calendar.getInstance();
@@ -125,10 +224,5 @@ public class LocalStorageService implements ILocalStorageService {
 			return true;
 		}
 		return false;
-	}
-
-	/*** PRIVATE METHODS */
-	private Context getApplicationContext() {
-		return ApplicationContextProvider.getContext();
 	}
 }

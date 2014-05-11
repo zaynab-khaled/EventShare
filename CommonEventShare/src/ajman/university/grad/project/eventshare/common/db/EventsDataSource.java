@@ -118,6 +118,30 @@ public class EventsDataSource {
 
 		return events;
 	}
+	
+	// Expects the database to be open!!
+		public List<Event> retrieveByDoctorName(String docName) {
+			Log.d(LOG_TAG, "retrieveByDoctorName: " + Environment.getDataDirectory());
+			List<Event> events = new ArrayList<Event> ();
+			Cursor cursor = null;
+			
+			try {
+				//cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, orderBy, null, EventsSqlLiteHelper.COLUMN_TITLE, "" + records);
+				cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, EventsSqlLiteHelper.COLUMN_NAME_DOCTOR +" = '"+docName+"'", null, null, null, null);
+				System.out.println("The database: " + Environment.getDataDirectory());
+				cursor.moveToFirst();
+				while (!cursor.isAfterLast()) {
+					events.add(cursorToEvent(cursor));
+					cursor.moveToNext();
+				} 
+			} catch (Exception e) {
+				Log.d(LOG_TAG, "retrieveAll exception: " + e.getMessage());
+			} finally {
+				try {if (cursor != null) cursor.close();} catch (Exception e) {/*Ignore */}
+			}
+
+			return events;
+		}
 
 	private Event cursorToEvent(Cursor cursor) {
 		Log.d(LOG_TAG, "cursorToEvent id: " + cursor.getInt(0));

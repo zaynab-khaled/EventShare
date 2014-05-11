@@ -6,4 +6,11 @@
         android:icon="@drawable/icon_nfc_write"
         android:showAsAction="always"
         android:title="@string/read_tag"/>
+    
+    <item
+        android:id="@+id/sortByDoc"
+        android:icon="@drawable/ic_action_expand"
+        android:showAsAction="always"
+        android:title="@string/sort_doc"/>
+    
 </menu>

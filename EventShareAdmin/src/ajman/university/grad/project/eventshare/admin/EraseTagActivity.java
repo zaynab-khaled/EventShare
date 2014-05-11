@@ -127,7 +127,7 @@ public class EraseTagActivity extends Activity {
 					bIndex = mfc.sectorToBlock(j);
 
 					for (int i = 0; i < bCount; i++) {
-
+						/*
 						try {
 							byte[] data = mfc.readBlock(bIndex);
 							if (byteArrayToHexString(data).equals("00000000000000000000000000000000")) {
@@ -137,7 +137,7 @@ public class EraseTagActivity extends Activity {
 
 						} catch (Exception e) {
 							System.out.println("Read error at: " + bIndex);
-						}
+						} */
 						
 						// Write to data blocks with key A
 						if ((bIndex + 1) % bCount != 0 && bIndex != 0) {
@@ -205,7 +205,7 @@ public class EraseTagActivity extends Activity {
 		if (mNfcAdapter == null) {
 			// Stop here, we definitely need NFC
 			Toast.makeText(this, "This device doesn't support NFC.",
-					Toast.LENGTH_SHORT).show();
+					Toast.LENGTH_LONG).show();
 			finish();
 			return;
 		}

@@ -6,7 +6,7 @@ import java.util.Calendar;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 
-import ajman.university.grad.project.eventshare.admin.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
@@ -22,12 +22,10 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -36,16 +34,15 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class EventActivity extends SherlockActivity implements OnItemSelectedListener{
-
-	private static String LOG_TAG = "EventActivity event details";
+	private static final String LOG_TAG = "EventActivity";
+	
+	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
 	
 	private EditText etEventTitle;
 	private EditText etEventDesc;
@@ -124,9 +121,10 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 
 
 	private void setUpViews() {
-		
-		final ArrayAdapter adapterLocation = ArrayAdapter.createFromResource(this,R.array.arrayLocation, android.R.layout.simple_spinner_dropdown_item);
-		final ArrayAdapter adapterDoctor = ArrayAdapter.createFromResource(this,R.array.arrayDoctors, android.R.layout.simple_spinner_dropdown_item);
+		final ArrayAdapter<?> adapterLocation = ArrayAdapter.createFromResource(this,R.array.arrayLocation, android.R.layout.simple_spinner_dropdown_item);
+		final ArrayAdapter<?> adapterLocation2 = ArrayAdapter.createFromResource(this,R.array.arrayLocation2, android.R.layout.simple_spinner_dropdown_item);
+		final ArrayAdapter<?> adapterDoctor = ArrayAdapter.createFromResource(this,R.array.arrayDoctors, android.R.layout.simple_spinner_dropdown_item);
+		final ArrayAdapter<?> adapterDoctor2 = ArrayAdapter.createFromResource(this,R.array.arrayDoctors2, android.R.layout.simple_spinner_dropdown_item);
 		
 		etEventTitle = (EditText) findViewById(R.id.editText_operationTitle);
 		etEventNamePat = (EditText) findViewById(R.id.editText_patientName);
@@ -166,109 +164,146 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 			
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(EventActivity.this)
-				.setTitle("Select Operating Theatre")
-				.setAdapter(adapterLocation, new DialogInterface.OnClickListener() {
 
-				    @Override
-				    public void onClick(DialogInterface dialog, int which) {
-
-				    	switch(which) {
-				    	case 0:
-				    		event.setLocation("Theatre E1");
-				    		btnLocation.setText("Theatre E1");
-				    		break;
-				    	case 1:
-				    		event.setLocation("Theatre E2");
-				    		btnLocation.setText("Theatre E2");
-				    		break;
-				    	case 2:
-				    		event.setLocation("Theatre E3");
-				    		btnLocation.setText("Theatre E3");
-				    		break;
-				    	case 3:
-				    		event.setLocation("Theatre E4");
-				    		btnLocation.setText("Theatre E4");
-				    		break;
-				    	case 4:
-				    		event.setLocation("Theatre G102");
-				    		btnLocation.setText("Theatre G102");
-				    		break;
-				    	case 5:
-				    		event.setLocation("Theatre G103");
-				    		btnLocation.setText("Theatre G103");
-				    		break;
-				    	case 6:
-				    		event.setLocation("Theatre B2");
-				    		btnLocation.setText("Theatre B2");
-				    		break;
-				    	case 7:
-				    		event.setLocation("Theatre B3");
-				    		btnLocation.setText("Theatre B3");
-				    		break;
-				    	}
-
-				      dialog.dismiss();
-				    }
-				  }).create().show();
-				
-			}
+				if (service.getAdminDepartment().equals("Neurology")) {
+					new AlertDialog.Builder(EventActivity.this)
+					.setTitle("Select Operating Theatre")
+					.setAdapter(adapterLocation, new DialogInterface.OnClickListener() {
+	
+					    @Override
+					    public void onClick(DialogInterface dialog, int which) {
+					    	switch(which) {
+					    	case 0:
+					    		event.setLocation("Theatre E1");
+					    		btnLocation.setText("Theatre E1");
+					    		break;
+					    	case 1:
+					    		event.setLocation("Theatre E2");
+					    		btnLocation.setText("Theatre E2");
+					    		break;
+					    	case 2:
+					    		event.setLocation("Theatre E3");
+					    		btnLocation.setText("Theatre E3");
+					    		break;
+					    	case 3:
+					    		event.setLocation("Theatre E4");
+					    		btnLocation.setText("Theatre E4");
+					    		break;
+					    	case 4:
+					    		event.setLocation("Theatre G102");
+					    		btnLocation.setText("Theatre G102");
+					    		break;
+					    	case 5:
+					    		event.setLocation("Theatre G103");
+					    		btnLocation.setText("Theatre G103");
+					    		break;
+					    	case 6:
+					    		event.setLocation("Theatre B2");
+					    		btnLocation.setText("Theatre B2");
+					    		break;
+					    	case 7:
+					    		event.setLocation("Theatre B3");
+					    		btnLocation.setText("Theatre B3");
+					    		break;
+					    	}
+					    	btnLocation.setTextColor(Color.BLACK);
+					      dialog.dismiss();
+					    }
+					  }).create().show();	
+				}
+				else if (service.getAdminDepartment().equals("Cardiology")) {
+					new AlertDialog.Builder(EventActivity.this)
+					.setTitle("Select Operating Theatre")
+					.setAdapter(adapterLocation2, new DialogInterface.OnClickListener() {
+	
+					    @Override
+					    public void onClick(DialogInterface dialog, int which) {
+	
+					    	switch(which) {
+					    	case 0:
+					    		event.setLocation("OR 1");
+					    		btnLocation.setText("OR 1");
+					    		break;
+					    	case 1:
+					    		event.setLocation("OR 2");
+					    		btnLocation.setText("OR 2");
+					    		break;
+					    	case 2:
+					    		event.setLocation("OR 3");
+					    		btnLocation.setText("OR 3");
+					    		break;
+					    	case 3:
+					    		event.setLocation("OR 4");
+					    		btnLocation.setText("OR 4");
+					    		break;
+					    	case 4:
+					    		event.setLocation("Theatre G104");
+					    		btnLocation.setText("Theatre G104");
+					    		break;
+					    	case 5:
+					    		event.setLocation("Theatre G105");
+					    		btnLocation.setText("Theatre G105");
+					    		break;
+					    	case 6:
+					    		event.setLocation("Theatre B4");
+					    		btnLocation.setText("Theatre B4");
+					    		break;
+					    	case 7:
+					    		event.setLocation("Theatre B5");
+					    		btnLocation.setText("Theatre B5");
+					    		break;
+					    	}
+					    	btnLocation.setTextColor(Color.BLACK);
+					      dialog.dismiss();
+					    }
+					  }).create().show();
+				}
+			}	
 		});
 		
 		btnDoctor.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				new AlertDialog.Builder(EventActivity.this)
-				.setTitle("Select Doctor")
-				.setAdapter(adapterDoctor, new DialogInterface.OnClickListener() {
+				String [] doctors = null;
+		    	
+				if(service.getAdminDepartment().equals("Neurology")) {
+					doctors = getResources().getStringArray(R.array.arrayDoctors);
+					final String [] items = doctors;
+					
+					new AlertDialog.Builder(EventActivity.this)
+					.setTitle("Select Doctor")
+					.setAdapter(adapterDoctor, new DialogInterface.OnClickListener() {
+					    @Override
+					    public void onClick(DialogInterface dialog, int which) {
+					    	String docName = items[which];
+					    	event.setNameDoc(docName);
+					    	System.out.println("Doctor Name in db: " + event.getNameDoc());
+				    		btnDoctor.setText(docName);
+				    		btnDoctor.setTextColor(Color.BLACK);
 
-				    @Override
-				    public void onClick(DialogInterface dialog, int which) {
-				    	
-				    	switch(which) {
-				    	case 0:
-				    		event.setNameDoc("Dr. Suhail Al Rukn");
-				    		btnDoctor.setText("Dr. Suhail Al Rukn");
-				    		break;
-				    	case 1:
-				    		event.setNameDoc("Dr. Abubaker Almadani");
-				    		btnDoctor.setText("Dr. Abubaker Almadani");
-				    		break;
-				    	case 2:
-				    		event.setNameDoc("Dr. Mohammed Saadah");
-				    		btnDoctor.setText("Dr. Mohammed Saadah");
-				    		break;
-				    	case 3:
-				    		event.setNameDoc("Dr. Suresh Nair");
-				    		btnDoctor.setText("Dr. Suresh Nair");
-				    		break;
-				    	case 4:
-				    		event.setNameDoc("Dr. Ayman Alboudi");
-				    		btnDoctor.setText("Dr. Ayman Alboudi");
-				    		break;
-				    	case 5:
-				    		event.setNameDoc("Dr. Hashim");
-				    		btnDoctor.setText("Dr. Hashim");
-				    		break;
-				    	case 6:
-				    		event.setNameDoc("Dr. Zulfa Omar Deesi");
-				    		btnDoctor.setText("Dr. Zulfa Omar Deesi");
-				    		break;
-				    	case 7:
-				    		event.setNameDoc("Dr. Fahad Omar Baslaib");
-				    		btnDoctor.setText("Dr. Fahad Omar Baslaib");
-				    		break;
-				    	}
-				      
-
-				      dialog.dismiss();
-				    }
-				  }).create().show();
-				
-			}
-		});
-
+					        dialog.dismiss();
+					    }
+					  }).create().show();
+				} else {
+					doctors = getResources().getStringArray(R.array.arrayDoctors2);
+					final String [] items = doctors;
+					
+					new AlertDialog.Builder(EventActivity.this)
+					.setTitle("Select Doctor")
+					.setAdapter(adapterDoctor2, new DialogInterface.OnClickListener() {
+					    @Override
+					    public void onClick(DialogInterface dialog, int which) {
+					    	String docName = items[which];
+					    	event.setNameDoc(docName);
+				    		btnDoctor.setText(docName);
+				    		btnDoctor.setTextColor(Color.BLACK);
+					        dialog.dismiss();
+					    }
+					 }).create().show();
+					}
+				}
+			});
 	}
 
 	private void populateFields() {
@@ -287,12 +322,17 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 		etEventDesc.setText(event.getDescription());
 		etEventNamePat.setText(event.getNamePat());
 		btnDoctor.setText(event.getNameDoc());
+		btnDoctor.setTextColor(Color.BLACK);
 		btnLocation.setText(event.getLocation());
+		btnLocation.setTextColor(Color.BLACK);
 		
 		
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()));
+		btnD1.setTextColor(Color.BLACK);
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
+		btnT1.setTextColor(Color.BLACK);
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
+		btnT2.setTextColor(Color.BLACK);
 	}
 
 	private void actionCancel() {
@@ -301,27 +341,23 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 
 	private void actionDone() {
 		IErrorService errorService = ServicesFactory.getErrorService();
-
-		// TODO: Some validation to make sure that the event data is actually
-		// provided:
 		
-//		Calendar fromCal = Calendar.getInstance();
-//		fromCal.set(Calendar.YEAR, event.getFromYear());
-//		fromCal.set(Calendar.MONTH, event.getFromMonth());
-//		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
-//		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
-//		fromCal.set(Calendar.MINUTE, event.getFromMinute());
-//		
-//		Calendar toCal = Calendar.getInstance();
-//		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
-//		toCal.set(Calendar.MINUTE, event.getToMinute());
-//		
-//		if (toCal.before(fromCal)) {	
-//			Toast.makeText(this, "TO date should be later that " + new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()) + " " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()), Toast.LENGTH_LONG).show();
-//		}
-		//else
+		Calendar fromCal = Calendar.getInstance();
+		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
+		fromCal.set(Calendar.MINUTE, event.getFromMinute());
+		
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		
+		if (toCal.before(fromCal)) {	
+			Toast.makeText(this, "TO time should be later than " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()), Toast.LENGTH_LONG).show();
+		}
+		else
 			if (etEventTitle.getText().length() > 0 &&
 				etEventNamePat.getText().length() > 0 &&
+				!btnDoctor.getText().toString().equals("Select Surgeon") &&
+				!btnLocation.getText().toString().equals("Select OR") &&
 				event.getNameDoc() != null &&
 				event.getNamePat() != null &&
 				event.getFromDay() != -1 &&
@@ -361,21 +397,17 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 		}
 	}
 
-
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
 		// TODO Auto-generated method stub
-		
 	}
 
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
-		
 	}
-
 }
 
 // Start code for TimePickerDialog
@@ -426,6 +458,7 @@ class EventStartTimePickerFragment extends DialogFragment
 		fromCal.set(Calendar.HOUR_OF_DAY, _innerEvent.getFromDayHour());
 		fromCal.set(Calendar.MINUTE, _innerEvent.getFromMinute());
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
+		btnT1.setTextColor(Color.BLACK);
 		
 		System.out.println("hour:" + hourOfDay + " minute: " + minute);
 	}
@@ -477,6 +510,7 @@ class EventEndTimePickerFragment extends DialogFragment
 		toCal.set(Calendar.HOUR_OF_DAY, _innerEvent.getToDayHour());
 		toCal.set(Calendar.MINUTE, _innerEvent.getToMinute());
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
+		btnT2.setTextColor(Color.BLACK);
 		
 		System.out.println("hour:" + hourOfDay + " minute: " + minute);
 	}
@@ -535,6 +569,7 @@ class EventDatePickerFragment extends DialogFragment
 		fromCal.set(Calendar.DAY_OF_MONTH, _innerEvent.getFromDay());
 		
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()));
+		btnD1.setTextColor(Color.BLACK);
 		
 		System.out.println("day:" + day + " month: " + month + " year:" + year);
 	}

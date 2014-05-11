@@ -3,7 +3,7 @@ package ajman.university.grad.project.eventshare.admin;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import ajman.university.grad.project.eventshare.admin.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;

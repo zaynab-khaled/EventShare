@@ -35,53 +35,57 @@
 	        android:id="@+id/editText_operationTitle"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:maxLength="32"
-	        android:textColorHint="#f0f8db"
+	        android:hint="@string/hint_title"
 	        android:inputType="textCapWords|textNoSuggestions"
-	        android:hint="@string/hint_title" />
+	        android:maxLength="32"
+	        android:paddingBottom="13dp"
+	        android:textColorHint="#f0f8db" />
 	    
         <Button
             android:id="@+id/btn_doctor"
+            style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="11dp"
             android:paddingTop="5dp"
-            style="?android:attr/spinnerStyle"
-            android:textColor="#f0f8db"
-            android:textSize="18sp"
+            android:text="@string/btn_doctor"
             android:textAlignment="gravity"
-            android:text="@string/btn_doctor" />
-	
+            android:textColor="#f0f8db"
+            android:textSize="18sp" />
 	    	    
 	    <EditText
 	        android:id="@+id/editText_patientName"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:paddingTop="5dp"
-	        android:maxLength="32"
-	        android:textColorHint="#f0f8db"
+	        android:hint="@string/hint_pName"
 	        android:inputType="textCapWords|textNoSuggestions"
-	        android:hint="@string/hint_pName" />
+	        android:maxLength="32"
+	        android:paddingBottom="13dp"
+	        android:paddingTop="10dp"
+	        android:textColorHint="#f0f8db" />
 	
         <Button
             android:id="@+id/btn_location"
+            style="?android:attr/spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="11dp"
             android:paddingTop="5dp"
-            style="?android:attr/spinnerStyle"
+            android:text="@string/btn_location"
             android:textColor="#f0f8db"
-            android:textSize="18sp"
-            android:text="@string/btn_location" />
+            android:textSize="18sp" />
 
 	    <EditText
-		    android:id="@+id/editText_operationDesc"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:paddingTop="5dp"
-			android:inputType="textCapSentences|textNoSuggestions"
-			android:maxLength="65"
-			android:maxLines="2"
-			android:textColorHint="#f0f8db"
-		    android:hint="@string/hint_desc" />
+	        android:id="@+id/editText_operationDesc"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:hint="@string/hint_addInfo"
+	        android:inputType="textCapSentences|textNoSuggestions"
+	        android:maxLength="65"
+	        android:maxLines="2"
+	        android:paddingBottom="13dp"
+	        android:paddingTop="10dp"
+	        android:textColorHint="#f0f8db" />
 
 		<TextView
 		    android:id="@+id/section_EventTime"
@@ -100,7 +104,11 @@
 		    style="?android:attr/spinnerStyle"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/btn_Date" />
+		    android:text="@string/btn_Date"
+            android:paddingLeft="11dp"
+            android:paddingTop="5dp"
+            android:textColor="#f0f8db"
+            android:textSize="18sp" />
 		
 	 	
 		<LinearLayout
@@ -114,7 +122,11 @@
 	        android:layout_width="100dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:text="@string/btn_Time" />
+	        android:text="@string/btn_Time"
+            android:paddingLeft="11dp"
+            android:paddingTop="5dp"
+            android:textColor="#f0f8db"
+            android:textSize="18sp" />
 
 	    <Button
 	        android:id="@+id/btnTime2"
@@ -122,7 +134,11 @@
 	        android:layout_width="100dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:text="@string/btn_Time" />
+	        android:text="@string/btn_Time"
+			android:paddingLeft="11dp"
+            android:paddingTop="5dp"
+            android:textColor="#f0f8db"
+            android:textSize="18sp" />
 	    
 
 		    

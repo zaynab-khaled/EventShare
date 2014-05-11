@@ -2,12 +2,13 @@ package ajman.university.grad.project.eventshare.admin;
 
 
 import android.os.Bundle;
-import ajman.university.grad.project.eventshare.admin.helpers.Constants;
-import ajman.university.grad.project.eventshare.admin.helpers.SharedPref;
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -21,62 +22,102 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnItemSelectedListener{
-
-	private static String LOG_TAG = "Main Activity";
+	private static final String LOG_TAG = "Main Activity";
 	
-	private Button btnOkay;
+	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
+	
+	private Button btnLogin;
 	private Button btnDepartments;
 	private TextView tvSchedule;
 	private EditText etPass;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setUpViews();
-		
-		//Set password in SharedPref
-		SharedPref.setDefaults(Constants.PASSWORD, "Neurology101" , getApplicationContext());
+	
+		service.setAdminPassword("nfc123");
 
-		btnOkay.setOnClickListener(new View.OnClickListener() {
+		btnLogin.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				String password = SharedPref.getDefaults(Constants.PASSWORD, getApplicationContext());
-				String deptName = SharedPref.getDefaults(Constants.DEPARTMENT, getApplicationContext());
+//				String password = service.getAdminPassword();
+//				Log.d(LOG_TAG, "password: " + password);
+//				
+//				if(etPass.getText().length() == 0){
+//					Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
+//				} 
+//				else if (etPass.getText().toString().equals(password)){
+//					if (btnDepartments.getText().toString().equals("Neurology") || btnDepartments.getText().toString().equals("Cardiology")) {
+//						Intent intent = new Intent(MainActivity.this, ListActivity.class);
+//						startActivity(intent);
+//						finish();
+//					}
+//					else
+//						Toast.makeText(getApplicationContext(), "This department is coming soon!", Toast.LENGTH_SHORT).show();
+//
+//				}
+//				else 
+//					Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
+//			}
+				String password = service.getAdminPassword();
 				
-				if(etPass.getText().length() == 0){
-					Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
-				} 
-				else if (etPass.getText().toString().equals(password) && !deptName.equals("Neurology"))
-					Toast.makeText(getApplicationContext(), "Are you sure you've chosen the correct department?", Toast.LENGTH_SHORT).show();
-				
-				else if (etPass.getText().toString().equals(password) && deptName.equals("Neurology")){
-					Intent intent = new Intent(MainActivity.this, ListActivity.class);
-					startActivity(intent);
-					finish();
+				if(service.getAdminDepartment().equals("")) 
+					Toast.makeText(getApplicationContext(), "Choose a department", Toast.LENGTH_SHORT).show();
+				else if(service.getAdminDepartment().equals("Neurology")) {
+					Log.d(LOG_TAG, "Password: " + password);
+					
+					if(etPass.getText().length() == 0){
+						Log.d(LOG_TAG, "Password: " + password);
+						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
+					} 
+					else if (etPass.getText().toString().equals("neuro")){
+						Intent intent = new Intent(MainActivity.this, ListActivity.class);
+						startActivity(intent);
+						finish();
+					}				
+					else 
+						Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
 				}
-				else 
-					Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
+				else if(service.getAdminDepartment().equals("Cardiology")){
+					Log.d(LOG_TAG, "Password: " + password);
+					
+					if(etPass.getText().length() == 0){
+						Log.d(LOG_TAG, "Password: " + password);
+						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
+					} 
+					else if (etPass.getText().toString().equals("card")){
+						Intent intent = new Intent(MainActivity.this, ListActivity.class);
+						startActivity(intent);
+						finish();
+					}
+					else 
+						Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
+				}
+				else
+					Toast.makeText(getApplicationContext(), "This department is coming soon!", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
 
-    private void setUpViews() {
-    	final ArrayAdapter adapterDepartment = ArrayAdapter.createFromResource(this,R.array.arrayDepartments, android.R.layout.simple_spinner_dropdown_item);
+    private void setUpViews() { 	
+    	final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this,R.array.arrayDepartments, android.R.layout.simple_spinner_dropdown_item);
     	
     	tvSchedule = (TextView) findViewById(R.id.tv_schedule);
-		etPass = (EditText) findViewById(R.id.editText_password);
-		btnOkay = (Button) findViewById(R.id.btn_okay);
+    	etPass = (EditText) findViewById(R.id.editText_password);
+		btnLogin = (Button) findViewById(R.id.btn_okay);
 		btnDepartments = (Button) findViewById(R.id.btnDepartments);
 		
-        tvSchedule.setGravity(Gravity.CENTER);
+		tvSchedule.setGravity(Gravity.CENTER);
         etPass.setGravity(Gravity.CENTER);
-        btnOkay.setGravity(Gravity.CENTER);
+        btnLogin.setGravity(Gravity.CENTER);
+        btnDepartments.setGravity(Gravity.CENTER);
         
         tvSchedule.setText("Operation Schedule");
         
+        btnDepartments.setText(service.getAdminDepartment().equals("") ? "Select Department" : service.getAdminDepartment());
         btnDepartments.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -91,47 +132,47 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 				    	switch(which) {
 				    	case 0:
 				    		btnDepartments.setText("Cardiology");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Cardiology");
 				    		break;
 				    	case 1:
 				    		btnDepartments.setText("Cancer Care Unit");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Cancer Care Unit");
 				    		break;
 				    	case 2:
 				    		btnDepartments.setText("Dermatology");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Dermatology");
 				    		break;
 				    	case 3:
 				    		btnDepartments.setText("Diabetology");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Diabetology");
 				    		break;
 				    	case 4:
 				    		btnDepartments.setText("Digestive Diseases");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Digestive Diseases");
 				    		break;
 				    	case 5:
 				    		btnDepartments.setText("Medical ICU");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Medical ICU");
 				    		break;
 				    	case 6:
 				    		btnDepartments.setText("Surgical ICU");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Surgical ICU");
 				    		break;
 				    	case 7:
 				    		btnDepartments.setText("Neurology");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Neurology");
 				    		break;
 				    	case 8:
 				    		btnDepartments.setText("Orthopedics");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Orthopedics");
 				    		break;
 				    	case 9:
 				    		btnDepartments.setText("Pediatric");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Pediatric");
 				    		break;
 				    	case 10:
 				    		btnDepartments.setText("Plastic Surgery");
-				    		SharedPref.setDefaults(Constants.DEPARTMENT, btnDepartments.getText().toString(), getApplicationContext());
+				    		service.setAdminDepartment("Plastic Surgery");
 				    		break;
 				    	}
 
@@ -139,8 +180,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 				    }
 				  }).create().show();
 			}
-		});
-        
+		}); 
 	}
 
 	@Override
@@ -152,12 +192,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 		TextView tvDepartment = (TextView) view;
-		SharedPref.setDefaults(Constants.DEPARTMENT, tvDepartment.getText().toString(), getApplicationContext());
-	}
-	
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		
+		service.setAdminDepartment(tvDepartment.getText().toString());
 	}
 	
 	@Override
@@ -166,4 +201,11 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

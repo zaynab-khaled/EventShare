@@ -99,6 +99,12 @@ public class ReadTagActivity extends Activity {
 
 			mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
 		}
+
+		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction())) {
+			if (!read) {
+				processIntent(getIntent());
+			}
+		}
 	}
 
 	@Override
@@ -148,7 +154,7 @@ public class ReadTagActivity extends Activity {
 						} catch (Exception e) {
 							System.out.println("Read error at: " + bIndex);
 						}
-						
+
 						// Read data blocks with key A
 						if ((bIndex + 1) % bCount != 0 && bIndex != 0) {
 							try {
@@ -169,7 +175,6 @@ public class ReadTagActivity extends Activity {
 			tvReadTag.setText(hexToASCII(metaInfo));
 
 			mfc.close();
-			read = true;
 
 			Event event;
 			ILocalStorageService service = ServicesFactory.getLocalStorageService();
@@ -184,34 +189,42 @@ public class ReadTagActivity extends Activity {
 				is.setCharacterStream(new StringReader(xmlCalendar));
 				Document doc = db.parse(is);
 
-				NodeList nodes = doc.getElementsByTagName("event");
+				NodeList nodes = doc.getElementsByTagName("e");
 
 				service.deleteAllEvents();
-				
+
 				for (int i = 0; i < nodes.getLength(); i++) {
 					event = new Event();
 
-					Element attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("summary").item(0);
+					Element attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("t").item(0);
 					event.setTitle(getCharacterDataFromElement(attr));
-					System.out.println("Summary: " + getCharacterDataFromElement(attr));
+					System.out.println("Title: " + getCharacterDataFromElement(attr));
 
-					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("description").item(0);
+					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("d").item(0);
 					event.setDescription(getCharacterDataFromElement(attr));
 					System.out.println("Description: " + getCharacterDataFromElement(attr));
 
-					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("location").item(0);
+					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("l").item(0);
 					event.setLocation(getCharacterDataFromElement(attr));
 					System.out.println("Location: " + getCharacterDataFromElement(attr));
 
-					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("uid").item(0);
+					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("i").item(0);
 					event.setId(Integer.parseInt(getCharacterDataFromElement(attr)));
 					System.out.println("Uid: " + getCharacterDataFromElement(attr));
 
-					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("dtstart").item(0);
+					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("o").item(0);
+					event.setNameDoc(getCharacterDataFromElement(attr));
+					System.out.println("Doctor: " + getCharacterDataFromElement(attr));
+
+					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("p").item(0);
+					event.setNamePat(getCharacterDataFromElement(attr));
+					System.out.println("Patient: " + getCharacterDataFromElement(attr));
+
+					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("s").item(0);
 					Calendar cal = Calendar.getInstance();
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
 					cal.setTime(sdf.parse(getCharacterDataFromElement(attr)));
-					
+
 					event.setFromYear(cal.get(Calendar.YEAR));
 					System.out.println("Fromyear: " + cal.get(Calendar.YEAR));
 
@@ -227,18 +240,20 @@ public class ReadTagActivity extends Activity {
 					event.setFromDayHour(cal.get(Calendar.MINUTE));
 					System.out.println("Fromminute: " + cal.get(Calendar.MINUTE));
 
-					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("dtend").item(0);
+					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("f").item(0);
 					cal.setTime(sdf.parse(getCharacterDataFromElement(attr)));
 
 					event.setToDayHour(cal.get(Calendar.HOUR_OF_DAY));
-					System.out.println("ToHour: " + cal.get(Calendar.HOUR_OF_DAY));
+					// System.out.println("ToHour: " +
+					// cal.get(Calendar.HOUR_OF_DAY));
 
-					event.setToMinute(cal.get(Calendar.MINUTE));
-					System.out.println("Tominute: " + cal.get(Calendar.MINUTE));
+					event.setToDayHour(cal.get(Calendar.MINUTE));
+					// System.out.println("Tominute: " +
+					// cal.get(Calendar.MINUTE));
 
 					service.addEvent(event);
 				}
-
+				read = true;
 			} catch (Exception e) {
 				System.out.println("Parse error occured!!");
 				errorService.log(e);
@@ -249,14 +264,19 @@ public class ReadTagActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialogInterface, int i) {
 							read = false;
-							finish();
-
+							startActivity();
 						}
 					}).show();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void startActivity() {
+		Intent intent = new Intent(ReadTagActivity.this, ListActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
+		startActivity(intent);
 	}
 
 	public static String getCharacterDataFromElement(Element e) {

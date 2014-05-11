@@ -1,10 +1,7 @@
 package ajman.university.grad.project.eventshare.admin;
 
-import java.util.List;
-
 import ajman.university.grad.project.eventshare.adapters.EventsAdapter;
-import ajman.university.grad.project.eventshare.admin.helpers.Constants;
-import ajman.university.grad.project.eventshare.admin.helpers.SharedPref;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
@@ -13,78 +10,69 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class ListActivity extends Activity implements OnItemClickListener {
+	private static final String LOG_TAG = "LIst Activity";
 	
-	ListView list;
-	EventsAdapter adapter;
+	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
+	
 	private TextView tvDepartment;
 	private TextView tvSchedule;
+	private ListView list;
+	private EventsAdapter adapter;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        
+
         tvSchedule = (TextView) findViewById(R.id.tv_schedule);
-        tvSchedule.setGravity(Gravity.CENTER);
-        
         tvDepartment = (TextView) findViewById(R.id.tv_department);
+        tvSchedule.setGravity(Gravity.CENTER);
+
+        String dept = service.getAdminDepartment();
+        tvDepartment.setText(dept == null ? "Unknown" : dept + " Department");
+        tvSchedule.setText("Operating Schedule");
         tvDepartment.setGravity(Gravity.CENTER);
         
-        
-        String dept = SharedPref.getDefaults(Constants.DEPARTMENT, getApplicationContext());
-        tvDepartment.setText(dept == null ? "Unknown" : dept + " Department");
-        tvSchedule.setText("Operation Schedule");
-        
-        //Code for list
         list = (ListView) findViewById(android.R.id.list);
-        adapter = new EventsAdapter(this);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(this);
-        
-        System.out.println("count: " + adapter.getCount());
-        
+        setupListAdapter(null);
     }
     
     @Override
     public void onBackPressed() {
-    	this.finish();
-    	  
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);	  
     }
     
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Intent intent = new Intent(ListActivity.this, DetailEventActivity.class);
 		Event event = (Event) adapter.getItem(arg2);
-		
-//		System.out.println("arg2: " + arg2);
-//		System.out.println("toDay: " + ((Event) adapter.getItem(arg2)).getToDay());
-//		System.out.println("toYear: " + ((Event) adapter.getItem(arg2)).getToYear());
-//		System.out.println("toMonth: " + ((Event) adapter.getItem(arg2)).getToMonth());
-		
 		intent.putExtra(Constants.CLICKED_EVENT, event);
 		startActivity(intent);
 	}
 
-	// From here on is the code for the action bar buttons and menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.first_activity_action, menu);
         return super.onCreateOptionsMenu(menu);
-    	
     }
     
     @Override
@@ -97,6 +85,10 @@ public class ListActivity extends Activity implements OnItemClickListener {
 			
 		case R.id.writeToTag:
 			writeToTag();
+			return true;
+			
+		case R.id.action_filter:
+			actionFilter();
 			return true;
 			
 		case R.id.action_deleteExpired:
@@ -114,20 +106,32 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		default:
 			return super.onOptionsItemSelected(item);
     	}
-    	
     }
+
+	private void actionFilter() {
+    	ArrayAdapter<?> adapterFilter = null;
+    	String [] doctors = null;
+    	
+		if(service.getAdminDepartment().equals("Neurology")) {
+			adapterFilter = ArrayAdapter.createFromResource(this,R.array.arrayDoctors, android.R.layout.simple_spinner_dropdown_item);
+			doctors = getResources().getStringArray(R.array.arrayDoctors);
+		} else {
+			adapterFilter = ArrayAdapter.createFromResource(this,R.array.arrayDoctors2, android.R.layout.simple_spinner_dropdown_item);
+			doctors = getResources().getStringArray(R.array.arrayDoctors2);
+		}
+		
+		showDialog(adapterFilter, doctors);
+	}
 
 	private void actionAbout() {
 		Intent intent = new Intent(ListActivity.this, AboutActivity.class);
 		startActivity(intent);
 	}
 
-
 	private void actionErase() {
 		Intent intent = new Intent(ListActivity.this, EraseTagActivity.class);
 		startActivity(intent);
 	}
-
 
 	private void actionDeleteExpired() {
 		new AlertDialog.Builder(this)
@@ -135,9 +139,8 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		.setMessage("Are you sure you want to delete all declined events?")
 		.setNegativeButton("No", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-	               
+	               //Do nothing
 	           }
-
 		})
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -148,14 +151,11 @@ public class ListActivity extends Activity implements OnItemClickListener {
 					Toast.makeText(getApplicationContext(), count + " declined " +  ((count == 1) ? "event" : "events") + " have been deleted!",
 							   Toast.LENGTH_SHORT).show();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	           }
-		})
-		.show();
+		}).show();
 	}
-
 
 	private void addNewEvent() {
 		Intent intent = new Intent(ListActivity.this, EventActivity.class);
@@ -167,5 +167,35 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		intent.putExtra(Constants.ICALENDAR, adapter.toString());
 		intent.putExtra(Constants.EVENTCOUNT, adapter.getValidCount());
 		startActivity(intent);
+	}
+	
+	private void showDialog(ArrayAdapter<?> adapterData, String [] doctors) {
+		final String [] items = doctors;
+		new AlertDialog.Builder(ListActivity.this)
+		.setTitle("Filter by .. ")
+		.setAdapter(adapterData, new DialogInterface.OnClickListener() {
+		    @Override
+		    public void onClick(DialogInterface dialog, int which) {
+		    	if (items != null) {
+			    	String docName = items[which]; 
+			    	Log.d(LOG_TAG, "Doc name: " + docName);
+			        setupListAdapter(docName);
+		    	} else {
+			        setupListAdapter(null);
+		    	}
+		        dialog.dismiss();
+		    }
+		  }).create().show();
+	}
+
+	private void setupListAdapter(String docName) {
+		if (docName != null)
+			adapter = new EventsAdapter(this, docName);
+		else
+			adapter = new EventsAdapter(this);
+		
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(this);
+		list.invalidate();
 	}
 }
