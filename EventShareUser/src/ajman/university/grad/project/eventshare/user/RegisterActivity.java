@@ -5,8 +5,13 @@ import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -32,6 +37,10 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		setUpViews();
+
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
 	
 	}
 
@@ -45,7 +54,6 @@ public class RegisterActivity extends Activity {
 		btnDepartments.setGravity(Gravity.CENTER);
 	    btnRegister.setGravity(Gravity.CENTER);
 	    
-	    btnDepartments.setText(service.getUserDepartment().equals("") ? "Select Department" : service.getUserDepartment());
 		btnDepartments.setOnClickListener(new OnClickListener() {
 			
 			@Override

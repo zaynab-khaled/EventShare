@@ -11,6 +11,7 @@ public class EventsSqlLiteHelper extends SQLiteOpenHelper {
 	
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_TITLE = "title";
+	public static final String COLUMN_DEPT = "department";
 	public static final String COLUMN_DESC = "description";
 	public static final String COLUMN_LOCATION = "location";
 	public static final String COLUMN_NAME_DOCTOR = "name_doc";
@@ -23,15 +24,17 @@ public class EventsSqlLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_TO_DAY_HOUR = "to_day_hour";
 	public static final String COLUMN_TO_MINUTE = "to_minute";
 	public static final String COLUMN_EXPIRED = "is_expired";
+	public static final String COLUMN_ALARMABLE = "is_alarmable";
 	
 	public static final String DATABASE_NAME = "events.db";
-	public static final int DATABASE_VERSION = 5;
+	public static final int DATABASE_VERSION = 9;
 	
 	private static final String DATABSASE_CREATE_SQL = "create table " 
 	+ TABLE_EVENTS 
 	+ "(" 
 	+ COLUMN_ID + " integer primary key autoincrement, " 
 	+ COLUMN_TITLE + " text not null, "
+	+ COLUMN_DEPT + " text not null, "
 	+ COLUMN_DESC + " text not null, "
 	+ COLUMN_LOCATION + " text not null, "
 	+ COLUMN_NAME_DOCTOR + " text not null, "
@@ -43,7 +46,8 @@ public class EventsSqlLiteHelper extends SQLiteOpenHelper {
 	+ COLUMN_FROM_DAY + " integer, "
 	+ COLUMN_TO_DAY_HOUR + " integer, "
 	+ COLUMN_TO_MINUTE + " integer, "
-	+ COLUMN_EXPIRED + " integer "
+	+ COLUMN_EXPIRED + " integer, "
+	+ COLUMN_ALARMABLE + " integer "
 	+ ");";
 	
 	public EventsSqlLiteHelper(Context context) {

@@ -19,9 +19,11 @@
 
     <!-- Pictures -->
     <string name="pic_writetotag">Tap to write to tag!</string>
-    <string name="pic_erasecontent">Tap to erase all content on tag!</string>
+    <string name="pic_erasecontent">Tap to erase all content from tag!</string>
     <string name="pic_changepassword">Tap to change password of tag!</string>
     <string name="arrowDescription">Show how to start off by adding new events</string>
+    <string name="imLoginDescription">Start off image</string>
+    <string name="alarmClockDesc">Add an alarm to remind you of the surgery</string>
 
     <!-- For 'Cancel Done Menu' -->
     <string name="title_cancel">Cancel</string>
@@ -38,8 +40,13 @@
 	<string name="hint_pName">Patient Name</string>
 	
     <!-- Add Event Labels -->
-    <string name="label_date">Date</string>
-    <string name="label_time">Time</string>
+    <string name="label_date">Date:</string>
+    <string name="label_time">Time:</string>
+    <string name="label_title">Operation:</string>
+    <string name="label_loc">Room:</string>
+    <string name="label_nameP">Patient:</string>
+    <string name="label_nameD">Doctor:</string>
+    <string name="label_desc">Additional Information:</string>
 
     <!-- Sections on Add Event Activity -->
     <string name="section_EventDetails">Surgery Details</string>
@@ -48,8 +55,8 @@
     <!-- Add Event Buttons -->
     <string name="btn_Time">Time</string>
     <string name="btn_Date">Date</string>
-    <string name="btn_location">Select OR</string>
-    <string name="btn_doctor">Select Surgeon</string>
+    <string name="btn_location">" " Select OR</string>
+    <string name="btn_doctor">" " Select Surgeon</string>
     <string name="btnDepartment">Select Department</string>
 
     <!-- For single row list -->

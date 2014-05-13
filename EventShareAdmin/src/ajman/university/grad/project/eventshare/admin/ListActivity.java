@@ -9,7 +9,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -32,11 +35,16 @@ public class ListActivity extends Activity implements OnItemClickListener {
 	private TextView tvSchedule;
 	private ListView list;
 	private EventsAdapter adapter;
+	private ImageView image;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        
+        getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
 
         tvSchedule = (TextView) findViewById(R.id.tv_schedule);
         tvDepartment = (TextView) findViewById(R.id.tv_department);
@@ -47,8 +55,15 @@ public class ListActivity extends Activity implements OnItemClickListener {
         tvSchedule.setText("Operating Schedule");
         tvDepartment.setGravity(Gravity.CENTER);
         
+        image = (ImageView) findViewById(R.id.start_image);
+        
         list = (ListView) findViewById(android.R.id.list);
         setupListAdapter(null);
+        
+        if(list.getCount() != 0) {
+        	image.setVisibility(View.GONE);
+        } else
+        	image.setVisibility(View.VISIBLE);
     }
     
     @Override

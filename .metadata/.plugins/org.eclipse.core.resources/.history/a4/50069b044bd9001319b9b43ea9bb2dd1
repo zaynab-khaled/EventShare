@@ -1,0 +1,44 @@
+package ajman.university.grad.project.eventshare.notifications;
+
+
+import android.app.NotificationManager;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.widget.Toast;
+
+public class NotificationService extends Service {
+	private NotificationManager mNM;
+	
+	@Override
+	public IBinder onBind(Intent arg0) {
+		// TODO Auto-generated method stub
+		return mBinder;
+	}
+
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		super.onCreate();
+		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		Toast.makeText(getApplicationContext(), "onCreate()", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		mNM.cancel(NOTIFICATION);
+		Toast.makeText(getApplicationContext(), "onDestroy()", Toast.LENGTH_SHORT).show();
+		super.onDestroy();
+		
+	}
+
+	@Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        //Log.i("LocalService", "Received start id " + startId + ": " + intent);
+        // We want this service to continue running until it is explicitly
+        // stopped, so return sticky.
+		Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT).show();
+        return START_STICKY;
+    }
+}

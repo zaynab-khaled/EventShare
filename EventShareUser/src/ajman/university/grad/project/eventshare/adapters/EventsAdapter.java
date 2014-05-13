@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
@@ -14,16 +13,21 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class EventsAdapter extends BaseAdapter {
+public class EventsAdapter extends BaseAdapter implements OnClickListener {
+	private static final String LOG_TAG = "EventsAdapter User";
+
 	private List<Event> events = new ArrayList<Event>();
 	private Context context;
 	private int nrOfValidEvents;
 	private final static int tagSize = (256 - 40) * 16;
-	//(nr of block - trailer blocks) * block size = 3456 bytes;
+	// (nr of block - trailer blocks) * block size = 3456 bytes;
 
 	public EventsAdapter(Context c) {
 		context = c;
@@ -34,7 +38,9 @@ public class EventsAdapter extends BaseAdapter {
 		try {
 			List<Event> storedEvents = service.getAllEvents();
 			for (Event event : storedEvents) {
-				events.add(event);
+				if(event.getDepartment().toString().equals(service.getUserDepartment().toString())) {
+					events.add(event);
+				}
 			}
 		} catch (Exception e) {
 			// TODO: Error service
@@ -52,7 +58,9 @@ public class EventsAdapter extends BaseAdapter {
 		try {
 			List<Event> storedEvents = service.filterByDoctorName(docName);
 			for (Event event : storedEvents) {
-				events.add(event);
+				if(event.getDepartment().toString().equals(service.getUserDepartment().toString())) {
+					events.add(event);
+				}
 			}
 		} catch (Exception e) {
 			// TODO: Error service
@@ -78,8 +86,6 @@ public class EventsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int i, View view, ViewGroup viewGroup) {
-		
-		String LOG_TAG = "getView List";
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		Event event = events.get(i);
@@ -90,37 +96,58 @@ public class EventsAdapter extends BaseAdapter {
 		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
 		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
 		fromCal.set(Calendar.MINUTE, event.getFromMinute());
-		
+
 		Calendar toCal = Calendar.getInstance();
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
 		View row;
-		
+
 		if (isDeclined(event)) {
 			// contains a reference to the Linear layout
 			Log.d(LOG_TAG, "Event: " + event);
 			row = inflater.inflate(R.layout.expired_row_list, viewGroup, false);
-			event.setExpired(true); }
+			event.setExpired(true);
+		}
 		else {
 			row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
-			event.setExpired(false); }
-		
+			event.setExpired(false);
+		}
+
 		TextView title = (TextView) row.findViewById(R.id.textView1);
-		TextView docname = (TextView) row.findViewById(R.id.textView2);
-		TextView location = (TextView) row.findViewById(R.id.textView3);
-		TextView dateTime = (TextView) row.findViewById(R.id.textView4);
-		
-		
+		TextView location = (TextView) row.findViewById(R.id.textView2);
+		TextView fromDate = (TextView) row.findViewById(R.id.textView3);
+		ImageView ivAddClock = (ImageView) row.findViewById(R.id.imAddClock);
+		// TRICKY: Attach an object to the image view so we an retrieve later 
+		ivAddClock.setTag(event);
+		ivAddClock.setOnClickListener(this);
+
 		Log.d(LOG_TAG, "Title: " + title + " Event: " + event);
 		title.setText(event.getTitle());
-		docname.setText(event.getNameDoc());
 		location.setText(event.getLocation());
-		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "  /  " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
+		fromDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + " - "
+				+ new SimpleDateFormat("EEE, dd MMM yyyy").format(toCal.getTime()));
 
 		return row; // return the rootView of the single_row_list.xml
 	}
-
-	// Final format should be 20140924185545
+	
+	@Override
+	public void onClick(View view) {
+//		TRICKY: Detach a previously attached object to the image view
+		Event taggedEvent = (Event) view.getTag();
+		if(taggedEvent != null){
+			taggedEvent.setAlarmable(true);
+			Toast.makeText(context, "Reminder successfully added!", Toast.LENGTH_SHORT).show();
+			System.out.println("Event: " + taggedEvent.isAlarmable() + " title: " + taggedEvent.getTitle().toString());
+			ILocalStorageService service = ServicesFactory.getLocalStorageService();
+			try {
+			service.updateEvent(taggedEvent);
+			} catch (Exception e) {
+				Log.d(LOG_TAG, "Exception ocurred during event update: " + e.getMessage());
+			}
+		}
+	}
+	
+// Final format should be 20140924185545
 	private String formatToDate(Event event) {
 		String date = "";
 		date += event.getFromYear();
@@ -183,25 +210,27 @@ public class EventsAdapter extends BaseAdapter {
 		vCal += "</c>";
 		return vCal;
 	}
-
-	private boolean isDeclined(Event event) {
 		
+	private boolean isDeclined(Event event) {
+
 		Calendar toCal = Calendar.getInstance();
 		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
 		toCal.set(Calendar.MINUTE, event.getToMinute());
 		toCal.set(Calendar.YEAR, event.getFromYear());
 		toCal.set(Calendar.MONTH, event.getFromMonth());
 		toCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
-	
+
 		Calendar c = Calendar.getInstance();
 
-		if (toCal.getTimeInMillis() < c.getTimeInMillis()) { 
+		if (toCal.getTimeInMillis() < c.getTimeInMillis()) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public int getValidCount() {
 		return nrOfValidEvents;
 	}
+
+
 }

@@ -2,6 +2,7 @@ package ajman.university.grad.project.eventshare.admin;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.view.Menu;
 
 public class AboutActivity extends Activity {
@@ -12,6 +13,9 @@ public class AboutActivity extends Activity {
 		setContentView(R.layout.activity_about);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
 	}
 
 	@Override

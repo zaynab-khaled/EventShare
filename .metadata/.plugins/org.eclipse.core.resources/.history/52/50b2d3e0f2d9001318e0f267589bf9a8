@@ -1,0 +1,161 @@
+package ajman.university.grad.project.eventshare.adapters;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import ajman.university.grad.project.eventshare.admin.R;
+import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class EventsAdapter extends BaseAdapter implements OnClickListener {
+	private List<Event> events = new ArrayList<Event>();
+	private Context context;
+	private int nrOfValidEvents;
+
+	public EventsAdapter(Context c) {
+		context = c;
+		events = new ArrayList<Event>();
+
+		// Get the events from the events repository
+		ILocalStorageService service = ServicesFactory.getLocalStorageService();
+		try {
+			List<Event> storedEvents = service.getAllEvents();
+			
+			for (Event event : storedEvents) {
+				System.out.println("event dept: " + event.getDepartment().toString() + " admin dept: " + service.getAdminDepartment().toString());
+				if(event.getDepartment().toString().equals(service.getAdminDepartment().toString())) {
+					events.add(event);
+				}	
+			}
+		} catch (Exception e) {
+			// TODO: Error service
+			IErrorService eService = ServicesFactory.getErrorService();
+			eService.log(e);
+		}
+	}
+	
+	public EventsAdapter(Context c, String docName) {
+		context = c;
+		events = new ArrayList<Event>();
+
+		// Get the events from the events repository
+		ILocalStorageService service = ServicesFactory.getLocalStorageService();
+		try {
+			List<Event> storedEvents = service.filterByDoctorName(docName);
+			for (Event event : storedEvents) {
+				if(event.getDepartment().toString().equals(service.getAdminDepartment().toString())) {
+					events.add(event);
+				}
+			}
+		} catch (Exception e) {
+			// TODO: Error service
+			IErrorService eService = ServicesFactory.getErrorService();
+			eService.log(e);
+		}
+	}
+
+	@Override
+	public int getCount() {
+		return events.size();
+	}
+
+	@Override
+	public Object getItem(int i) {
+		return events.get(i);
+	}
+
+	@Override
+	public long getItemId(int i) {
+		return i;
+	}
+
+	@Override
+	public View getView(int i, View view, ViewGroup viewGroup) {
+		
+		String LOG_TAG = "getView List";
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+		Event event = events.get(i);
+
+		Calendar fromCal = Calendar.getInstance();
+		fromCal.set(Calendar.YEAR, event.getFromYear());
+		fromCal.set(Calendar.MONTH, event.getFromMonth());
+		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
+		fromCal.set(Calendar.MINUTE, event.getFromMinute());
+		
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		View row;
+		
+		if (isDeclined(event)) {
+			// contains a reference to the Linear layout
+			Log.d(LOG_TAG, "Event: " + event);
+			row = inflater.inflate(R.layout.expired_row_list, viewGroup, false);
+			event.setExpired(true);}
+		else {
+			row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
+			event.setExpired(false);}
+		
+		TextView title = (TextView) row.findViewById(R.id.textView1);
+		TextView docname = (TextView) row.findViewById(R.id.textView2);
+		TextView location = (TextView) row.findViewById(R.id.textView3);
+		TextView dateTime = (TextView) row.findViewById(R.id.textView4);
+		ImageView ivAddClock = (ImageView) row.findViewById(R.id.imAddClock);
+		ivAddClock.setTag(event);
+		ivAddClock.setOnClickListener(this);
+		
+		title.setText(event.getTitle());
+		docname.setText(event.getNameDoc());
+		location.setText(event.getLocation());
+		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "  /  " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
+
+		return row; // return the rootView of the single_row_list.xml
+	}
+	
+	@Override
+	public void onClick(View view) {
+		Event taggedEvent = (Event) view.getTag();
+		if(taggedEvent != null){
+			taggedEvent.setAlarmable(true);
+			Toast.makeText(context, "Reminder successfully added!", Toast.LENGTH_SHORT).show();
+			System.out.println("Event: " + taggedEvent.isAlarmable() + " title: " + taggedEvent.getTitle().toString());
+		}
+		
+	}
+
+	private boolean isDeclined(Event event) {
+		
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		toCal.set(Calendar.YEAR, event.getFromYear());
+		toCal.set(Calendar.MONTH, event.getFromMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+	
+		Calendar c = Calendar.getInstance();
+
+		if (toCal.getTimeInMillis() < c.getTimeInMillis()) { 
+			return true;
+		}
+		return false;
+	}
+	
+	public int getValidCount() {
+		return nrOfValidEvents;
+	}
+}

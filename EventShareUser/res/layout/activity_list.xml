@@ -12,7 +12,7 @@
 
 
     <TextView 
-	    android:background="#33b5e5" 
+	    android:background="@color/grey" 
 	    android:layout_height="wrap_content" 
 	    android:layout_width="match_parent" 
 	    android:textSize="24sp"
@@ -25,7 +25,7 @@
   		android:layout_height="wrap_content"
   		android:textSize="20sp"
   		android:paddingBottom="10dp"
-  		android:background="#33b5e5"/>
+  		android:background="@color/grey"/>
 		
 	<ListView 
 	    android:id="@id/android:list"
@@ -40,5 +40,13 @@
       android:layout_width="match_parent"
       android:layout_height="2dp"
       android:background="#50c0e9" />
+	
+	<ImageView
+		android:id="@+id/start_image"
+		android:src="@drawable/image_start_long"
+		android:contentDescription="@string/arrowDescription"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_gravity="center" />
 	    
 </LinearLayout>

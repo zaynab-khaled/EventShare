@@ -1,0 +1,5 @@
+ackage ajman.university.grad.project.eventshare.common.services;
+
+public class CronService {
+
+}

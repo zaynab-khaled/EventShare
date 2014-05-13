@@ -2,12 +2,14 @@ package ajman.university.grad.project.eventshare.admin;
 
 
 import android.os.Bundle;
+import ajman.university.grad.project.eventshare.common.contracts.IAlarmService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,11 +26,11 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements OnItemSelectedListener{
 	private static final String LOG_TAG = "Main Activity";
 	
-	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
+	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
+	private IAlarmService alarmService = ServicesFactory.getAlarmService();
 	
 	private Button btnLogin;
 	private Button btnDepartments;
-	private TextView tvSchedule;
 	private EditText etPass;
 
 	@Override
@@ -36,37 +38,22 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setUpViews();
-	
-		service.setAdminPassword("nfc123");
+		
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
+		
+		localStorageService.setAdminPassword("nfc123");
 
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-//				String password = service.getAdminPassword();
-//				Log.d(LOG_TAG, "password: " + password);
-//				
-//				if(etPass.getText().length() == 0){
-//					Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
-//				} 
-//				else if (etPass.getText().toString().equals(password)){
-//					if (btnDepartments.getText().toString().equals("Neurology") || btnDepartments.getText().toString().equals("Cardiology")) {
-//						Intent intent = new Intent(MainActivity.this, ListActivity.class);
-//						startActivity(intent);
-//						finish();
-//					}
-//					else
-//						Toast.makeText(getApplicationContext(), "This department is coming soon!", Toast.LENGTH_SHORT).show();
-//
-//				}
-//				else 
-//					Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
-//			}
-				String password = service.getAdminPassword();
+				String password = localStorageService.getAdminPassword();
 				
-				if(service.getAdminDepartment().equals("")) 
+				if(localStorageService.getAdminDepartment().equals("")) 
 					Toast.makeText(getApplicationContext(), "Choose a department", Toast.LENGTH_SHORT).show();
-				else if(service.getAdminDepartment().equals("Neurology")) {
+				else if(localStorageService.getAdminDepartment().equals("Neurology")) {
 					Log.d(LOG_TAG, "Password: " + password);
 					
 					if(etPass.getText().length() == 0){
@@ -74,6 +61,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
 					} 
 					else if (etPass.getText().toString().equals("neuro")){
+						alarmService.start();
 						Intent intent = new Intent(MainActivity.this, ListActivity.class);
 						startActivity(intent);
 						finish();
@@ -81,7 +69,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 					else 
 						Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
 				}
-				else if(service.getAdminDepartment().equals("Cardiology")){
+				else if(localStorageService.getAdminDepartment().equals("Cardiology")){
 					Log.d(LOG_TAG, "Password: " + password);
 					
 					if(etPass.getText().length() == 0){
@@ -105,19 +93,15 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
     private void setUpViews() { 	
     	final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this,R.array.arrayDepartments, android.R.layout.simple_spinner_dropdown_item);
     	
-    	tvSchedule = (TextView) findViewById(R.id.tv_schedule);
     	etPass = (EditText) findViewById(R.id.editText_password);
 		btnLogin = (Button) findViewById(R.id.btn_okay);
 		btnDepartments = (Button) findViewById(R.id.btnDepartments);
 		
-		tvSchedule.setGravity(Gravity.CENTER);
         etPass.setGravity(Gravity.CENTER);
         btnLogin.setGravity(Gravity.CENTER);
         btnDepartments.setGravity(Gravity.CENTER);
         
-        tvSchedule.setText("Operation Schedule");
-        
-        btnDepartments.setText(service.getAdminDepartment().equals("") ? "Select Department" : service.getAdminDepartment());
+        btnDepartments.setText(localStorageService.getAdminDepartment().equals("") ? "Select Department" : localStorageService.getAdminDepartment());
         btnDepartments.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -132,47 +116,47 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 				    	switch(which) {
 				    	case 0:
 				    		btnDepartments.setText("Cardiology");
-				    		service.setAdminDepartment("Cardiology");
+				    		localStorageService.setAdminDepartment("Cardiology");
 				    		break;
 				    	case 1:
 				    		btnDepartments.setText("Cancer Care Unit");
-				    		service.setAdminDepartment("Cancer Care Unit");
+				    		localStorageService.setAdminDepartment("Cancer Care Unit");
 				    		break;
 				    	case 2:
 				    		btnDepartments.setText("Dermatology");
-				    		service.setAdminDepartment("Dermatology");
+				    		localStorageService.setAdminDepartment("Dermatology");
 				    		break;
 				    	case 3:
 				    		btnDepartments.setText("Diabetology");
-				    		service.setAdminDepartment("Diabetology");
+				    		localStorageService.setAdminDepartment("Diabetology");
 				    		break;
 				    	case 4:
 				    		btnDepartments.setText("Digestive Diseases");
-				    		service.setAdminDepartment("Digestive Diseases");
+				    		localStorageService.setAdminDepartment("Digestive Diseases");
 				    		break;
 				    	case 5:
 				    		btnDepartments.setText("Medical ICU");
-				    		service.setAdminDepartment("Medical ICU");
+				    		localStorageService.setAdminDepartment("Medical ICU");
 				    		break;
 				    	case 6:
 				    		btnDepartments.setText("Surgical ICU");
-				    		service.setAdminDepartment("Surgical ICU");
+				    		localStorageService.setAdminDepartment("Surgical ICU");
 				    		break;
 				    	case 7:
 				    		btnDepartments.setText("Neurology");
-				    		service.setAdminDepartment("Neurology");
+				    		localStorageService.setAdminDepartment("Neurology");
 				    		break;
 				    	case 8:
 				    		btnDepartments.setText("Orthopedics");
-				    		service.setAdminDepartment("Orthopedics");
+				    		localStorageService.setAdminDepartment("Orthopedics");
 				    		break;
 				    	case 9:
 				    		btnDepartments.setText("Pediatric");
-				    		service.setAdminDepartment("Pediatric");
+				    		localStorageService.setAdminDepartment("Pediatric");
 				    		break;
 				    	case 10:
 				    		btnDepartments.setText("Plastic Surgery");
-				    		service.setAdminDepartment("Plastic Surgery");
+				    		localStorageService.setAdminDepartment("Plastic Surgery");
 				    		break;
 				    	}
 
@@ -192,7 +176,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener{
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 		TextView tvDepartment = (TextView) view;
-		service.setAdminDepartment(tvDepartment.getText().toString());
+		localStorageService.setAdminDepartment(tvDepartment.getText().toString());
 	}
 	
 	@Override

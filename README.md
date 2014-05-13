@@ -1,4 +1,4 @@
-EventShare
-==========
+NfcShare
+========
 
-Event Share is a Ajman University Graduation Project.  
+NFC Share App to share events

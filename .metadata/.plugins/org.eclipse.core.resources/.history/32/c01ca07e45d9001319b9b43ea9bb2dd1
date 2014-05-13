@@ -1,0 +1,7 @@
+package ajman.university.grad.project.eventshare.common.contracts;
+
+public class INotificationService {
+	public void onCreate();
+	public void onDestroy();
+	public void onStart();
+}

@@ -1,0 +1,40 @@
+package ajman.university.grad.project.eventshare.common.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ajman.university.grad.project.eventshare.common.contracts.ITagService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+
+public class FakeNfcTagService implements ITagService{
+
+	@Override
+	public List<Event> readEvents() {
+		List<Event> readEvents = new ArrayList<Event>();
+		Event event = new Event();
+		event.setId(0);
+		event.setTitle("Heart Transplant");
+		event.setDepartment("Neurology");
+		event.setDescription("Patient has low blood count");
+		event.setNameDoc("Dr. Suhail Al Rukn");
+		event.setNamePat("John Carter");
+		event.setLocation("OR 3");
+		event.setFromDay(6);
+		event.setFromMonth(6);
+		event.setFromYear(2014);
+		event.setFromDayHour(5);
+		event.setFromMinute(35);
+		
+		readEvents.add(event);
+		
+		event = new Event();
+		evemt
+		ea
+		
+		return readEvents;
+	}
+
+	@Override
+	public void writeEvents(List<Event> events) {
+	}
+}

@@ -1,0 +1,11 @@
+package ajman.university.grad.project.eventshare.common.helpers;
+
+import ajman.university.grad.project.eventshare.common.models.Event;
+
+public class Utils {
+	private static String formatToDate(Event event) {
+		String date = "UNKNOWN";
+		// TODO: Do somwething and return
+		return date;
+	}
+}

@@ -1,0 +1,5 @@
+package ajman.university.grad.project.eventshare.common.services;
+
+public class RemoteNotificationService {
+
+}

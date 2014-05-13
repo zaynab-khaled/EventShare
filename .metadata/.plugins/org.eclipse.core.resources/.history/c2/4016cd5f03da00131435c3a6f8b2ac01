@@ -1,0 +1,17 @@
+package ajman.university.grad.project.eventshare.common.helpers;
+
+import ajman.university.grad.project.eventshare.common.models.Event;
+
+public class Utils {
+	private static String formatToUnixDate(Event event) {
+		String date = "UNKNOWN";
+		// TODO: Do something and return
+//		date += event.getToYear();
+//		date += (event.getToMonth() < 10 ? "0" + (event.getToMonth() + 1) : event.getToMonth() + 1);
+//		date += (event.getToDay() < 10 ? "0" + event.getToDay() : event.getToDay());
+//		date += (event.getToDayHour() < 10 ? "0" + event.getToDayHour() : event.getToDayHour());
+//		date += (event.getToMinute() < 10 ? "0" + event.getToMinute() : event.getToMinute());
+//		date += "00";
+		return date;
+	}
+}

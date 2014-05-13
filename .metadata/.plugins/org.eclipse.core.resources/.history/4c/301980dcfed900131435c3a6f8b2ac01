@@ -1,0 +1,9 @@
+package ajman.university.grad.project.eventshare.common.services;
+
+
+import ajman.university.grad.project.eventshare.common.contracts.ILocalNotificationService;
+
+
+public class LocalNotificationService implements ILocalNotificationService {
+		
+	}

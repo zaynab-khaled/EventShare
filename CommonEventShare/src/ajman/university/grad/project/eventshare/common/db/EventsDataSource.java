@@ -20,6 +20,7 @@ public class EventsDataSource {
 	private String [] allColumns = {
 			EventsSqlLiteHelper.COLUMN_ID,
 			EventsSqlLiteHelper.COLUMN_TITLE,
+			EventsSqlLiteHelper.COLUMN_DEPT,
 			EventsSqlLiteHelper.COLUMN_DESC,
 			EventsSqlLiteHelper.COLUMN_LOCATION,
 			EventsSqlLiteHelper.COLUMN_NAME_DOCTOR,
@@ -31,7 +32,8 @@ public class EventsDataSource {
 			EventsSqlLiteHelper.COLUMN_FROM_DAY,
 			EventsSqlLiteHelper.COLUMN_TO_DAY_HOUR,
 			EventsSqlLiteHelper.COLUMN_TO_MINUTE,
-			EventsSqlLiteHelper.COLUMN_EXPIRED
+			EventsSqlLiteHelper.COLUMN_EXPIRED,
+			EventsSqlLiteHelper.COLUMN_ALARMABLE
 	};
 	
 	public EventsDataSource(Context context) {
@@ -55,6 +57,7 @@ public class EventsDataSource {
 		try {
 			ContentValues  values = new ContentValues();
 			values.put(EventsSqlLiteHelper.COLUMN_TITLE, event.getTitle());
+			values.put(EventsSqlLiteHelper.COLUMN_DEPT, event.getDepartment());
 			values.put(EventsSqlLiteHelper.COLUMN_DESC, event.getDescription());
 			values.put(EventsSqlLiteHelper.COLUMN_LOCATION, event.getLocation());
 			values.put(EventsSqlLiteHelper.COLUMN_NAME_DOCTOR, event.getNameDoc());
@@ -67,6 +70,7 @@ public class EventsDataSource {
 			values.put(EventsSqlLiteHelper.COLUMN_TO_DAY_HOUR, event.getToDayHour());
 			values.put(EventsSqlLiteHelper.COLUMN_TO_MINUTE, event.getToMinute());
 			values.put(EventsSqlLiteHelper.COLUMN_EXPIRED, (event.isExpired() ? 1 : 0));
+			values.put(EventsSqlLiteHelper.COLUMN_ALARMABLE, (event.isAlarmable() ? 1 : 0));
 			
 			long insertId = database.insert(EventsSqlLiteHelper.TABLE_EVENTS, null, values);
 			Log.d(LOG_TAG, "inserted id: " + insertId);
@@ -124,10 +128,11 @@ public class EventsDataSource {
 			Log.d(LOG_TAG, "retrieveByDoctorName: " + Environment.getDataDirectory());
 			List<Event> events = new ArrayList<Event> ();
 			Cursor cursor = null;
+			String orderBy = EventsSqlLiteHelper.COLUMN_FROM_YEAR + "," + EventsSqlLiteHelper.COLUMN_FROM_MONTH + "," +  EventsSqlLiteHelper.COLUMN_FROM_DAY + "," +  EventsSqlLiteHelper.COLUMN_FROM_DAY_HOUR + "," +  EventsSqlLiteHelper.COLUMN_FROM_MINUTE;
 			
 			try {
 				//cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, null, null, orderBy, null, EventsSqlLiteHelper.COLUMN_TITLE, "" + records);
-				cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, EventsSqlLiteHelper.COLUMN_NAME_DOCTOR +" = '"+docName+"'", null, null, null, null);
+				cursor = database.query(EventsSqlLiteHelper.TABLE_EVENTS, allColumns, EventsSqlLiteHelper.COLUMN_NAME_DOCTOR +" = '"+docName+"'", null, orderBy, null, null);
 				System.out.println("The database: " + Environment.getDataDirectory());
 				cursor.moveToFirst();
 				while (!cursor.isAfterLast()) {
@@ -148,21 +153,23 @@ public class EventsDataSource {
 		Event event = new Event();
 		event.setId(cursor.getInt(0));
 		event.setTitle(cursor.getString(1));
-		event.setDescription(cursor.getString(2));
-		event.setLocation(cursor.getString(3));
-		event.setNameDoc(cursor.getString(4));
-		event.setNamePat(cursor.getString(5));
-		event.setFromDayHour(cursor.getInt(6));
-		event.setFromMinute(cursor.getInt(7));
-		event.setFromYear(cursor.getInt(8));
-		event.setFromMonth(cursor.getInt(9));
-		event.setFromDay(cursor.getInt(10));
-		event.setToDayHour(cursor.getInt(11));
-		event.setToMinute(cursor.getInt(12));
-		event.setExpired((cursor.getInt(13) == 0 ? false : true));
+		event.setDepartment(cursor.getString(2));
+		event.setDescription(cursor.getString(3));
+		event.setLocation(cursor.getString(4));
+		event.setNameDoc(cursor.getString(5));
+		event.setNamePat(cursor.getString(6));
+		event.setFromDayHour(cursor.getInt(7));
+		event.setFromMinute(cursor.getInt(8));
+		event.setFromYear(cursor.getInt(9));
+		event.setFromMonth(cursor.getInt(10));
+		event.setFromDay(cursor.getInt(11));
+		event.setToDayHour(cursor.getInt(12));
+		event.setToMinute(cursor.getInt(13));
+		event.setExpired((cursor.getInt(14) == 0 ? false : true));
+		event.setAlarmable((cursor.getInt(15) == 0 ? false : true));
 		
 		String st = "";
-		for (int i = 0; i < 14; i++) {
+		for (int i = 0; i < 16; i++) {
 			st += cursor.getString(i) + " | ";
 		}
 		System.out.println(st);

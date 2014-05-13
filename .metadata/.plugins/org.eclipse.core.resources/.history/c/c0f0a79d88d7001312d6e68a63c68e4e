@@ -1,0 +1,218 @@
+package ajman.university.grad.project.eventshare.common.services;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+import ajman.university.grad.project.eventshare.common.db.*;
+import ajman.university.grad.project.eventshare.common.helpers.ApplicationContextProvider;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
+
+public class LocalStorageService implements ILocalStorageService {
+	private static String LOG_TAG = "LocalStorageService";
+	
+	private String userDepartment;
+	private String adminPassword;
+	private String userPassword;
+	private Boolean isRegistered;
+
+	@Override
+	public void addEvent(Event event) throws Exception {
+		EventsDataSource ds = null;
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			ds.insert(event);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
+	}
+
+	@Override
+	public void updateEvent(Event event) throws Exception {
+		EventsDataSource ds = null;
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			ds.delete(event);
+			ds.insert(event);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
+	}
+
+	@Override
+	public void removeEvent(Event event) throws Exception {
+		EventsDataSource ds = null;
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			ds.delete(event);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
+	}
+
+	@Override
+	public List<Event> getAllEvents() throws Exception {
+		List<Event> events = new ArrayList<Event>();
+
+		EventsDataSource ds = null;
+
+		try {
+			ds = new EventsDataSource(getApplicationContext());
+			ds.open();
+			events = ds.retrieveAll(1000);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		} finally {
+			if (ds != null)
+				ds.close();
+		}
+
+		return events;
+	}
+
+	public int deleteDeclinedEvents() throws Exception {
+		List<Event> events = getAllEvents();
+		int count = 0;
+		// Compare each event, compare the event's from date to current
+		for (Event event : events) {
+			if (isDeclined(event)) {
+				Log.d(LOG_TAG, "Event name: " + event.getTitle() + " will be deleted!");
+				removeEvent(event);
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int deleteAllEvents() throws Exception {
+		List<Event> events = getAllEvents();
+		int count = 0;
+		// Compare each event, compare the event's from date to current
+		for (Event event : events) {
+				Log.d(LOG_TAG, "Event name: " + event.getTitle() + " will be deleted!");
+				removeEvent(event);
+				count++;
+		}
+		return count;
+	}
+
+	@Override
+	public void setUserPassword(String pwd) {
+//		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(Constants.USER_PASSWORD, pwd);
+//        editor.commit();
+		userPassword = pwd;
+	}
+
+	@Override
+	public String getUserPassword() {
+//		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        return preferences.getString(Constants.USER_PASSWORD, "");
+		return userPassword;
+	}
+
+	@Override
+	public void setAdminPassword(String pwd) {
+//		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(Constants.ADMIN_PASSWORD, pwd);
+//        editor.commit();
+		adminPassword = pwd;
+	}
+
+	@Override
+	public String getAdminPassword() {
+//		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        return preferences.getString(Constants.ADMIN_PASSWORD, "");
+		return adminPassword;
+	}
+	
+	@Override
+	public void setRegistered(boolean reg) {
+//		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putBoolean(Constants.REGISTERED, reg);
+//        editor.commit();
+		isRegistered = reg;
+	}
+
+	@Override
+	public boolean isRegistered() {
+//		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        return preferences.getBoolean(Constants.REGISTERED, false);
+		return isRegistered;
+	}
+	
+	@Override
+	public void setUserDepartment(String dept) {
+//		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(Constants.DEPARTMENT, dept);
+//        editor.commit();
+		userDepartment = dept;
+	}
+
+	@Override
+	public String getUserDepartment() {
+//		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        return preferences.getString(Constants.DEPARTMENT, "");
+		return userDepartment;
+	}
+	
+	@Override
+	public void setAdminDepartment(String dept) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getAdminDepartment() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/*** PRIVATE METHODS */
+	private Context getApplicationContext() {
+		return ApplicationContextProvider.getContext();
+	}
+	
+	private boolean isDeclined(Event event) {
+
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		toCal.set(Calendar.YEAR, event.getFromYear());
+		toCal.set(Calendar.MONTH, event.getFromMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+
+		Calendar c = Calendar.getInstance();
+
+		if (toCal.getTimeInMillis() < c.getTimeInMillis()) {
+			return true;
+		}
+		return false;
+	}
+}

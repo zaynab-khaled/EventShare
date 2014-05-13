@@ -13,6 +13,7 @@ public interface ILocalStorageService {
 	public int deleteDeclinedEvents() throws Exception;
 	public int deleteAllEvents() throws Exception;
 	public List<Event> filterByDoctorName(String docName) throws Exception;
+	public List<Event> getExpiringAlarmableEvents(int minutes) throws Exception;
 	
 	//Application
 	public void setUserPassword(String pwd);

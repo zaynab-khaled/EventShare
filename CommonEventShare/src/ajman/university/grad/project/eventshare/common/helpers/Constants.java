@@ -15,4 +15,9 @@ public class Constants {
 	public static String USER_PASSWORD = "userPassword";
 	public static String ADMIN_PASSWORD = "adminPassword";
 	public static String FILTER_BY = "filterBy";
+	
+	public static String LAUNCH_PACKAGE_NAME = "ajman.university.grad.project.eventshare.admin";
+
+	// Cron Service in minutes
+	public static int CRON_SERVICE_INTERVAL = 1;
 }

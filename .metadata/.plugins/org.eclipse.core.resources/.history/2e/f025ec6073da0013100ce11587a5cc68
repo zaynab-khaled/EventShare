@@ -1,0 +1,35 @@
+package ajman.university.grad.project.eventshare.common.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ajman.university.grad.project.eventshare.common.contracts.ITagService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+
+public class FakeNfcTagService implements ITagService{
+
+	@Override
+	public List<Event> readEvents() {
+		List<Event> readEvents = new ArrayList<Event>();
+		Event event = new Event();
+		event.setId(0);
+		event.set
+		readEvents.add(event);
+		
+		event = new Event();
+		evemt
+		ea
+		
+		return readEvents;
+	}
+
+	@Override
+	public void writeEvents(List<Event> events) {
+		// TODO Auto-generated method stub
+//		if (isSecure)
+//			writeEventsWithSecurity(events);
+//		else 
+//			writeEventsWithoutSecurity(events);
+		
+	}
+}

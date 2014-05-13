@@ -1,0 +1,280 @@
+package ajman.university.grad.project.eventshare.admin;
+
+
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
+public class ListActivity extends Activity implements OnItemClickListener {
+	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
+	
+	private TextView tvDepartment;
+	private TextView tvSchedule;
+	private ListView list;
+	private EventsAdapter adapter;
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list);
+
+        tvSchedule = (TextView) findViewById(R.id.tv_schedule);
+        tvDepartment = (TextView) findViewById(R.id.tv_department);
+        tvSchedule.setGravity(Gravity.CENTER);
+
+        String dept = service.getAdminDepartment();
+        tvDepartment.setText(dept == null ? "Unknown" : dept + " Department");
+        tvSchedule.setText("Operating Schedule");
+        tvDepartment.setGravity(Gravity.CENTER);
+        
+        list = (ListView) findViewById(android.R.id.list);
+        adapter = new EventsAdapter(this);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(this);
+        
+        //System.out.println("count: " + adapter.getCount());
+    }
+    
+    @Override
+    public void onBackPressed() {
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);	  
+    }
+    
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		Intent intent = new Intent(ListActivity.this, DetailEventActivity.class);
+		Event event = (Event) adapter.getItem(arg2);
+		
+//		System.out.println("arg2: " + arg2);
+//		System.out.println("toDay: " + ((Event) adapter.getItem(arg2)).getToDay());
+//		System.out.println("toYear: " + ((Event) adapter.getItem(arg2)).getToYear());
+//		System.out.println("toMonth: " + ((Event) adapter.getItem(arg2)).getToMonth());
+		
+		intent.putExtra(Constants.CLICKED_EVENT, event);
+		startActivity(intent);
+	}
+
+	// From here on is the code for the action bar buttons and menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.first_activity_action, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	//return super.onOptionsItemSelected(item);
+    	switch (item.getItemId()) {
+		case R.id.addNewEvent:
+			addNewEvent();
+			return true;
+			
+		case R.id.writeToTag:
+			writeToTag();
+			return true;
+			
+		case R.id.action_deleteExpired:
+			actionDeleteExpired();
+			return true;
+			
+		case R.id.action_filter:
+			filter();
+			return true;
+			
+		case R.id.action_erase:
+			actionErase();
+			return true;
+			
+		case R.id.action_about:
+			actionAbout();
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
+    	}
+    }
+
+	private void actionAbout() {
+		Intent intent = new Intent(ListActivity.this, AboutActivity.class);
+		startActivity(intent);
+	}
+
+	private void actionErase() {
+		Intent intent = new Intent(ListActivity.this, EraseTagActivity.class);
+		startActivity(intent);
+	}
+	
+	private void filter() {
+    	final ArrayAdapter<?> adapterSortN = ArrayAdapter.createFromResource(this,R.array.arrayDoctors, android.R.layout.simple_spinner_dropdown_item);
+    	final ArrayAdapter<?> adapterSortC = ArrayAdapter.createFromResource(this,R.array.arrayDoctors2, android.R.layout.simple_spinner_dropdown_item);
+    	
+		if(service.getUserDepartment().equals("Neurology")) {
+			new AlertDialog.Builder(ListActivity.this)
+			.setTitle("Sort by .. ")
+			.setAdapter(adapterSortN, new DialogInterface.OnClickListener() {
+
+			    @Override
+			    public void onClick(DialogInterface dialog, int which) {
+			    	switch(which) {
+				    	case 0:
+							try {
+								service.getAllFilteredEvents("Suhail Al Rukn");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+				    	case 1:
+							try {
+								service.getAllFilteredEvents("Abubaker Almadani");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+				    	case 2:
+							try {
+								service.getAllFilteredEvents("Mohammed Saadah");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+				    	case 3:
+							try {
+								service.getAllFilteredEvents("Suresh Nair");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+				    	case 4:
+							try {
+								service.getAllFilteredEvents("Ayman Alboudi");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+				    	case 5:
+							try {
+								service.getAllFilteredEvents("Mohamed Hamdy Ibrahim");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+				    	case 6:
+							try {
+								service.getAllFilteredEvents("Zulfa Omar Deesi");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+				    	case 7:
+							try {
+								service.getAllFilteredEvents("Fahad Omar Baslaib");
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				    		break;
+			    	}
+			      dialog.dismiss();
+			    }
+			  }).create().show();
+		}
+		else if(service.getUserDepartment().equals("Cardiology")) {
+			new AlertDialog.Builder(ListActivity.this)
+			.setTitle("Sort By .. ")
+			.setAdapter(adapterSortN, new DialogInterface.OnClickListener() {
+
+			    @Override
+			    public void onClick(DialogInterface dialog, int which) {
+			    	switch(which) {
+				    	case 0:
+				    		service.setSortBy("Moosa Kunhi"); 
+				    		break;
+				    	case 1:
+				    		service.setSortBy("Ehab Moheyeldin");
+				    		break;
+				    	case 2:
+				    		service.setSortBy("Ani Purushothaman");
+				    		break;
+				    	case 3:
+				    		service.setSortBy("Mais M Mauwfak");
+				    		break;
+				    	case 4:
+				    		service.setSortBy("Mohamed Ahmed");
+				    		break;
+				    	case 5:
+				    		service.setSortBy("Omaia Siddig Bashir");
+				    		break;
+			    	}
+			      dialog.dismiss();
+			    }
+			  }).create().show();
+		}
+	}
+
+	private void actionDeleteExpired() {
+		new AlertDialog.Builder(this)
+		.setTitle("Delete Event")
+		.setMessage("Are you sure you want to delete all declined events?")
+		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+	               //Do nothing
+	           }
+		})
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				ILocalStorageService service = ServicesFactory.getLocalStorageService();
+				try {
+					int count = service.deleteDeclinedEvents();
+					onCreate(null);
+					Toast.makeText(getApplicationContext(), count + " declined " +  ((count == 1) ? "event" : "events") + " have been deleted!",
+							   Toast.LENGTH_SHORT).show();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	           }
+		})
+		.show();
+	}
+
+	private void addNewEvent() {
+		Intent intent = new Intent(ListActivity.this, EventActivity.class);
+		startActivity(intent);
+	}
+
+	private void writeToTag() {
+		Intent intent = new Intent(ListActivity.this, WriteToTagActivity.class);
+		intent.putExtra(Constants.ICALENDAR, adapter.toString());
+		intent.putExtra(Constants.EVENTCOUNT, adapter.getValidCount());
+		startActivity(intent);
+	}
+}

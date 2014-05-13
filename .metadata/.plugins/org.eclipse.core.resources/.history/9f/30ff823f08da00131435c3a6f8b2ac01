@@ -1,0 +1,16 @@
+package ajman.university.grad.project.eventshare.common.services;
+
+
+import ajman.university.grad.project.eventshare.common.contracts.ILocalNotificationService;
+import ajman.university.grad.project.eventshare.common.models.Event;
+
+
+public class LocalNotificationService implements ILocalNotificationService {
+
+	@Override
+	public void notify(Event event) {
+		// TODO Auto-generated method stub
+		
+	}
+		
+}

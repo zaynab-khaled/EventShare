@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
-
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
@@ -19,10 +18,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ import android.widget.Toast;
 public class EventActivity extends SherlockActivity implements OnItemSelectedListener{
 	private static final String LOG_TAG = "EventActivity";
 	
-	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
+	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
 	
 	private EditText etEventTitle;
 	private EditText etEventDesc;
@@ -62,7 +63,11 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_event);
 		setUpViews();
+		
 		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
 
 		if (getIntent().getSerializableExtra(Constants.EDIT_EVENT) == null) {
 			event = new Event();
@@ -135,6 +140,12 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 		btnD1 = (Button) findViewById(R.id.btnDate1);
 		btnT1 = (Button) findViewById(R.id.btnTime1);
 		btnT2 = (Button) findViewById(R.id.btnTime2);
+		System.out.println("button Location:" + btnLocation.getText().toString() + "Button Doctor: " + btnDoctor.getText().toString());
+		
+		if(btnLocation.getText().toString().equals("  Select OR") || btnDoctor.getText().toString().equals("  Select Surgeon")) {
+			btnLocation.setTextColor(0xff888888);
+			btnDoctor.setTextColor(0xff888888);
+		} 
 
 		btnD1.setOnClickListener(new OnClickListener() {
 
@@ -164,8 +175,7 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 			
 			@Override
 			public void onClick(View v) {
-
-				if (service.getAdminDepartment().equals("Neurology")) {
+				if (localStorageService.getAdminDepartment().equals("Neurology")) {
 					new AlertDialog.Builder(EventActivity.this)
 					.setTitle("Select Operating Theatre")
 					.setAdapter(adapterLocation, new DialogInterface.OnClickListener() {
@@ -175,43 +185,43 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 					    	switch(which) {
 					    	case 0:
 					    		event.setLocation("Theatre E1");
-					    		btnLocation.setText("Theatre E1");
+					    		btnLocation.setText(" Theatre E1");
 					    		break;
 					    	case 1:
 					    		event.setLocation("Theatre E2");
-					    		btnLocation.setText("Theatre E2");
+					    		btnLocation.setText(" Theatre E2");
 					    		break;
 					    	case 2:
 					    		event.setLocation("Theatre E3");
-					    		btnLocation.setText("Theatre E3");
+					    		btnLocation.setText(" Theatre E3");
 					    		break;
 					    	case 3:
 					    		event.setLocation("Theatre E4");
-					    		btnLocation.setText("Theatre E4");
+					    		btnLocation.setText(" Theatre E4");
 					    		break;
 					    	case 4:
 					    		event.setLocation("Theatre G102");
-					    		btnLocation.setText("Theatre G102");
+					    		btnLocation.setText(" Theatre G102");
 					    		break;
 					    	case 5:
 					    		event.setLocation("Theatre G103");
-					    		btnLocation.setText("Theatre G103");
+					    		btnLocation.setText(" Theatre G103");
 					    		break;
 					    	case 6:
 					    		event.setLocation("Theatre B2");
-					    		btnLocation.setText("Theatre B2");
+					    		btnLocation.setText(" Theatre B2");
 					    		break;
 					    	case 7:
 					    		event.setLocation("Theatre B3");
-					    		btnLocation.setText("Theatre B3");
+					    		btnLocation.setText(" Theatre B3");
 					    		break;
 					    	}
-					    	btnLocation.setTextColor(Color.BLACK);
+	
 					      dialog.dismiss();
 					    }
 					  }).create().show();	
 				}
-				else if (service.getAdminDepartment().equals("Cardiology")) {
+				else if (localStorageService.getAdminDepartment().equals("Cardiology")) {
 					new AlertDialog.Builder(EventActivity.this)
 					.setTitle("Select Operating Theatre")
 					.setAdapter(adapterLocation2, new DialogInterface.OnClickListener() {
@@ -222,42 +232,43 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 					    	switch(which) {
 					    	case 0:
 					    		event.setLocation("OR 1");
-					    		btnLocation.setText("OR 1");
+					    		btnLocation.setText(" OR 1");
 					    		break;
 					    	case 1:
 					    		event.setLocation("OR 2");
-					    		btnLocation.setText("OR 2");
+					    		btnLocation.setText(" OR 2");
 					    		break;
 					    	case 2:
 					    		event.setLocation("OR 3");
-					    		btnLocation.setText("OR 3");
+					    		btnLocation.setText(" OR 3");
 					    		break;
 					    	case 3:
 					    		event.setLocation("OR 4");
-					    		btnLocation.setText("OR 4");
+					    		btnLocation.setText(" OR 4");
 					    		break;
 					    	case 4:
 					    		event.setLocation("Theatre G104");
-					    		btnLocation.setText("Theatre G104");
+					    		btnLocation.setText(" Theatre G104");
 					    		break;
 					    	case 5:
 					    		event.setLocation("Theatre G105");
-					    		btnLocation.setText("Theatre G105");
+					    		btnLocation.setText(" Theatre G105");
 					    		break;
 					    	case 6:
 					    		event.setLocation("Theatre B4");
-					    		btnLocation.setText("Theatre B4");
+					    		btnLocation.setText(" Theatre B4");
 					    		break;
 					    	case 7:
 					    		event.setLocation("Theatre B5");
-					    		btnLocation.setText("Theatre B5");
+					    		btnLocation.setText(" Theatre B5");
 					    		break;
 					    	}
-					    	btnLocation.setTextColor(Color.BLACK);
+	
 					      dialog.dismiss();
 					    }
 					  }).create().show();
 				}
+				btnLocation.setTextColor(0xff000000);
 			}	
 		});
 		
@@ -267,7 +278,7 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 			public void onClick(View v) {
 				String [] doctors = null;
 		    	
-				if(service.getAdminDepartment().equals("Neurology")) {
+				if(localStorageService.getAdminDepartment().equals("Neurology")) {
 					doctors = getResources().getStringArray(R.array.arrayDoctors);
 					final String [] items = doctors;
 					
@@ -279,8 +290,7 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 					    	String docName = items[which];
 					    	event.setNameDoc(docName);
 					    	System.out.println("Doctor Name in db: " + event.getNameDoc());
-				    		btnDoctor.setText(docName);
-				    		btnDoctor.setTextColor(Color.BLACK);
+				    		btnDoctor.setText(" " + docName);
 
 					        dialog.dismiss();
 					    }
@@ -296,12 +306,13 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 					    public void onClick(DialogInterface dialog, int which) {
 					    	String docName = items[which];
 					    	event.setNameDoc(docName);
-				    		btnDoctor.setText(docName);
-				    		btnDoctor.setTextColor(Color.BLACK);
+				    		btnDoctor.setText(" " + docName);
+					    	
 					        dialog.dismiss();
 					    }
 					 }).create().show();
 					}
+				btnDoctor.setTextColor(0xff000000);
 				}
 			});
 	}
@@ -321,18 +332,16 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 		etEventTitle.setText(event.getTitle());
 		etEventDesc.setText(event.getDescription());
 		etEventNamePat.setText(event.getNamePat());
-		btnDoctor.setText(event.getNameDoc());
-		btnDoctor.setTextColor(Color.BLACK);
-		btnLocation.setText(event.getLocation());
-		btnLocation.setTextColor(Color.BLACK);
+		btnDoctor.setText(" " + event.getNameDoc());
+		btnLocation.setText(" " + event.getLocation());
 		
 		
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()));
-		btnD1.setTextColor(Color.BLACK);
+		btnT1.setTextColor(Color.BLACK);
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
 		btnT1.setTextColor(Color.BLACK);
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
-		btnT2.setTextColor(Color.BLACK);
+		btnT1.setTextColor(Color.BLACK);
 	}
 
 	private void actionCancel() {
@@ -369,18 +378,19 @@ public class EventActivity extends SherlockActivity implements OnItemSelectedLis
 				event.getToMinute() != -1 ) {
 
 			// Get the events from the events repository
-			ILocalStorageService service = ServicesFactory.getLocalStorageService();
 			event.setTitle(etEventTitle.getText().toString());
 			event.setNamePat(etEventNamePat.getText().toString());
 			event.setDescription(etEventDesc.getText().toString());
+			event.setDepartment(localStorageService.getAdminDepartment());
+			event.setAlarmable(false);
 			
 			try {
 				if (mode == 0){
-					service.addEvent(event);
+					localStorageService.addEvent(event);
 					Toast.makeText(getApplicationContext(), "Event Created",
-						   Toast.LENGTH_SHORT).show(); }
-				else {
-					service.updateEvent(event);
+						   Toast.LENGTH_SHORT).show();
+				} else {
+					localStorageService.updateEvent(event);
 				Toast.makeText(getApplicationContext(), "Event Saved",
 						   Toast.LENGTH_SHORT).show(); }
 				Log.d(LOG_TAG, "Event details: " + event.getDescription() + " location: " + event.getLocation() + " Doctor: " + event.getNameDoc() + " Patient: " + event.getNamePat() + " Title: " + event.getTitle());
@@ -458,7 +468,6 @@ class EventStartTimePickerFragment extends DialogFragment
 		fromCal.set(Calendar.HOUR_OF_DAY, _innerEvent.getFromDayHour());
 		fromCal.set(Calendar.MINUTE, _innerEvent.getFromMinute());
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
-		btnT1.setTextColor(Color.BLACK);
 		
 		System.out.println("hour:" + hourOfDay + " minute: " + minute);
 	}
@@ -510,7 +519,6 @@ class EventEndTimePickerFragment extends DialogFragment
 		toCal.set(Calendar.HOUR_OF_DAY, _innerEvent.getToDayHour());
 		toCal.set(Calendar.MINUTE, _innerEvent.getToMinute());
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
-		btnT2.setTextColor(Color.BLACK);
 		
 		System.out.println("hour:" + hourOfDay + " minute: " + minute);
 	}
@@ -569,7 +577,6 @@ class EventDatePickerFragment extends DialogFragment
 		fromCal.set(Calendar.DAY_OF_MONTH, _innerEvent.getFromDay());
 		
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal.getTime()));
-		btnD1.setTextColor(Color.BLACK);
 		
 		System.out.println("day:" + day + " month: " + month + " year:" + year);
 	}

@@ -1,0 +1,41 @@
+1398023153766	Delete element
+1398023896502	Delete elements
+1398023918847	Delete elements
+1398024237475	Delete element
+1398024265040	Delete elements
+1398024270356	Delete elements
+1398024289345	Delete elements
+1398107790765	Rename field 'tv_Smonth'
+1398107815668	Rename field 'tv_Sday'
+1398108615489	Rename field '_tvEventName'
+1398108630738	Rename field '_tvEventLoc'
+1398108636133	Rename field '_tvEventDesc'
+1398108821914	Rename field 'tv_Eday'
+1398108830214	Rename field 'tv_Eyear'
+1398108835283	Rename field 'tv_ShourOfDay'
+1398108838854	Rename field 'tv_Sminute'
+1398108842913	Rename field 'tv_EhourOfDay'
+1398108846703	Rename field 'tv_Eminute'
+1398109082094	Rename field '_eventLocation'
+1398109093518	Rename field '_etEventName'
+1398109099837	Rename field '_etEventLocation'
+1398109107542	Rename field '_eventDesc'
+1398109253518	Rename field 'tvShourOfDay'
+1398148578497	Rename type 'EditActivity'
+1398148905261	Rename field 'etEventName'
+1398148911969	Rename field 'etEventLocation'
+1398148917435	Rename field 'etEventDesc'
+1398151587183	Rename type 'EventDetailsActivity'
+1398151708846	Copy compilation unit
+1398151794143	Rename type 'StartTimePickerFragment'
+1398151805583	Rename type 'EndTimePickerFragment'
+1398151819881	Rename type 'StartDatePickerFragment'
+1398151834954	Rename type 'EndDatePickerFragment'
+1398152403303	Rename method 'actonCancel'
+1398152710837	Rename field 'tvEventSdate'
+1398152722556	Rename field 'tvEventFRomDate'
+1398152735880	Rename field 'tvEventEdate'
+1398153127949	Delete elements
+1398153531068	Delete elements
+1398168530742	Delete element
+1398317343220	Delete element

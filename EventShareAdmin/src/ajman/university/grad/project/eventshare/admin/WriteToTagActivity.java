@@ -1,8 +1,9 @@
+
 package ajman.university.grad.project.eventshare.admin;
 
 import java.io.IOException;
 
-import ajman.university.grad.project.eventshare.admin.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
@@ -16,6 +17,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
@@ -50,6 +52,9 @@ public class WriteToTagActivity extends Activity {
 		setContentView(R.layout.activity_write_to_tag);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
 
 		// Get bundled data
 		Bundle extras = getIntent().getExtras();

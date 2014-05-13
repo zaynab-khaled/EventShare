@@ -1,0 +1,10 @@
+INDEX VERSION 1.126+C:\Work\SourceCode\NfcShare\.metadata\.plugins\org.eclipse.jdt.core
+1122178717.index
+4054822528.index
+4035478592.index
+4184098733.index
+3984740174.index
+1390470050.index
+2030897045.index
+4075405406.index
+3630895803.index

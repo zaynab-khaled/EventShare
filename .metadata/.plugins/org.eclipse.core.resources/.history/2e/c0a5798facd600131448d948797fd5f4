@@ -1,0 +1,12 @@
+package ajman.university.grad.project.eventshare.common.helpers;
+
+public class Constants {
+	// Intent Bundle Keys
+	public static String CLICKED_EVENT = "clickedEvent";
+	public static String EDIT_EVENT = "editEvent";
+	public static String ICALENDAR = "iCalendar";
+	public static String EVENTCOUNT = "eventCount";
+	public static String DEPARTMENT = "department";
+	public static String PASSWORD = "password";
+	public static String REGISTERED = "password";
+}

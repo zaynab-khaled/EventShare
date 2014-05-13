@@ -2,7 +2,6 @@ package ajman.university.grad.project.eventshare.admin;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
@@ -13,11 +12,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+
 
 public class DetailEventActivity extends Activity {
 	
@@ -32,12 +33,14 @@ public class DetailEventActivity extends Activity {
 	private TextView tvEventDate;
 	private TextView tvEventTime;
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_details);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
 		
 		tvEventTitle = (TextView) findViewById(R.id.edit_tvTitle);
 		tvEventDoc = (TextView) findViewById(R.id.edit_tvNameDoc);
@@ -73,11 +76,11 @@ public class DetailEventActivity extends Activity {
 		tvEventDesc.setText(event.getDescription());
 		tvEventDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()));
 		tvEventTime.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime())  + " - " + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
+
 		
 		// Setting them wrong here
 		Log.d(LOG_TAG, "from cal: " + fromCal.getTime() + " to cal: " +  toCal.getTime() );
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,15 +97,12 @@ public class DetailEventActivity extends Activity {
 		case R.id.action_edit:
 			actionEdit();
 			return true;
-			
 		case R.id.action_delete:
 			actionDelete();
-			return true;
-			
+			return true;	
 		default:
 			return super.onOptionsItemSelected(item);
-    	}
-    	
+    	} 	
     }
 
 	private void actionEdit() {
@@ -112,8 +112,6 @@ public class DetailEventActivity extends Activity {
 	}
 
 	private void actionDelete() {
-		
-		
 		new AlertDialog.Builder(this)
 		.setTitle("Delete Event")
 		.setMessage("Are you sure you want to delete this event?")
@@ -135,7 +133,6 @@ public class DetailEventActivity extends Activity {
 				Intent intent = new Intent(DetailEventActivity.this, ListActivity.class);
 				startActivity(intent);
 	           }
-
 		})
 		.show();
 	}

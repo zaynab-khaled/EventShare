@@ -7,7 +7,7 @@
 
     <!-- For action bar -->
     <string name="new_event">New Event</string>
-    <string name="read_tag">Write to tag</string>
+    <string name="read_tag">Read tag</string>
     <string name="overflow_icon">Open Menu</string>
 
     <!-- Menu list -->
@@ -19,9 +19,12 @@
 
     <!-- Pictures -->
     <string name="pic_writetotag">Tap to write to tag!</string>
+    <string name="readtotag">Tap to read to tag!</string>
     <string name="pic_erasecontent">Tap to erase all content on tag!</string>
     <string name="pic_changepassword">Tap to change password of tag!</string>
+    <string name="imLoginDescription">Start off image</string>
     <string name="arrowDescription">Show how to start off by adding new events</string>
+    <string name="alarmClockDesc">Add an alarm to remind you of the surgery</string>
 
     <!-- For 'Cancel Done Menu' -->
     <string name="title_cancel">Cancel</string>
@@ -40,8 +43,8 @@
     <string name="hint_coPass">Confirm Password</string>
 
     <!-- Add Event Labels -->
-    <string name="label_date">Date</string>
-    <string name="label_time">Time</string>
+    <string name="label_from">From</string>
+    <string name="label_to">To</string>
 
     <!-- Sections on Add Event Activity -->
     <string name="section_EventDetails">Event Details</string>
@@ -55,6 +58,7 @@
     <!-- For single row list -->
     <string name="lText">Large Text</string>
     <string name="sText">Small Text</string>
+    
     <string name="btn_register">Register</string>
     <string name="hint_pass">Enter Password</string>
     <string name="btnDepartment">Select Department</string>
@@ -73,8 +77,9 @@
         <item>Pediatric</item>
         <item>Plastic Surgery</item>
     </string-array>
-    <string-array name="arrayFilterN">
-        <item>Dr. Suhail Al Rukn</item>
+    
+	<string-array name="arrayFilterN">
+		<item>Dr. Suhail Al Rukn</item>
         <item>Dr. Abubaker Almadani</item>
         <item>Dr. Mohammed Saadah</item>
         <item>Dr. Suresh Nair</item>
@@ -83,7 +88,8 @@
         <item>Dr. Zulfa Omar Deesi</item>
         <item>Dr. Fahad Omar Baslaib</item>
     </string-array>
-    <string-array name="arrayFilterC">
+    
+	<string-array name="arrayFilterC">
         <item>Dr. Moosa Kunhi</item>
         <item>Dr. Ehab Moheyeldin</item>
         <item>Dr. Ani Purushothaman</item>
@@ -91,8 +97,10 @@
         <item>Dr. Mohamed Ahmed</item>
         <item>Dr. Omaia Siddig Bashir</item>
     </string-array>
-
+    
+        
     <string name="sort_doc">Sort</string>
+
 
     <!-- Automatic for manifest, change title on screen -->
     <string name="title_activity_add_event">Add Event</string>

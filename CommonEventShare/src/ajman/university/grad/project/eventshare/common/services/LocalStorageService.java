@@ -14,6 +14,7 @@ import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.db.*;
 import ajman.university.grad.project.eventshare.common.helpers.ApplicationContextProvider;
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.helpers.Utils;
 
 public class LocalStorageService implements ILocalStorageService {
 	private static String LOG_TAG = "LocalStorageService";
@@ -132,6 +133,20 @@ public class LocalStorageService implements ILocalStorageService {
 		}
 
 		return events;
+	}
+
+	@Override
+	public List<Event> getExpiringAlarmableEvents(int minutes) throws Exception {	
+		List<Event> alarmableEvents = new ArrayList<Event> ();
+		List<Event> events = getAllEvents();
+		for (Event event : events) {
+			int minutesToEvent = Utils.getTimeDifferenceFromNow(event.getFromYear(), event.getFromMonth(), event.getFromDay(), event.getFromDayHour(), event.getFromMinute());
+			Log.d(LOG_TAG, "Event alarmable flag: " + event.isAlarmable());
+			Log.d(LOG_TAG, "Event minutes from now: " + minutesToEvent);
+			if (event.isAlarmable() && minutesToEvent >= 0 && minutesToEvent <= minutes)	
+				alarmableEvents.add(event);
+		}
+		return alarmableEvents;
 	}
 
 	@Override

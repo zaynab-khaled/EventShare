@@ -1,0 +1,7 @@
+package ajman.university.grad.project.eventshare.common.contracts;
+
+import ajman.university.grad.project.eventshare.common.models.Event;
+
+public interface ILocalNotificationService {
+	public void notify(Event event);
+}

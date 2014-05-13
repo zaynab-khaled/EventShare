@@ -7,6 +7,7 @@ public class Event implements Serializable {
 
 	private int id;
 	private String title;
+	private String department;
 	private String description;
 	private String location;
 	private String nameDoc;
@@ -19,10 +20,12 @@ public class Event implements Serializable {
 	private int toDayHour;
 	private int toMinute;
 	private boolean expired;
+	private boolean alarmable;
 	
 	public Event () {
 		this.setId(-1);
 		this.setTitle("");
+		this.setDepartment("");
 		this.setDescription("");
 		this.setLocation("");
 		this.setNameDoc("");
@@ -35,14 +38,16 @@ public class Event implements Serializable {
 		this.setToDayHour(-1);
 		this.setToMinute(-1);
 		this.setExpired(false);
+		this.setAlarmable(false);
 	}
 
-	public Event(int id, String title, String description, String location,
+	public Event(int id, String title, String department, String description, String location,
 			String nameDoc, String namePat, int fromDayHour, int fromMinute, int fromYear, 
-			int fromMonth, int fromDay, int toDayHour, int toMinute, int isExpired) {
+			int fromMonth, int fromDay, int toDayHour, int toMinute, boolean isExpired, boolean isAlarmable) {
 		super();
 		this.id = id;
 		this.title = title;
+		this.department = department;
 		this.description = description;
 		this.location = location;
 		this.nameDoc = nameDoc;
@@ -54,7 +59,8 @@ public class Event implements Serializable {
 		this.fromDay = fromDay;
 		this.toDayHour = toDayHour;
 		this.toMinute = toMinute;
-		this.expired = expired;
+		this.expired = isExpired;
+		this.alarmable = isAlarmable;
 	}
 
 	public int getId() {
@@ -71,6 +77,14 @@ public class Event implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 
 	public String getDescription() {
@@ -167,5 +181,13 @@ public class Event implements Serializable {
 
 	public void setExpired(boolean expired) {
 		this.expired = expired;
+	}
+	
+	public boolean isAlarmable() {
+		return alarmable;
+	}
+
+	public void setAlarmable(boolean alarmable) {
+		this.alarmable = alarmable;
 	}
 }
