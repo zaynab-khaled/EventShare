@@ -45,12 +45,13 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
 		
-		startingImage = (ImageView) findViewById(R.id.start_image);
+        startingImage = (ImageView) findViewById(R.id.start_image);
 		
 		if(list.getCount() != 0) {
         	startingImage.setVisibility(View.GONE);
         } else
         	startingImage.setVisibility(View.VISIBLE);
+		
     }
     
 	private void setUpViews() {
@@ -64,7 +65,7 @@ public class ListActivity extends Activity implements OnItemClickListener {
         
         tvSchedule.setText("Operating Schedule");
         tvDepartment.setText(dept == null ? "Unknown" : dept + " Department");
-        
+
         //Code for list
         list = (ListView) findViewById(android.R.id.list);
         adapter = new EventsAdapter(this);
@@ -146,8 +147,8 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		.setAdapter(adapterData, new DialogInterface.OnClickListener() {
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
-		    	if (items != null) {
-			    	String docName = items[which]; 
+		    	String docName = items[which];
+		    	if (items != null && !docName.toString().equals("Filter All")) {   	 
 			    	Log.d(LOG_TAG, "Doc name: " + docName);
 			        setupListAdapter(docName);
 		    	} else {

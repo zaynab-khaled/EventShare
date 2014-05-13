@@ -53,6 +53,8 @@
             android:name="ajman.university.grad.project.eventshare.user.ListActivity"
             android:label="@string/title_userList" >
         </activity>
+        <service android:name="ajman.university.grad.project.eventshare.common.system.services.CronService">
+        </service>
     </application>
 
 </manifest>

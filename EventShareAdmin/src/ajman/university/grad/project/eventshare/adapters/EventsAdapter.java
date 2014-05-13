@@ -13,14 +13,11 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class EventsAdapter extends BaseAdapter implements OnClickListener {
+public class EventsAdapter extends BaseAdapter {
 	private static final String LOG_TAG = "Events Adapter";
 	
 	private List<Event> events = new ArrayList<Event>();
@@ -116,34 +113,15 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		TextView docname = (TextView) row.findViewById(R.id.textView2);
 		TextView location = (TextView) row.findViewById(R.id.textView3);
 		TextView dateTime = (TextView) row.findViewById(R.id.textView4);
-		ImageView ivAddClock = (ImageView) row.findViewById(R.id.imAddClock);
-		// TRICKY: Attach an object to the image view so we an retrieve later 
-		ivAddClock.setTag(event);
-		ivAddClock.setOnClickListener(this);
 		
 		title.setText(event.getTitle());
 		docname.setText(event.getNameDoc());
 		location.setText(event.getLocation());
-		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "  /  " + new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " + new SimpleDateFormat("HH:mm").format(toCal.getTime()));
+		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "  /  " 
+				+ new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " 
+				+ new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 
 		return row;
-	}
-	
-	@Override
-	public void onClick(View view) {
-		// TRICKY: Detach a previously attached object to the image view
-		Event taggedEvent = (Event) view.getTag();
-		if(taggedEvent != null){
-			taggedEvent.setAlarmable(true);
-			Toast.makeText(context, "Reminder successfully added!", Toast.LENGTH_SHORT).show();
-			System.out.println("Event: " + taggedEvent.isAlarmable() + " title: " + taggedEvent.getTitle().toString());
-			ILocalStorageService service = ServicesFactory.getLocalStorageService();
-			try {
-			service.updateEvent(taggedEvent);
-			} catch (Exception e) {
-				Log.d(LOG_TAG, "Exception ocurred during event update: " + e.getMessage());
-			}
-		}
 	}
 	
 // Final format should be 20140924185545

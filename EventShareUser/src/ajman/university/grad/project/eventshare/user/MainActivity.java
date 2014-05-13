@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
 		getActionBar().setDisplayShowTitleEnabled(true);
 		
 		alarmService.start();
+		Log.d(LOG_TAG, "In the main activity splash screen");
 		
 		localStorageService.setRegistered(false);
 		Boolean registered = localStorageService.isRegistered();

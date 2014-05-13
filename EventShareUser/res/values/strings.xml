@@ -42,9 +42,14 @@
     <string name="hint_nPass">New Password</string>
     <string name="hint_coPass">Confirm Password</string>
 
-    <!-- Add Event Labels -->
-    <string name="label_from">From</string>
-    <string name="label_to">To</string>
+    <!-- Detail Event Labels -->
+    <string name="label_date">Date:</string>
+    <string name="label_time">Time:</string>
+    <string name="label_title">Operation:</string>
+    <string name="label_loc">Room:</string>
+    <string name="label_nameP">Patient:</string>
+    <string name="label_nameD">Doctor:</string>
+    <string name="label_desc">Info:</string>
 
     <!-- Sections on Add Event Activity -->
     <string name="section_EventDetails">Event Details</string>
@@ -87,6 +92,7 @@
         <item>Dr. Mohamed Hamdy Ibrahim</item>
         <item>Dr. Zulfa Omar Deesi</item>
         <item>Dr. Fahad Omar Baslaib</item>
+        <item>Filter All</item>
     </string-array>
     
 	<string-array name="arrayFilterC">
@@ -96,6 +102,7 @@
         <item>Dr. Mais M Mauwfak</item>
         <item>Dr. Mohamed Ahmed</item>
         <item>Dr. Omaia Siddig Bashir</item>
+        <item>Filter All</item>
     </string-array>
     
         

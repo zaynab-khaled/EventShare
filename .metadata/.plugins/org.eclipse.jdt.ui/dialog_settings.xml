@@ -30,15 +30,15 @@
 	<section name="JavaSearchPage">
 		<item value="false" key="CASE_SENSITIVE"/>
 		<item value="11" key="INCLUDE_MASK"/>
-		<item value="6" key="HISTORY_SIZE"/>
+		<item value="8" key="HISTORY_SIZE"/>
 		<section name="HISTORY2">
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
+			<item value="is_alarmable" key="pattern"/>
 			<item value="" key="javaElement"/>
-			<item value="doc" key="pattern"/>
-			<item value="0" key="matchLocations"/>
 			<item value="0" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="false" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -47,10 +47,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
+			<item value="setNameDoc" key="pattern"/>
 			<item value="" key="javaElement"/>
-			<item value="adapter" key="pattern"/>
-			<item value="0" key="matchLocations"/>
 			<item value="0" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="false" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -59,10 +59,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
+			<item value="main" key="pattern"/>
 			<item value="" key="javaElement"/>
-			<item value="is_alarmable" key="pattern"/>
+			<item value="1" key="searchFor"/>
 			<item value="0" key="matchLocations"/>
-			<item value="0" key="searchFor"/>
 			<item value="false" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -71,10 +71,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
+			<item value="menu" key="pattern"/>
 			<item value="" key="javaElement"/>
-			<item value="setNameDoc" key="pattern"/>
-			<item value="0" key="matchLocations"/>
 			<item value="0" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="false" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -83,10 +83,10 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
+			<item value="adapter" key="pattern"/>
 			<item value="" key="javaElement"/>
-			<item value="getAllEvents" key="pattern"/>
-			<item value="0" key="matchLocations"/>
 			<item value="0" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="false" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>
@@ -95,10 +95,34 @@
 			<item value="11" key="includeMask"/>
 			<item value="2" key="limitTo"/>
 			<item value="0" key="scope"/>
+			<item value="doc" key="pattern"/>
 			<item value="" key="javaElement"/>
-			<item value="getAllEvents()" key="pattern"/>
-			<item value="0" key="matchLocations"/>
 			<item value="0" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
+			<item value="false" key="isCaseSensitive"/>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY7">
+			<item value="11" key="includeMask"/>
+			<item value="2" key="limitTo"/>
+			<item value="0" key="scope"/>
+			<item value="getAllEvents" key="pattern"/>
+			<item value="" key="javaElement"/>
+			<item value="0" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
+			<item value="false" key="isCaseSensitive"/>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY6">
+			<item value="11" key="includeMask"/>
+			<item value="2" key="limitTo"/>
+			<item value="0" key="scope"/>
+			<item value="getAllEvents()" key="pattern"/>
+			<item value="" key="javaElement"/>
+			<item value="0" key="searchFor"/>
+			<item value="0" key="matchLocations"/>
 			<item value="false" key="isCaseSensitive"/>
 			<list key="workingSets">
 			</list>

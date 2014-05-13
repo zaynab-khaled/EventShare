@@ -1,0 +1,106 @@
+package ajman.university.grad.project.eventshare.user;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import ajman.university.grad.project.eventshare.common.models.Event;
+import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
+import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
+import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.TextView;
+
+public class DetailEventActivity extends Activity {
+	
+	private static String LOG_TAG = "DetailEventActivity User";
+	private Event event;
+	
+	private TextView tvEventTitle;
+	private TextView tvEventDoc;
+	private TextView tvEventPat;
+	private TextView tvEventLoc;
+	private TextView tvEventDesc;
+	private TextView tvEventDate;
+	private TextView tvEventTime;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_event_details);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(true);
+		
+		tvEventTitle = (TextView) findViewById(R.id.edit_tvName);
+		tvEventLoc = (TextView) findViewById(R.id.edit_tvLoc);
+		tvEventDesc = (TextView) findViewById(R.id.edit_tvDescription);
+		tvEventDate = (TextView) findViewById(R.id.edit_tvSdate);
+		tvEventTime = (TextView) findViewById(R.id.edit_tvEdate);
+		
+		// Get bundled data
+		event = (Event) getIntent().getSerializableExtra(Constants.CLICKED_EVENT);
+		
+		// Bind the UI
+		populateFields();
+	}
+
+	private void populateFields() {
+		Calendar fromCal = Calendar.getInstance();
+		fromCal.set(Calendar.YEAR, event.getFromYear());
+		fromCal.set(Calendar.MONTH, event.getFromMonth());
+		fromCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
+		fromCal.set(Calendar.MINUTE, event.getFromMinute());
+		
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		
+		tvEventTitle.setText(event.getTitle());
+		tvEventLoc.setText(event.getLocation());
+		tvEventDesc.setText(event.getDescription());
+		tvEventDate.setText(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm").format(fromCal.getTime()));
+		tvEventTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm").format(toCal.getTime()));
+		// Setting them wrong here
+		Log.d(LOG_TAG, "from cal: " + fromCal.getTime() + " to cal: " +  toCal.getTime());
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main_delete, menu);
+		return true;
+	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	//return super.onOptionsItemSelected(item);
+    	switch (item.getItemId()) {			
+			case R.id.deleteEvents:
+				actionDelete();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+    	}
+    }
+
+	private void actionDelete() {
+		IErrorService errorService = ServicesFactory.getErrorService();
+		ILocalStorageService service = ServicesFactory.getLocalStorageService();
+		try {
+			service.removeEvent(event);
+		} catch (Exception e) {
+			errorService.log(e);
+		}
+		Intent intent = new Intent(DetailEventActivity.this, ListActivity.class);
+		startActivity(intent);
+    }
+}

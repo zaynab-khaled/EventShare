@@ -20,3 +20,8 @@
 1399794230402	Delete element
 1399961608852	Delete element
 1399968277331	Rename field 'service'
+1399997959864	Rename field 'tvEventFromDate'
+1399997977809	Rename field 'tvEventToDate'
+1399997993892	Rename field 'tvEventName'
+1399999687376	Delete element
+1400009513127	Rename local variable 'ivAddClock'

@@ -39,14 +39,14 @@
     <string name="hint_addInfo">Additional Information</string>
 	<string name="hint_pName">Patient Name</string>
 	
-    <!-- Add Event Labels -->
+    <!-- Detail Event Labels -->
     <string name="label_date">Date:</string>
     <string name="label_time">Time:</string>
     <string name="label_title">Operation:</string>
     <string name="label_loc">Room:</string>
     <string name="label_nameP">Patient:</string>
     <string name="label_nameD">Doctor:</string>
-    <string name="label_desc">Additional Information:</string>
+    <string name="label_desc">Info:</string>
 
     <!-- Sections on Add Event Activity -->
     <string name="section_EventDetails">Surgery Details</string>

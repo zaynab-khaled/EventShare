@@ -69,8 +69,15 @@ public class ReadTagActivity extends Activity {
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
 		
-//		List<Event> events = faketTagService.readEvents();
-//		localStorageService.addEvent(event);
+		//Get Fake events to test the functionality without actual NFC tags
+		List<Event> events = faketTagService.readEvents();
+		for(Event event : events) {
+			try {
+				localStorageService.addEvent(event);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		tvReadTag = (TextView) findViewById(R.id.tv_read_tag);
 

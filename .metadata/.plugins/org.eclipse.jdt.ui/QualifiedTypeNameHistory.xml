@@ -17,8 +17,6 @@
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.contracts.INotificationService"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.notifications.NotificationService"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.admin.R"/>
-<fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.admin.R.drawable"/>
-<fullyQualifiedTypeName name="android.widget.ImageView"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.services.LocalNotificationService"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.contracts.IRemoteNotificationService"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
@@ -32,12 +30,10 @@
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.contracts.ILocalNotificationService"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.services.ServicesFactory"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.models.Event"/>
-<fullyQualifiedTypeName name="java.util.Calendar"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.helpers.Utils"/>
 <fullyQualifiedTypeName name="android.app.Notification"/>
 <fullyQualifiedTypeName name="android.support.v4.app.TaskStackBuilder"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.helpers.Constants"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="android.support.v4.app.NotificationCompat"/>
 <fullyQualifiedTypeName name="android.app.NotificationManager"/>
 <fullyQualifiedTypeName name="android.app.PendingIntent"/>
@@ -51,4 +47,9 @@
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.common.contracts.IAlarmService"/>
+<fullyQualifiedTypeName name="ajman.university.grad.project.eventshare.admin.R.drawable"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="java.util.Calendar"/>
+<fullyQualifiedTypeName name="android.widget.ImageView"/>
 </qualifiedTypeNameHistroy>

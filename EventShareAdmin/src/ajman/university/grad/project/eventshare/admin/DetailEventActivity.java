@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 public class DetailEventActivity extends Activity {
 	
-	private static String LOG_TAG = "detailEventActivity";
+	private static String LOG_TAG = "DetailEventActivity Admin";
 	private Event event;
 	
 	private TextView tvEventTitle;
@@ -119,7 +119,6 @@ public class DetailEventActivity extends Activity {
 			public void onClick(DialogInterface dialog, int id) {
 	               
 	           }
-
 		})
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {

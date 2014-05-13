@@ -193,14 +193,6 @@
 		        android:textSize="16sp" />
 			
 		</RelativeLayout>
-		
-		<ImageView
-	        android:id="@+id/ivAddClock"
-	        android:src="@drawable/ic_action_add_alarm"
-	        android:layout_width="50dp"
-	        android:layout_height="50dp"
-	        android:contentDescription="@string/alarmClockDesc"
-	        android:visibility="visible" />
 
 </LinearLayout>
 
