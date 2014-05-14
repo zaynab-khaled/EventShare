@@ -111,10 +111,13 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		else {
 			row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
 			event.setExpired(false);
-			ImageView ivClock = (ImageView) row.findViewById(R.id.btnAddClock);
+			
+			ImageView ivAddClock = (ImageView) row.findViewById(R.id.btnAddClock);
+			
 			// TRICKY: Attach an object to the button view so we an retrieve later 
-			ivClock.setTag(event);
-			ivClock.setOnClickListener(this);
+			ivAddClock.setTag(event);
+			
+			ivAddClock.setOnClickListener(this);
 		}
 
 		TextView title = (TextView) row.findViewById(R.id.textView1);
@@ -122,7 +125,6 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		TextView location = (TextView) row.findViewById(R.id.textView3);
 		TextView dateTime = (TextView) row.findViewById(R.id.textView4);
 		
-
 		title.setText(event.getTitle());
 		docname.setText(event.getNameDoc());
 		location.setText(event.getLocation());
@@ -130,15 +132,18 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 				+ new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " 
 				+ new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 		
-		ImageView ivClock = (ImageView) row.findViewById(R.id.btnAddClock);
+		ImageView ivAddClock = (ImageView) row.findViewById(R.id.btnAddClock);	
 		if(event.isAlarmable()) {
-			ivClock.setImageDrawable(null);
-			ivClock.setBackgroundResource(R.drawable.ic_action_alarms);		
+			ivAddClock.setImageDrawable(null);
+			ivAddClock.setBackgroundResource(R.drawable.ic_action_alarms);
 		}
-			
-			
-			
 		
+//		if(!event.isAlarmable()) {
+//			ivClock.setImageDrawable(null);
+//			ivClock.setVisibility(View.INVISIBLE);
+//			ivAddClock.setVisibility(View.VISIBLE);
+//		}
+
 		return row; // return the rootView of the single_row_list.xml
 	}
 	
@@ -152,21 +157,29 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		cal.set(Calendar.MINUTE, taggedEvent.getFromMinute());
 		
 		if(taggedEvent != null){
-			taggedEvent.setAlarmable(true);
-			((ImageView) view).setImageDrawable(null);
-			view.setBackgroundResource(R.drawable.ic_action_alarms);
-			Toast.makeText(context, "Notification set 15 minutes before " + new SimpleDateFormat("HH:mm").format(cal.getTime()) + " on " + taggedEvent.getFromDay(), Toast.LENGTH_SHORT).show();
-			System.out.println("Event: " + taggedEvent.isAlarmable() + " title: " + taggedEvent.getTitle().toString());
+			if(taggedEvent.isAlarmable()) {
+				taggedEvent.setAlarmable(false);
+				((ImageView) view).setImageDrawable(null);
+				view.setBackgroundResource(R.drawable.ic_action_add_alarm);
+				Toast.makeText(context, "Notification was removed" , Toast.LENGTH_SHORT).show();
+			} else {
+				taggedEvent.setAlarmable(true);
+				((ImageView) view).setImageDrawable(null);
+				view.setBackgroundResource(R.drawable.ic_action_alarms);
+				Toast.makeText(context, "Notification set 15 minutes before " + new SimpleDateFormat("HH:mm").format(cal.getTime()) + " on " + taggedEvent.getFromDay(), Toast.LENGTH_SHORT).show();
+				
+			}
+			
 			ILocalStorageService service = ServicesFactory.getLocalStorageService();
 			try {
 			service.updateEvent(taggedEvent);
 			} catch (Exception e) {
 				Log.d(LOG_TAG, "Exception ocurred during event update: " + e.getMessage());
 			}
-		}
+		}	
 	}
-	
-// Final format should be 20140924185545
+
+	// Final format should be 20140924185545
 	private String formatToDate(Event event) {
 		String date = "";
 		date += event.getFromYear();

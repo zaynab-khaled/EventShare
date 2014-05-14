@@ -118,7 +118,7 @@
 	        android:textSize="18sp"
 	        android:paddingLeft="11dp"
             android:paddingTop="5dp"
-	        android:text="@string/btn_Time" />
+	        android:text="@string/btn_FromTime" />
 
 	    <Button
 	        android:id="@+id/btnTime2"
@@ -129,10 +129,8 @@
 	        android:textSize="18sp"
 	        android:paddingLeft="11dp"
             android:paddingTop="5dp"
-	        android:text="@string/btn_Time" />
-	    
-
-		    
+	        android:text="@string/btn_ToTime" />
+  
 	 	</LinearLayout>
 	
 

@@ -53,10 +53,11 @@
     <string name="section_EventTime">Date and Time</string>
 
     <!-- Add Event Buttons -->
-    <string name="btn_Time">Time</string>
+    <string name="btn_FromTime">From Time</string>
+    <string name="btn_ToTime">To Time</string>
     <string name="btn_Date">Date</string>
-    <string name="btn_location">" " Select OR</string>
-    <string name="btn_doctor">" " Select Surgeon</string>
+    <string name="btn_location">" " Select Operation Room</string>
+    <string name="btn_doctor">" " Select Doctor</string>
     <string name="btnDepartment">Select Department</string>
 
     <!-- For single row list -->
