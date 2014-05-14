@@ -111,16 +111,17 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		else {
 			row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
 			event.setExpired(false);
+			ImageView ivClock = (ImageView) row.findViewById(R.id.btnAddClock);
+			// TRICKY: Attach an object to the button view so we an retrieve later 
+			ivClock.setTag(event);
+			ivClock.setOnClickListener(this);
 		}
 
 		TextView title = (TextView) row.findViewById(R.id.textView1);
 		TextView docname = (TextView) row.findViewById(R.id.textView2);
 		TextView location = (TextView) row.findViewById(R.id.textView3);
 		TextView dateTime = (TextView) row.findViewById(R.id.textView4);
-		ImageView ivClock = (ImageView) row.findViewById(R.id.btnAddClock);
-		// TRICKY: Attach an object to the button view so we an retrieve later 
-		ivClock.setTag(event);
-		ivClock.setOnClickListener(this);
+		
 
 		title.setText(event.getTitle());
 		docname.setText(event.getNameDoc());
@@ -129,6 +130,7 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 				+ new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " 
 				+ new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 		
+		ImageView ivClock = (ImageView) row.findViewById(R.id.btnAddClock);
 		if(event.isAlarmable()) {
 			ivClock.setImageDrawable(null);
 			ivClock.setBackgroundResource(R.drawable.ic_action_alarms);		

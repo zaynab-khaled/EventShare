@@ -53,8 +53,18 @@
             android:name="ajman.university.grad.project.eventshare.user.ListActivity"
             android:label="@string/title_userList" >
         </activity>
-        <service android:name="ajman.university.grad.project.eventshare.common.system.services.CronService">
+
+        <service android:name="ajman.university.grad.project.eventshare.common.system.services.CronService" >
         </service>
+
+        <activity
+            android:name="ajman.university.grad.project.eventshare.user.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="ajman.university.grad.project.eventshare.user.ListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ajman.university.grad.project.eventshare.user.ListActivity" />
+        </activity>
     </application>
 
 </manifest>

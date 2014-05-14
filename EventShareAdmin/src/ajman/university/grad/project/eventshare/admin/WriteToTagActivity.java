@@ -4,20 +4,17 @@ package ajman.university.grad.project.eventshare.admin;
 import java.io.IOException;
 
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.TextView;
@@ -39,7 +36,7 @@ public class WriteToTagActivity extends Activity {
 
 	public static final String MIME_TEXT_CALENDAR = "text/x-vcalendar";
 	private static final String HEXES = "0123456789ABCDEF";
-	private static final String preferenceName = "NFC_PREFERENCES";
+	//private static final String preferenceName = "NFC_PREFERENCES";
 
 	private static final byte[] KEYA = {
 			(byte) 0xd3, (byte) 0xf7, (byte) 0xd3,

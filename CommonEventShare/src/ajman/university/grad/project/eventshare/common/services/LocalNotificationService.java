@@ -70,7 +70,8 @@ public class LocalNotificationService implements ILocalNotificationService {
     }
 
     private String getEventMessage(Event event) {
-    	return event.getNameDoc().toString();
+    	String time = event.getFromDayHour() + " : " + event.getFromMinute();
+    	return time;
     }
 
     private Context getApplicationContext() {

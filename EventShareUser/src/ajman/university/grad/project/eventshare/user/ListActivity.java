@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -97,14 +98,50 @@ public class ListActivity extends Activity implements OnItemClickListener {
 			case R.id.readTag:
 				readTag();
 				return true;
-			case R.id.sortByDoc:
+			case R.id.action_deleteExpired:
+				deleteExpired();
+				return true;
+			case R.id.action_filter:
 				filter();
 				return true;
+			case R.id.action_about:
+				actionAbout();
 	
 			default:
 				return super.onOptionsItemSelected(item);
     	}
     }
+
+	private void actionAbout() {
+		Intent intent = new Intent(ListActivity.this, AboutActivity.class);
+		startActivity(intent);
+		
+	}
+
+	private void deleteExpired() {
+		new AlertDialog.Builder(this)
+		.setTitle("Delete Event")
+		.setMessage("Are you sure you want to delete all declined events?")
+		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+	               //Do nothing
+	           }
+		})
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				ILocalStorageService service = ServicesFactory.getLocalStorageService();
+				try {
+					int count = service.deleteDeclinedEvents();
+					onCreate(null);
+					Toast.makeText(getApplicationContext(), count + " declined " +  ((count == 1) ? "event" : "events") + " have been deleted!",
+							   Toast.LENGTH_SHORT).show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	           }
+		}).show();
+		
+	}
 
 	private void filter() {
 		ArrayAdapter<?> adapterFilter = null;

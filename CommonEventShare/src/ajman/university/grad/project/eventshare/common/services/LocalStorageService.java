@@ -101,6 +101,23 @@ public class LocalStorageService implements ILocalStorageService {
 		}
 		return count;
 	}
+	
+	public boolean isDeclined(Event event) {
+
+		Calendar toCal = Calendar.getInstance();
+		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
+		toCal.set(Calendar.MINUTE, event.getToMinute());
+		toCal.set(Calendar.YEAR, event.getFromYear());
+		toCal.set(Calendar.MONTH, event.getFromMonth());
+		toCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
+
+		Calendar c = Calendar.getInstance();
+
+		if (toCal.getTimeInMillis() < c.getTimeInMillis()) {
+			return true;
+		}
+		return false;
+	}
 
 	public int deleteAllEvents() throws Exception {
 		List<Event> events = getAllEvents();
@@ -222,22 +239,5 @@ public class LocalStorageService implements ILocalStorageService {
 	/*** PRIVATE METHODS */
 	private Context getApplicationContext() {
 		return ApplicationContextProvider.getContext();
-	}
-	
-	private boolean isDeclined(Event event) {
-
-		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
-		toCal.set(Calendar.MINUTE, event.getToMinute());
-		toCal.set(Calendar.YEAR, event.getFromYear());
-		toCal.set(Calendar.MONTH, event.getFromMonth());
-		toCal.set(Calendar.DAY_OF_MONTH, event.getFromDay());
-
-		Calendar c = Calendar.getInstance();
-
-		if (toCal.getTimeInMillis() < c.getTimeInMillis()) {
-			return true;
-		}
-		return false;
 	}
 }

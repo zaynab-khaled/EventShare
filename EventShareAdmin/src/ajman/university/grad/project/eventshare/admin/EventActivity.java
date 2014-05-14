@@ -3,27 +3,24 @@ package ajman.university.grad.project.eventshare.admin;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
-import android.os.Build;
-import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,10 +31,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.DatePicker;
 import android.widget.Toast;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class EventActivity extends SherlockActivity implements OnItemSelectedListener{

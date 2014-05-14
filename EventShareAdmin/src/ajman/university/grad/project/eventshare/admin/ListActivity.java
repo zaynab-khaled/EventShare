@@ -1,8 +1,8 @@
 package ajman.university.grad.project.eventshare.admin;
 
 import ajman.university.grad.project.eventshare.adapters.EventsAdapter;
-import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -19,12 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 public class ListActivity extends Activity implements OnItemClickListener {
 	private static final String LOG_TAG = "LIst Activity";

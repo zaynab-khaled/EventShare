@@ -4,13 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import ajman.university.grad.project.eventshare.admin.R;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class EventsAdapter extends BaseAdapter {
-	private static final String LOG_TAG = "Events Adapter";
+	//private static final String LOG_TAG = "Events Adapter";
 	
 	private List<Event> events = new ArrayList<Event>();
 	private Context context;
@@ -85,7 +85,6 @@ public class EventsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int i, View view, ViewGroup viewGroup) {
-		String LOG_TAG = "getView List";
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		Event event = events.get(i);
