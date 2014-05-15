@@ -18,9 +18,8 @@
     <string name="title_about">About</string>
 
     <!-- Pictures -->
-    <string name="pic_writetotag">Tap to write to tag!</string>
-    <string name="pic_erasecontent">Tap to erase all content from tag!</string>
-    <string name="pic_changepassword">Tap to change password of tag!</string>
+    <string name="pic_writetotag">Tap to write to tag.</string>
+    <string name="pic_erasecontent">Tap to erase all content from tag.\nThis may take up to a minute.</string>
     <string name="arrowDescription">Show how to start off by adding new events</string>
     <string name="imLoginDescription">Start off image</string>
     <string name="alarmClockDesc">Add an alarm to remind you of the surgery</string>
@@ -42,7 +41,7 @@
     <!-- Detail Event Labels -->
     <string name="label_date">Date:</string>
     <string name="label_time">Time:</string>
-    <string name="label_title">Operation:</string>
+    <string name="label_title">Title:</string>
     <string name="label_loc">Room:</string>
     <string name="label_nameP">Patient:</string>
     <string name="label_nameD">Doctor:</string>

@@ -17,7 +17,6 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -153,26 +152,18 @@ public class EventActivity extends SherlockActivity implements
 		etEventDesc = (EditText) findViewById(R.id.editText_operationDesc);
 
 		btnLocation = (Button) findViewById(R.id.btn_location);
+		btnLocation.setTextColor(0xff888888);
 		btnDoctor = (Button) findViewById(R.id.btn_doctor);
+		btnDoctor.setTextColor(0xff888888);
 		btnD1 = (Button) findViewById(R.id.btnDate1);
+		btnD1.setTextColor(0xff888888);
 		btnT1 = (Button) findViewById(R.id.btnTime1);
+		btnT1.setTextColor(0xff888888);
 		btnT2 = (Button) findViewById(R.id.btnTime2);
+		btnT2.setTextColor(0xff888888);
 		System.out.println("button Location:"
 				+ btnLocation.getText().toString() + "Button Doctor: "
 				+ btnDoctor.getText().toString());
-
-		if (btnLocation.getText().toString().equals("  Select OR")
-				|| btnDoctor.getText().toString().equals("  Select Surgeon")
-				|| btnD1.getText().toString().equals("Date")
-				|| btnT1.getText().toString().equals("From Time")
-				|| btnT2.getText().toString().equals("To Time")) {
-			
-			btnLocation.setTextColor(0xff888888);
-			btnDoctor.setTextColor(0xff888888);
-			btnD1.setTextColor(0xff888888);
-			btnT1.setTextColor(0xff888888);
-			btnT2.setTextColor(0xff888888);
-		}
 
 		btnD1.setOnClickListener(new OnClickListener() {
 
@@ -202,8 +193,14 @@ public class EventActivity extends SherlockActivity implements
 
 			@Override
 			public void onClick(View v) {
+				String[] locations = null;
+
 				if (localStorageService.getAdminDepartment()
 						.equals("Neurology")) {
+					locations = getResources().getStringArray(
+							R.array.arrayLocation);
+					final String[] items = locations;
+
 					new AlertDialog.Builder(EventActivity.this)
 							.setTitle("Select Operation Room")
 							.setAdapter(adapterLocation,
@@ -213,54 +210,18 @@ public class EventActivity extends SherlockActivity implements
 										public void onClick(
 												DialogInterface dialog,
 												int which) {
-											switch (which) {
-											case 0:
-												event.setLocation("Theatre E1");
-												btnLocation
-														.setText(" Theatre E1");
-												break;
-											case 1:
-												event.setLocation("Theatre E2");
-												btnLocation
-														.setText(" Theatre E2");
-												break;
-											case 2:
-												event.setLocation("Theatre E3");
-												btnLocation
-														.setText(" Theatre E3");
-												break;
-											case 3:
-												event.setLocation("Theatre E4");
-												btnLocation
-														.setText(" Theatre E4");
-												break;
-											case 4:
-												event.setLocation("Theatre G102");
-												btnLocation
-														.setText(" Theatre G102");
-												break;
-											case 5:
-												event.setLocation("Theatre G103");
-												btnLocation
-														.setText(" Theatre G103");
-												break;
-											case 6:
-												event.setLocation("Theatre B2");
-												btnLocation
-														.setText(" Theatre B2");
-												break;
-											case 7:
-												event.setLocation("Theatre B3");
-												btnLocation
-														.setText(" Theatre B3");
-												break;
-											}
-
+											String locName = items[which];
+											event.setLocation(locName);
+											btnLocation.setText(" " + locName);
+											btnLocation.setTextColor(0xff000000);
 											dialog.dismiss();
 										}
 									}).create().show();
-				} else if (localStorageService.getAdminDepartment().equals(
-						"Cardiology")) {
+				} else {
+					locations = getResources().getStringArray(
+							R.array.arrayLocation2);
+					final String[] items = locations;
+
 					new AlertDialog.Builder(EventActivity.this)
 							.setTitle("Select Operation Room")
 							.setAdapter(adapterLocation2,
@@ -271,50 +232,16 @@ public class EventActivity extends SherlockActivity implements
 												DialogInterface dialog,
 												int which) {
 
-											switch (which) {
-											case 0:
-												event.setLocation("OR 1");
-												btnLocation.setText(" OR 1");
-												break;
-											case 1:
-												event.setLocation("OR 2");
-												btnLocation.setText(" OR 2");
-												break;
-											case 2:
-												event.setLocation("OR 3");
-												btnLocation.setText(" OR 3");
-												break;
-											case 3:
-												event.setLocation("OR 4");
-												btnLocation.setText(" OR 4");
-												break;
-											case 4:
-												event.setLocation("Theatre G104");
-												btnLocation
-														.setText(" Theatre G104");
-												break;
-											case 5:
-												event.setLocation("Theatre G105");
-												btnLocation
-														.setText(" Theatre G105");
-												break;
-											case 6:
-												event.setLocation("Theatre B4");
-												btnLocation
-														.setText(" Theatre B4");
-												break;
-											case 7:
-												event.setLocation("Theatre B5");
-												btnLocation
-														.setText(" Theatre B5");
-												break;
-											}
+											String locName = items[which];
+											event.setLocation(locName);
+											btnLocation.setText(" " + locName);
+											btnLocation.setTextColor(0xff000000);
+											dialog.dismiss();
 
 											dialog.dismiss();
 										}
 									}).create().show();
 				}
-				btnLocation.setTextColor(0xff000000);
 			}
 		});
 
@@ -343,7 +270,7 @@ public class EventActivity extends SherlockActivity implements
 											System.out.println("Doctor Name in db: "
 													+ event.getNameDoc());
 											btnDoctor.setText(" " + docName);
-
+											btnDoctor.setTextColor(0xff000000);
 											dialog.dismiss();
 										}
 									}).create().show();
@@ -363,12 +290,11 @@ public class EventActivity extends SherlockActivity implements
 											String docName = items[which];
 											event.setNameDoc(docName);
 											btnDoctor.setText(" " + docName);
-
+											btnDoctor.setTextColor(0xff000000);
 											dialog.dismiss();
 										}
 									}).create().show();
 				}
-				btnDoctor.setTextColor(0xff000000);
 			}
 		});
 	}
@@ -389,17 +315,17 @@ public class EventActivity extends SherlockActivity implements
 		etEventDesc.setText(event.getDescription());
 		etEventNamePat.setText(event.getNamePat());
 		btnDoctor.setText(" " + event.getNameDoc());
-		btnDoctor.setTextColor(Color.BLACK);
+		btnDoctor.setTextColor(0xff000000);
 		btnLocation.setText(" " + event.getLocation());
-		btnLocation.setTextColor(Color.BLACK);
+		btnLocation.setTextColor(0xff000000);
 
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal
 				.getTime()));
-		btnT1.setTextColor(Color.BLACK);
+		btnD1.setTextColor(0xff000000);
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
-		btnT1.setTextColor(Color.BLACK);
+		btnT1.setTextColor(0xff000000);
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
-		btnT1.setTextColor(Color.BLACK);
+		btnT2.setTextColor(0xff000000);
 	}
 
 	private void actionCancel() {
@@ -409,24 +335,10 @@ public class EventActivity extends SherlockActivity implements
 	private void actionDone() {
 		IErrorService errorService = ServicesFactory.getErrorService();
 
-		Calendar fromCal = Calendar.getInstance();
-		fromCal.set(Calendar.HOUR_OF_DAY, event.getFromDayHour());
-		fromCal.set(Calendar.MINUTE, event.getFromMinute());
-
-		Calendar toCal = Calendar.getInstance();
-		toCal.set(Calendar.HOUR_OF_DAY, event.getToDayHour());
-		toCal.set(Calendar.MINUTE, event.getToMinute());
-
-		if (toCal.before(fromCal)) {
-			Toast.makeText(
-					this,
-					"TO time should be later than "
-							+ new SimpleDateFormat("HH:mm").format(fromCal
-									.getTime()), Toast.LENGTH_LONG).show();
-		} else if (etEventTitle.getText().length() > 0
+		if (etEventTitle.getText().length() > 0
 				&& etEventNamePat.getText().length() > 0
-				&& !btnDoctor.getText().toString().equals("Select Surgeon")
-				&& !btnLocation.getText().toString().equals("Select OR")
+				&& !btnDoctor.getText().toString().equals("Select Doctor")
+				&& !btnLocation.getText().toString().equals("Select Operation Room")
 				&& event.getNameDoc() != null && event.getNamePat() != null
 				&& event.getFromDay() != -1 && event.getFromDayHour() != -1
 				&& event.getFromMinute() != -1 && event.getFromMonth() != -1
@@ -517,7 +429,7 @@ class EventStartTimePickerFragment extends DialogFragment implements
 		// Create a new instance of TimePickerDialog and return it
 		TimePickerDialog dialogTime = new TimePickerDialog(getActivity(), this,
 				hour, minute, DateFormat.is24HourFormat(getActivity()));
-		dialogTime.setTitle("Set Time");
+		dialogTime.setTitle("Set From Time");
 
 		return dialogTime;
 	}
@@ -534,6 +446,7 @@ class EventStartTimePickerFragment extends DialogFragment implements
 		fromCal.set(Calendar.HOUR_OF_DAY, _innerEvent.getFromDayHour());
 		fromCal.set(Calendar.MINUTE, _innerEvent.getFromMinute());
 		btnT1.setText(new SimpleDateFormat("HH:mm").format(fromCal.getTime()));
+		btnT1.setTextColor(0xff000000);
 
 		System.out.println("hour:" + hourOfDay + " minute: " + minute);
 	}
@@ -570,7 +483,7 @@ class EventEndTimePickerFragment extends DialogFragment implements
 		// Create a new instance of TimePickerDialog and return it
 		TimePickerDialog dialogTime = new TimePickerDialog(getActivity(), this,
 				hour, minute, DateFormat.is24HourFormat(getActivity()));
-		dialogTime.setTitle("Set Time");
+		dialogTime.setTitle("Set To Time");
 
 		return dialogTime;
 	}
@@ -587,7 +500,7 @@ class EventEndTimePickerFragment extends DialogFragment implements
 		toCal.set(Calendar.HOUR_OF_DAY, _innerEvent.getToDayHour());
 		toCal.set(Calendar.MINUTE, _innerEvent.getToMinute());
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
-
+		btnT2.setTextColor(0xff000000);
 		System.out.println("hour:" + hourOfDay + " minute: " + minute);
 	}
 
@@ -650,7 +563,7 @@ class EventDatePickerFragment extends DialogFragment implements
 
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal
 				.getTime()));
-
+		btnD1.setTextColor(0xff000000);
 		System.out.println("day:" + day + " month: " + month + " year:" + year);
 	}
 }

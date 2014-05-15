@@ -83,44 +83,7 @@ public class DetailEventActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_delete, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	//return super.onOptionsItemSelected(item);
-    	switch (item.getItemId()) {			
-			case R.id.deleteEvents:
-				actionDelete();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-    	}
-    }
-
-	private void actionDelete() {
-		new AlertDialog.Builder(this)
-		.setTitle("Delete Event")
-		.setMessage("Are you sure you want to delete this event?")
-		.setNegativeButton("No", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-	               
-	           }
-		})
-		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				IErrorService errorService = ServicesFactory.getErrorService();
-				ILocalStorageService service = ServicesFactory.getLocalStorageService();
-				try {
-					service.removeEvent(event);
-				} catch (Exception e) {
-					errorService.log(e);
-				}
-				Intent intent = new Intent(DetailEventActivity.this, ListActivity.class);
-				startActivity(intent);
-	           }
-		})
-		.show();
-    }
 }

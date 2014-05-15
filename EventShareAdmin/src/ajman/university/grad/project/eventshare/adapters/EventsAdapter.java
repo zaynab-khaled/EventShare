@@ -161,6 +161,7 @@ public class EventsAdapter extends BaseAdapter {
 				vEvent += "<s>" + formatFromDate(events.get(i)) + "</s>";
 				vEvent += "<f>" + formatToDate(events.get(i)) + "</f>";
 				vEvent += "<t>" + events.get(i).getTitle() + "</t>";
+				vEvent += "<a>" + events.get(i).getDepartment() + "</a>";
 				vEvent += "<d>" + events.get(i).getDescription() + "</d>";
 				vEvent += "<o>" + events.get(i).getNameDoc() + "</o>";
 				vEvent += "<p>" + events.get(i).getNamePat() + "</p>";

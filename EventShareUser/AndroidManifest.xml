@@ -25,6 +25,7 @@
             android:configChanges="orientation|screenSize"
             android:label="" >
             <intent-filter>
+"C:/Users/Yusra/AppData/Local/Temp/Rar$DR01.058/EventShare/EventShareUser/AndroidManifest.xml"
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,6 +36,13 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_read_tag"
             android:parentActivityName="ajman.university.grad.project.eventshare.user.ListActivity" >
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/filter_nfc" />
         </activity>
         <activity
             android:name="ajman.university.grad.project.eventshare.user.DetailEventActivity"

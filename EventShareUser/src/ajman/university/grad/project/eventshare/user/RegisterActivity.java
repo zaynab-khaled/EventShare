@@ -5,13 +5,9 @@ import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,14 +20,14 @@ import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
 	private static final String LOG_TAG = "Register Activity";
-	
+
 	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
-	
+
 	private Button btnDepartments;
 	private Button btnRegister;
 	private EditText etPass;
 	private String password;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,117 +37,84 @@ public class RegisterActivity extends Activity {
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
-	
+
 	}
 
 	private void setUpViews() {
-    	final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this,R.array.arrayDepartments, android.R.layout.simple_spinner_dropdown_item);
+		final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this, R.array.arrayDepartments,
+				android.R.layout.simple_spinner_dropdown_item);
 
 		etPass = (EditText) findViewById(R.id.editText_password);
 		btnDepartments = (Button) findViewById(R.id.btnDepartments);
 		btnRegister = (Button) findViewById(R.id.btn_register);
 		etPass.setGravity(Gravity.CENTER);
 		btnDepartments.setGravity(Gravity.CENTER);
-	    btnRegister.setGravity(Gravity.CENTER);
-	    
+		btnRegister.setGravity(Gravity.CENTER);
+
 		btnDepartments.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
+				String[] departments = null;
+
+				departments = getResources().getStringArray(
+						R.array.arrayDepartments);
+				final String[] items = departments;
+
 				new AlertDialog.Builder(RegisterActivity.this)
-				.setTitle("Select Department")
-				.setAdapter(adapterDepartment, new DialogInterface.OnClickListener() {
+						.setTitle("Select Department")
+						.setAdapter(adapterDepartment, new DialogInterface.OnClickListener() {
 
-				    @Override
-				    public void onClick(DialogInterface dialog, int which) {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
 
-				    	switch(which) {
-				    	case 0:
-				    		btnDepartments.setText("Cardiology");
-				    		service.setUserDepartment("Cardiology");
-				    		break;
-				    	case 1:
-				    		btnDepartments.setText("Cancer Care Unit");
-				    		service.setUserDepartment("Cancer Care Unit");
-				    		break;
-				    	case 2:
-				    		btnDepartments.setText("Dermatology");
-				    		service.setUserDepartment("Dermatology");
-				    		break;
-				    	case 3:
-				    		btnDepartments.setText("Diabetology");
-				    		service.setUserDepartment("Diabetology");
-				    		break;
-				    	case 4:
-				    		btnDepartments.setText("Digestive Diseases");
-				    		service.setUserDepartment("Digestive Diseases");
-				    		break;
-				    	case 5:
-				    		btnDepartments.setText("Medical ICU");
-				    		service.setUserDepartment("Medical ICU");
-				    		break;
-				    	case 6:
-				    		btnDepartments.setText("Surgical ICU");
-				    		service.setUserDepartment("Surgical ICU");
-				    		break;
-				    	case 7:
-				    		btnDepartments.setText("Neurology");
-				    		service.setUserDepartment("Neurology");
-				    		break;
-				    	case 8:
-				    		btnDepartments.setText("Orthopedics");
-				    		service.setUserDepartment("Orthopedics");
-				    		break;
-				    	case 9:
-				    		btnDepartments.setText("Pediatric");
-				    		service.setUserDepartment("Pediatric");
-				    		break;
-				    	case 10:
-				    		btnDepartments.setText("Plastic Surgery");
-				    		service.setUserDepartment("Plastic Surgery");
-				    		break;
-				    	}
-				      dialog.dismiss();
-				    }
-				  }).create().show();
+								String deptName = items[which];
+								btnDepartments.setText(deptName);
+								service.setUserDepartment(btnDepartments.getText().toString());
+								dialog.dismiss();
+							}
+						}).create().show();
 			}
 		});
-		
+
 		btnRegister.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				password = service.getAdminPassword();
-				
-				if(service.getUserDepartment().equals("Neurology")) {
-					Log.d(LOG_TAG, "Password: " + password);
-					
-					if(etPass.getText().length() == 0){
-						Log.d(LOG_TAG, "Password: " + password);
-						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
-					} 
-					else if (etPass.getText().toString().equals("neuro")){
-						service.setRegistered(true);
-						Intent intent = new Intent(RegisterActivity.this, ListActivity.class);
-						startActivity(intent);
-						finish();
-					}				
-					else 
-						Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
+
+				if (btnDepartments.getText().equals("Select Department")) {
+					Toast.makeText(getApplicationContext(), "Choose a department", Toast.LENGTH_SHORT).show();
 				}
-				else if(service.getUserDepartment().equals("Cardiology")){
+				else if (btnDepartments.getText().equals("Neurology")) {
 					Log.d(LOG_TAG, "Password: " + password);
-					
-					if(etPass.getText().length() == 0){
+
+					if (etPass.getText().length() == 0) {
 						Log.d(LOG_TAG, "Password: " + password);
 						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
-					} 
-					else if (etPass.getText().toString().equals("card")){
+					}
+					else if (etPass.getText().toString().equals("neuro")) {
 						service.setRegistered(true);
 						Intent intent = new Intent(RegisterActivity.this, ListActivity.class);
 						startActivity(intent);
 						finish();
 					}
-					else 
+					else
+						Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
+				}
+				else if (btnDepartments.getText().equals("Cardiology")) {
+					Log.d(LOG_TAG, "Password: " + password);
+
+					if (etPass.getText().length() == 0) {
+						Log.d(LOG_TAG, "Password: " + password);
+						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
+					}
+					else if (etPass.getText().toString().equals("card")) {
+						service.setRegistered(true);
+						Intent intent = new Intent(RegisterActivity.this, ListActivity.class);
+						startActivity(intent);
+						finish();
+					}
+					else
 						Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
 				}
 				else
@@ -159,19 +122,19 @@ public class RegisterActivity extends Activity {
 			}
 		});
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
-		return true;	
+		return true;
 	}
-	
-    @Override
-    public void onBackPressed() {
+
+	@Override
+	public void onBackPressed() {
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);	  
-    }
+		startActivity(intent);
+	}
 }

@@ -4,12 +4,14 @@ import ajman.university.grad.project.eventshare.common.contracts.IAlarmService;
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalNotificationService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.contracts.INfcService;
 import ajman.university.grad.project.eventshare.common.contracts.IRemoteNotificationService;
 import ajman.university.grad.project.eventshare.common.contracts.ITagService;
 
 public class ServicesFactory {
 	private static ILocalStorageService _localStorageService;
 	private static ITagService _tagService;
+	private static INfcService _nfcService;
 	private static IErrorService _errorService;
 	private static ILocalNotificationService _localNotificationService;
 	private static IRemoteNotificationService _remoteNotificationService;
@@ -29,6 +31,14 @@ public class ServicesFactory {
 		}
 		
 		return _tagService;
+	}
+	
+	public static INfcService getNfcService() {
+		if (_nfcService == null) {
+			_nfcService = new NfcService();
+		}
+		
+		return _nfcService;
 	}
 
 	public static IErrorService getErrorService() {

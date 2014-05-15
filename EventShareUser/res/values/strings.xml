@@ -17,10 +17,9 @@
     <string name="title_about">About</string>
     <string name="title_userList">NFC Share</string>
     <string name="title_filter">Filter Events</string>
-    <string name="read_tag">Read from tag</string>
 
     <!-- Pictures -->
-    <string name="pic_writetotag">Tap to write to tag!</string>
+    <string name="pic_writetotag">Tap to read tag!</string>
     <string name="readtotag">Tap to read to tag!</string>
     <string name="pic_erasecontent">Tap to erase all content on tag!</string>
     <string name="pic_changepassword">Tap to change password of tag!</string>
@@ -47,7 +46,7 @@
     <!-- Detail Event Labels -->
     <string name="label_date">Date:</string>
     <string name="label_time">Time:</string>
-    <string name="label_title">Operation:</string>
+    <string name="label_title">Title:</string>
     <string name="label_loc">Room:</string>
     <string name="label_nameP">Patient:</string>
     <string name="label_nameD">Doctor:</string>
