@@ -2,8 +2,11 @@ package ajman.university.grad.project.eventshare.common.services;
 
 
 import ajman.university.grad.project.eventshare.common.contracts.INfcService;
+import ajman.university.grad.project.eventshare.common.helpers.ApplicationContextProvider;
+import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -25,7 +28,7 @@ public class NfcService extends Activity implements INfcService {
 	public void ensureNfcIsAvailable(NfcAdapter mNfcAdapter) {
 		if (mNfcAdapter != null && !mNfcAdapter.isEnabled()) {
 			// Alert the user that NFC is off
-			new AlertDialog.Builder(this)
+			new AlertDialog.Builder(getApplicationContext())
 					.setTitle("NFC Sensor Turned Off")
 					.setMessage(
 							"In order to use this application, the NFC sensor must be turned on. Do you wish to turn it on?")
@@ -89,5 +92,19 @@ public class NfcService extends Activity implements INfcService {
 			hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
 		}
 		return hex.toString();
+	}
+
+	@Override
+	public byte[] getKey(String department) {
+		if (department.equals("Neurology")) {
+			return Constants.KEYA_NEURO;
+		}
+		else {
+			return Constants.KEYA_FAKE;
+		}
+	}
+	
+	public Context getApplicationContext() {
+		return ApplicationContextProvider.getContext();
 	}
 }

@@ -21,14 +21,12 @@ public class Constants {
 	// Cron Service in minutes
 	public static int CRON_SERVICE_INTERVAL = 1;
 
-	// Nfc tag keys
+	// Nfc tag keys	
 	public static final byte[] KEYA_NEURO = {
-			(byte) 0xc1, (byte) 0xf9, (byte) 0xd3,
-			(byte) 0x45, (byte) 0x23, (byte) 0x11
+			(byte) 0xc1, (byte) 0xf9, (byte) 0xd3, (byte) 0x45, (byte) 0x23, (byte) 0x11
 	};
 
-	public static final byte[] KEYFAKE = {
-			(byte) 0xd3, (byte) 0xf7, (byte) 0xd3,
-			(byte) 0xf7, (byte) 0xd3, (byte) 0xf7
+	public static final byte[] KEYA_FAKE = {
+			(byte) 0xd3, (byte) 0xf7, (byte) 0xd3, (byte) 0xf7, (byte) 0xd3, (byte) 0xf7
 	};
 }

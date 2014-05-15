@@ -113,12 +113,8 @@ public class EraseTagActivity extends Activity {
 				 */
 
 				// Authenticate a sector with key.
-				if (localStorageService.getAdminDepartment().equals("Neurology")) {
-					auth = mfc.authenticateSectorWithKeyA(j, Constants.KEYA_NEURO);
-				}
-				else {
-					auth = mfc.authenticateSectorWithKeyA(j, Constants.KEYFAKE);
-				}
+				auth = mfc.authenticateSectorWithKeyA(j, nfcService.getKey(localStorageService.getAdminDepartment()));
+				
 				int bCount;
 				int bIndex;
 				if (auth) {

@@ -139,12 +139,7 @@ public class ReadTagActivity extends Activity {
 			outer: for (int j = 0; j < mfc.getSectorCount(); j++) {
 
 				// Authenticate a sector with key.
-				if (localStorageService.isRegistered() && localStorageService.getUserDepartment().equals("Neurology")) {
-					auth = mfc.authenticateSectorWithKeyA(j, Constants.KEYA_NEURO);
-				}
-				else {
-					auth = mfc.authenticateSectorWithKeyA(j, Constants.KEYFAKE);
-				}
+				auth = mfc.authenticateSectorWithKeyA(j, nfcService.getKey(localStorageService.getUserDepartment()));
 				int bCount;
 				int bIndex;
 				if (auth) {
