@@ -191,7 +191,7 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		    @Override
 		    public void onClick(DialogInterface dialog, int which) {
 		    	String docName = items[which];
-		    	if (items != null && !docName.toString().equals("Filter All")) {   	 
+		    	if (items != null && !docName.toString().equals("Select All")) {   	 
 			    	Log.d(LOG_TAG, "Doc name: " + docName);
 			        setupListAdapter(docName);
 		    	} else {
