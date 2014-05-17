@@ -62,14 +62,14 @@ public class ReadTagActivity extends Activity {
 		getActionBar().setDisplayShowTitleEnabled(true);
 		
 		//Get Fake events to test the functionality without actual NFC tags
-		List<Event> events = fakeTagService.readEvents();
+		/*List<Event> events = fakeTagService.readEvents();
 		for(Event event : events) {
 			try {
 				localStorageService.addEvent(event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -187,7 +187,7 @@ public class ReadTagActivity extends Activity {
 					read = false;
 					startActivity();
 				}
-			}).show();
+			}).show(); 
 			
 			Event event;
 			try {

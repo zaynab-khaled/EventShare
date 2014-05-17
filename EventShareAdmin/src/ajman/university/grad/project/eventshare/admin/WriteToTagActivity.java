@@ -73,7 +73,7 @@ public class WriteToTagActivity extends Activity {
 
 		mNFCTechLists = new String[][] { new String[] { MifareClassic.class.getName() } };
 	}
-	
+
 	private void setupActionBar() {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
@@ -95,7 +95,7 @@ public class WriteToTagActivity extends Activity {
 		// Ensure that the device supports NFC
 		ensureNfcIsAvailable(mNfcAdapter);
 		ensureSensorIsOn(mNfcAdapter);
-		
+
 		mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
 	}
 
@@ -151,7 +151,7 @@ public class WriteToTagActivity extends Activity {
 
 				// Authenticate a sector with key.
 				auth = mfc.authenticateSectorWithKeyA(j, getKey(localStorageService.getAdminDepartment()));
-				
+
 				int bCount;
 				int bIndex;
 				if (auth) {
@@ -204,13 +204,16 @@ public class WriteToTagActivity extends Activity {
 			write = true;
 
 			if (msgCount > 0 && write) {
-				remoteService.sendPushNotification(ajman.university.grad.project.eventshare.admin.helpers.Constants.PARSE_APP_ID, 
-						ajman.university.grad.project.eventshare.admin.helpers.Constants.PARSE_APP_REST_KEY, 
-						localStorageService.getAdminDepartment(), 
+				remoteService.sendPushNotification(ajman.university.grad.project.eventshare.admin.helpers.Constants.PARSE_APP_ID,
+						ajman.university.grad.project.eventshare.admin.helpers.Constants.PARSE_APP_REST_KEY,
+						localStorageService.getAdminDepartment(),
 						"New events have been updated for your department");
 			}
-			
-			new AlertDialog.Builder(this).setMessage((msgCount == 0) ? "Could not write to tag!" : (nrOfEvents + (nrOfEvents == 1 ? " event " : " events ") + "successfully written to tag!"))
+
+			new AlertDialog.Builder(this)
+					.setMessage(
+							(msgCount == 0) ? "Could not write to tag!"
+									: (nrOfEvents + (nrOfEvents == 1 ? " event " : " events ") + "successfully written to tag!"))
 					.setCancelable(false)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 						@Override
@@ -224,7 +227,7 @@ public class WriteToTagActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// ***** ****
 	private void ensureSensorIsOn(NfcAdapter mNfcAdapter) {
 		if (mNfcAdapter == null) {
