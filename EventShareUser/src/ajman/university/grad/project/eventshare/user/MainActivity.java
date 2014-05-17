@@ -2,11 +2,13 @@ package ajman.university.grad.project.eventshare.user;
 
 import ajman.university.grad.project.eventshare.common.contracts.IAlarmService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.contracts.IRemoteNotificationService;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
-import android.os.Bundle;
+import ajman.university.grad.project.eventshare.helpers.Constants;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 
@@ -15,6 +17,10 @@ public class MainActivity extends Activity {
 	
 	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
 	private IAlarmService alarmService = ServicesFactory.getAlarmService();
+	private IRemoteNotificationService remoteNotificationService = ServicesFactory.getRemoteNotificationService();
+	
+	Boolean registered;
+	String userDept = localStorageService.getUserDepartment();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +32,9 @@ public class MainActivity extends Activity {
 		getActionBar().setDisplayShowTitleEnabled(true);
 		
 		alarmService.start();
-		Log.d(LOG_TAG, "In the main activity splash screen");
+		Log.d(LOG_TAG, "In the main activity splash screen: " + localStorageService.isRegistered());
 		
-		localStorageService.setRegistered(false);
-		Boolean registered = localStorageService.isRegistered();
+		registered = localStorageService.isRegistered();
 		
 		Log.d(LOG_TAG, "Registered? " + localStorageService.isRegistered());
 		if(registered.equals("true")){
@@ -41,6 +46,8 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 			
 		}
+		
+		remoteNotificationService.register(Constants.PARSE_APP_ID, Constants.PARSE_APP_CLIENT_KEY);
 	}
 
 	@Override
@@ -48,5 +55,32 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	@Override 
+	public void onSaveInstanceState(Bundle savedInstanceState) { 
+	  super.onSaveInstanceState(savedInstanceState); 
+	  // Save UI state changes to the savedInstanceState. 
+	  // This bundle will be passed to onCreate if the process is 
+	  // killed and restarted. 
+
+	  savedInstanceState.putBoolean("registered", true);
+	  savedInstanceState.putString("userDepartment", localStorageService.getUserDepartment());
+	  // etc. 
+	}
+	
+	@Override 
+	public void onRestoreInstanceState(Bundle savedInstanceState) { 
+	  super.onRestoreInstanceState(savedInstanceState); 
+	  // Restore UI state from the savedInstanceState. 
+	  // This bundle has also been passed to onCreate. 
+
+	  registered = savedInstanceState.getBoolean("registered");
+	  userDept = savedInstanceState.getString("userDepartment");
+	} 
+	
+	public void onResume() {
+		super.onRestart();
+		localStorageService.setRegistered(true);
 	}
 }

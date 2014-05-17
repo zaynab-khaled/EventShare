@@ -161,9 +161,6 @@ public class EventActivity extends SherlockActivity implements
 		btnT1.setTextColor(0xff888888);
 		btnT2 = (Button) findViewById(R.id.btnTime2);
 		btnT2.setTextColor(0xff888888);
-		System.out.println("button Location:"
-				+ btnLocation.getText().toString() + "Button Doctor: "
-				+ btnDoctor.getText().toString());
 
 		btnD1.setOnClickListener(new OnClickListener() {
 
@@ -351,6 +348,8 @@ public class EventActivity extends SherlockActivity implements
 			event.setDescription(etEventDesc.getText().toString());
 			event.setDepartment(localStorageService.getAdminDepartment());
 			event.setAlarmable(false);
+			if(event.getDescription().toString().equals(""))
+				event.setDescription("-");
 
 			try {
 				if (mode == 0) {
@@ -379,10 +378,10 @@ public class EventActivity extends SherlockActivity implements
 			errorService
 					.log("You cannot keep some fields empty, please fill them out!");
 			Toast.makeText(this, "Some fields cannot be empty!",
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_SHORT).show();
 		}
 	}
-
+	
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
@@ -429,7 +428,7 @@ class EventStartTimePickerFragment extends DialogFragment implements
 		// Create a new instance of TimePickerDialog and return it
 		TimePickerDialog dialogTime = new TimePickerDialog(getActivity(), this,
 				hour, minute, DateFormat.is24HourFormat(getActivity()));
-		dialogTime.setTitle("Set From Time");
+		dialogTime.setTitle("Set Time");
 
 		return dialogTime;
 	}
@@ -483,7 +482,7 @@ class EventEndTimePickerFragment extends DialogFragment implements
 		// Create a new instance of TimePickerDialog and return it
 		TimePickerDialog dialogTime = new TimePickerDialog(getActivity(), this,
 				hour, minute, DateFormat.is24HourFormat(getActivity()));
-		dialogTime.setTitle("Set To Time");
+		dialogTime.setTitle("Set Time");
 
 		return dialogTime;
 	}
@@ -501,6 +500,7 @@ class EventEndTimePickerFragment extends DialogFragment implements
 		toCal.set(Calendar.MINUTE, _innerEvent.getToMinute());
 		btnT2.setText(new SimpleDateFormat("HH:mm").format(toCal.getTime()));
 		btnT2.setTextColor(0xff000000);
+
 		System.out.println("hour:" + hourOfDay + " minute: " + minute);
 	}
 
@@ -564,6 +564,7 @@ class EventDatePickerFragment extends DialogFragment implements
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal
 				.getTime()));
 		btnD1.setTextColor(0xff000000);
+
 		System.out.println("day:" + day + " month: " + month + " year:" + year);
 	}
 }

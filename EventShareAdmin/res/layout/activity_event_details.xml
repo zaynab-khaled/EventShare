@@ -27,7 +27,7 @@
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
-	    	<TextView
+			<TextView
 	    	    android:id="@+id/textView_title"
 	    	    android:layout_width="wrap_content"
 	    	    android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
 	    	    android:textAppearance="?android:attr/absListViewStyle"
 	    	    android:textSize="16sp"
 	    	    android:width="70dp" />
-	    	
+			
 		    <TextView
 		        android:id="@+id/edit_tvTitle"
 		        android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
 	            android:textAppearance="?android:attr/absListViewStyle"
 	            android:textSize="16sp"
 	            android:width="70dp" />
-	    	
+	        
 		    <TextView
 		        android:id="@+id/edit_tvNameDoc"
 		        android:layout_width="wrap_content"
@@ -73,9 +73,9 @@
 	    <RelativeLayout
 	 	    android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
-        	android:orientation="horizontal">
-	    
-	        <TextView
+        	android:orientation="horizontal" >
+		    
+			<TextView
 	            android:id="@+id/textView_patName"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -84,7 +84,6 @@
 	            android:textAppearance="?android:attr/absListViewStyle"
 	            android:textSize="16sp"
 	            android:width="70dp" />
-		    	
 		    <TextView
 		        android:id="@+id/edit_tvNamePat"
 		        android:layout_width="wrap_content"
@@ -99,7 +98,7 @@
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
 	    
-	        <TextView
+		<TextView
 	            android:id="@+id/textView_location"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -107,8 +106,8 @@
 	            android:text="@string/label_loc"
 	            android:textAppearance="?android:attr/absListViewStyle"
 	            android:textSize="16sp"
-	            android:width="70dp" />
-		    	
+	            android:width="70dp" />	   
+	             	
 			<TextView
 		        android:id="@+id/edit_tvLoc"
 		        android:layout_width="wrap_content"
@@ -123,23 +122,23 @@
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
 	    
-	        <TextView
-	            android:id="@+id/textView_desc"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:paddingRight="10dp"
-	            android:text="@string/label_desc"
-	            android:textAppearance="?android:attr/absListViewStyle"
-	            android:textSize="16sp"
-	            android:width="70dp" />
-		    	
-		<TextView
-	        android:id="@+id/edit_tvDescription"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/textView_desc"
-	        android:textSize="16sp" />
-		    
+			<TextView
+		            android:id="@+id/textView_desc"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:paddingRight="10dp"
+		            android:text="@string/label_desc"
+		            android:textAppearance="?android:attr/absListViewStyle"
+		            android:textSize="16sp"
+		            android:width="70dp" />
+		        	        
+			<TextView
+		        android:id="@+id/edit_tvDescription"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_toRightOf="@id/textView_desc"
+		        android:textSize="16sp" />
+			    
 	    </RelativeLayout>
 
 		<TextView
@@ -158,7 +157,7 @@
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
-		    <TextView
+			<TextView
 		        android:id="@+id/textView_date"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
@@ -182,7 +181,7 @@
         	android:layout_height="wrap_content"
         	android:orientation="horizontal">
         	
-		    <TextView
+		<TextView
 		        android:id="@+id/textView_time"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
@@ -191,7 +190,7 @@
 		        android:textAppearance="?android:attr/absListViewStyle"
 		        android:textSize="16sp"
 		        android:width="70dp" />
-		    
+		
 			<TextView
 		        android:id="@+id/edit_tvTime"
 		        android:layout_width="wrap_content"

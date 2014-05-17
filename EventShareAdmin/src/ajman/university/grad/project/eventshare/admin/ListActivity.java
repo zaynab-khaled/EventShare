@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,14 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ListActivity extends Activity implements OnItemClickListener {
-	private static final String LOG_TAG = "LIst Activity";
+	//private static final String LOG_TAG = "LIst Activity";
 	
 	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
 	
@@ -34,36 +32,41 @@ public class ListActivity extends Activity implements OnItemClickListener {
 	private TextView tvSchedule;
 	private ListView list;
 	private EventsAdapter adapter;
-	private ImageView image;
+	private ImageView startingImage;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        
-        getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
+        setupActionBar();
+        setUpViews();
+
+        list = (ListView) findViewById(android.R.id.list);
+        adapter = new EventsAdapter(this);
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(this);
+		list.setEmptyView(startingImage);
+		
+    }
+
+    private void setupActionBar() {
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
-
-        tvSchedule = (TextView) findViewById(R.id.tv_schedule);
+	}
+    
+    private void setUpViews() {
+    	tvSchedule = (TextView) findViewById(R.id.tv_schedule);
         tvDepartment = (TextView) findViewById(R.id.tv_department);
-        tvSchedule.setGravity(Gravity.CENTER);
+        startingImage = (ImageView) findViewById(android.R.id.empty);
 
-        String dept = service.getAdminDepartment();
-        tvDepartment.setText(dept == null ? "Unknown" : dept + " Department");
-        tvSchedule.setText("Operating Schedule");
+        tvSchedule.setGravity(Gravity.CENTER);
         tvDepartment.setGravity(Gravity.CENTER);
         
-        image = (ImageView) findViewById(R.id.start_image);
-        
-        list = (ListView) findViewById(android.R.id.list);
-        setupListAdapter(null);
-        
-        if(list.getCount() != 0) {
-        	image.setVisibility(View.GONE);
-        } else
-        	image.setVisibility(View.VISIBLE);
-    }
+        String dept = service.getAdminDepartment();
+        tvDepartment.setText(dept == null ? "Unknown" : dept + " Department");
+        tvSchedule.setText("Operating Schedule"); 
+	}
     
     @Override
     public void onBackPressed() {
@@ -101,8 +104,8 @@ public class ListActivity extends Activity implements OnItemClickListener {
 			writeToTag();
 			return true;
 			
-		case R.id.action_filter:
-			actionFilter();
+		case R.id.action_sendMsg:
+			actionSendMsg();
 			return true;
 			
 		case R.id.action_deleteExpired:
@@ -122,19 +125,11 @@ public class ListActivity extends Activity implements OnItemClickListener {
     	}
     }
 
-	private void actionFilter() {
-    	ArrayAdapter<?> adapterFilter = null;
-    	String [] doctors = null;
-    	
-		if(service.getAdminDepartment().equals("Neurology")) {
-			adapterFilter = ArrayAdapter.createFromResource(this,R.array.arrayDoctors, android.R.layout.simple_spinner_dropdown_item);
-			doctors = getResources().getStringArray(R.array.arrayDoctors);
-		} else {
-			adapterFilter = ArrayAdapter.createFromResource(this,R.array.arrayDoctors2, android.R.layout.simple_spinner_dropdown_item);
-			doctors = getResources().getStringArray(R.array.arrayDoctors2);
-		}
+
+	private void actionSendMsg() {
+		Intent intent = new Intent(ListActivity.this, MessageActivity.class);
+		startActivity(intent);
 		
-		showDialog(adapterFilter, doctors);
 	}
 
 	private void actionAbout() {
@@ -181,35 +176,5 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		intent.putExtra(Constants.ICALENDAR, adapter.toString());
 		intent.putExtra(Constants.EVENTCOUNT, adapter.getValidCount());
 		startActivity(intent);
-	}
-	
-	private void showDialog(ArrayAdapter<?> adapterData, String [] doctors) {
-		final String [] items = doctors;
-		new AlertDialog.Builder(ListActivity.this)
-		.setTitle("Filter by .. ")
-		.setAdapter(adapterData, new DialogInterface.OnClickListener() {
-		    @Override
-		    public void onClick(DialogInterface dialog, int which) {
-		    	if (items != null) {
-			    	String docName = items[which]; 
-			    	Log.d(LOG_TAG, "Doc name: " + docName);
-			        setupListAdapter(docName);
-		    	} else {
-			        setupListAdapter(null);
-		    	}
-		        dialog.dismiss();
-		    }
-		  }).create().show();
-	}
-
-	private void setupListAdapter(String docName) {
-		if (docName != null)
-			adapter = new EventsAdapter(this, docName);
-		else
-			adapter = new EventsAdapter(this);
-		
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(this);
-		list.invalidate();
 	}
 }

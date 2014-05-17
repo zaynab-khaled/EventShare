@@ -116,7 +116,6 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 			
 			// TRICKY: Attach an object to the button view so we an retrieve later 
 			ivAddClock.setTag(event);
-			
 			ivAddClock.setOnClickListener(this);
 		}
 
@@ -137,12 +136,6 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 			ivAddClock.setImageDrawable(null);
 			ivAddClock.setBackgroundResource(R.drawable.ic_action_alarms);
 		}
-		
-//		if(!event.isAlarmable()) {
-//			ivClock.setImageDrawable(null);
-//			ivClock.setVisibility(View.INVISIBLE);
-//			ivAddClock.setVisibility(View.VISIBLE);
-//		}
 
 		return row; // return the rootView of the single_row_list.xml
 	}
@@ -151,22 +144,18 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 	public void onClick(View view) {
 //		TRICKY: Detach a previously attached object to the image view
 		Event taggedEvent = (Event) view.getTag();
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.DAY_OF_MONTH, taggedEvent.getFromDay());
-		cal.set(Calendar.HOUR_OF_DAY, taggedEvent.getFromDayHour());
-		cal.set(Calendar.MINUTE, taggedEvent.getFromMinute());
 		
 		if(taggedEvent != null){
 			if(taggedEvent.isAlarmable()) {
 				taggedEvent.setAlarmable(false);
 				((ImageView) view).setImageDrawable(null);
 				view.setBackgroundResource(R.drawable.ic_action_add_alarm);
-				Toast.makeText(context, "Notification was removed" , Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "Notification has been removed" , Toast.LENGTH_SHORT).show();
 			} else {
 				taggedEvent.setAlarmable(true);
 				((ImageView) view).setImageDrawable(null);
 				view.setBackgroundResource(R.drawable.ic_action_alarms);
-				Toast.makeText(context, "Notification set 15 minutes before " + new SimpleDateFormat("HH:mm").format(cal.getTime()) + " on " + taggedEvent.getFromDay(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "Notification set 15 minutes before time of event", Toast.LENGTH_SHORT).show();
 				
 			}
 			

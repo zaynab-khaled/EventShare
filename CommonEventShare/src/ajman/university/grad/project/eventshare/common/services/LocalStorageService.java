@@ -26,6 +26,7 @@ public class LocalStorageService implements ILocalStorageService {
 		try {
 			ds = new EventsDataSource(getApplicationContext());
 			ds.open();
+			ds.delete(event);
 			ds.insert(event);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
@@ -234,6 +235,34 @@ public class LocalStorageService implements ILocalStorageService {
 	public String getAdminDepartment() {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return preferences.getString(Constants.ADMIN_DEPARTMENT, "");
+	}
+
+	@Override
+	public void setPushMessage(String msg) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.PUSH_MESSAGE, msg);
+        editor.commit();
+	}
+
+	@Override
+	public String getPushMessage() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getString(Constants.PUSH_MESSAGE, "");
+	}
+
+	@Override
+	public void setPushChannel(String chnl) {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.PUSH_CHANNEL, chnl);
+        editor.commit();
+	}
+
+	@Override
+	public String getPushChannel() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getString(Constants.PUSH_CHANNEL, "");
 	}
 	
 	/*** PRIVATE METHODS */

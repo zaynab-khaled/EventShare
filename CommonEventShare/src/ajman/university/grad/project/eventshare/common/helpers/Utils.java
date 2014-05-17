@@ -3,6 +3,12 @@ package ajman.university.grad.project.eventshare.common.helpers;
 import java.util.Calendar;
 
 import ajman.university.grad.project.eventshare.common.models.Event;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.nfc.NfcAdapter;
+import android.widget.Toast;
 
 public class Utils {
 	public static String formatToUnixDate(Event event) {

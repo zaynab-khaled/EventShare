@@ -3,7 +3,6 @@ package ajman.university.grad.project.eventshare.admin;
 import java.io.IOException;
 
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
-import ajman.university.grad.project.eventshare.common.contracts.INfcService;
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
@@ -12,12 +11,14 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
 
 public class EraseTagActivity extends Activity {
 
@@ -28,7 +29,6 @@ public class EraseTagActivity extends Activity {
 	private static boolean erase = false;
 
 	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
-	private INfcService nfcService = ServicesFactory.getNfcService();
 
 	private static final byte[] CLEANDATACONTENT = new byte[MifareClassic.BLOCK_SIZE];
 
@@ -38,6 +38,7 @@ public class EraseTagActivity extends Activity {
 		setContentView(R.layout.activity_erase);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -71,8 +72,8 @@ public class EraseTagActivity extends Activity {
 		super.onResume();
 
 		// Ensure that the device supports NFC
-		nfcService.ensureNfcIsAvailable(mNfcAdapter);
-		nfcService.ensureSensorIsOn(mNfcAdapter);
+		ensureNfcIsAvailable(mNfcAdapter);
+		ensureSensorIsOn(mNfcAdapter);
 			
 		mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
 	}
@@ -113,7 +114,7 @@ public class EraseTagActivity extends Activity {
 				 */
 
 				// Authenticate a sector with key.
-				auth = mfc.authenticateSectorWithKeyA(j, nfcService.getKey(localStorageService.getAdminDepartment()));
+				auth = mfc.authenticateSectorWithKeyA(j, getKey(localStorageService.getAdminDepartment()));
 				
 				int bCount;
 				int bIndex;
@@ -147,7 +148,7 @@ public class EraseTagActivity extends Activity {
 
 						try {
 							byte[] data = mfc.readBlock(bIndex);
-							metaInfo += "Block " + bIndex + " : " + nfcService.byteArrayToHexString(data) + "\n";
+							metaInfo += "Block " + bIndex + " : " + byteArrayToHexString(data) + "\n";
 						} catch (Exception e) {
 							System.out.println("Cound not read block nr: " + bIndex);
 						}
@@ -179,6 +180,71 @@ public class EraseTagActivity extends Activity {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	// ***** ****
+	private void ensureSensorIsOn(NfcAdapter mNfcAdapter) {
+		if (mNfcAdapter == null) {
+			// Stop here, we definitely need NFC
+			Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+			finish();
+			return;
+		}
+	}
+
+	private void ensureNfcIsAvailable(NfcAdapter mNfcAdapter) {
+		if (mNfcAdapter != null && !mNfcAdapter.isEnabled()) {
+			// Alert the user that NFC is off
+			new AlertDialog.Builder(getApplicationContext())
+					.setTitle("NFC Sensor Turned Off")
+					.setMessage(
+							"In order to use this application, the NFC sensor must be turned on. Do you wish to turn it on?")
+					.setPositiveButton("Go to Settings",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(
+										DialogInterface dialogInterface, int i) {
+									// Send the user to the settings page and
+									// hope they turn it on
+									if (android.os.Build.VERSION.SDK_INT >= 16) {
+										startActivity(new Intent(
+												android.provider.Settings.ACTION_NFC_SETTINGS));
+									} else {
+										startActivity(new Intent(
+												android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+									}
+								}
+							})
+					.setNegativeButton("Do Nothing",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(
+										DialogInterface dialogInterface, int i) {
+									// Do nothing
+								}
+							}).show();
+		}
+	}
+
+	private String byteArrayToHexString(byte[] raw) {
+		final String HEXES = "0123456789ABCDEF";
+		if (raw == null) {
+			return null;
+		}
+		final StringBuilder hex = new StringBuilder(2 * raw.length);
+		for (final byte b : raw) {
+			hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
+		}
+		return hex.toString();
+	}
+
+	private byte[] getKey(String department) {
+		if (department.equals("Neurology")) {
+			return Constants.KEYA_NEURO;
+		}
+		else {
+			return Constants.KEYA_FAKE;
 		}
 	}
 }

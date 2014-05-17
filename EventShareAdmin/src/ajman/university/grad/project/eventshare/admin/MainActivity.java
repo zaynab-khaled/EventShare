@@ -1,6 +1,6 @@
 package ajman.university.grad.project.eventshare.admin;
 
-import android.os.Bundle;
+
 import ajman.university.grad.project.eventshare.common.contracts.IAlarmService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -21,12 +22,12 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	private static final String LOG_TAG = "Main Activity";
-
-	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
+	
+	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
 	private IAlarmService alarmService = ServicesFactory.getAlarmService();
-
+	
 	private Button btnLogin;
-	private Button btnDepartments;
+	private Button btnDepartment;
 	private EditText etPass;
 
 	@Override
@@ -34,23 +35,23 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setUpViews();
-
+		
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
-
-		service.setAdminPassword("nfc123");
+		
+		localStorageService.setAdminPassword("nfc123");
 
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String password = service.getAdminPassword();
+				String password = localStorageService.getAdminPassword();
 
-				if (btnDepartments.getText().equals("Select Department")) {
+				if (btnDepartment.getText().equals("Select Department")) {
 					Toast.makeText(getApplicationContext(), "Choose a department", Toast.LENGTH_SHORT).show();
 				}
-				else if (service.getAdminDepartment().equals("Neurology")) {
+				else if (localStorageService.getAdminDepartment().equals("Neurology")) {
 					Log.d(LOG_TAG, "Password: " + password);
 
 					if (etPass.getText().length() == 0) {
@@ -66,7 +67,7 @@ public class MainActivity extends Activity {
 					else
 						Toast.makeText(getApplicationContext(), "Sorry, invalid password", Toast.LENGTH_SHORT).show();
 				}
-				else if (service.getAdminDepartment().equals("Cardiology")) {
+				else if (localStorageService.getAdminDepartment().equals("Cardiology")) {
 					Log.d(LOG_TAG, "Password: " + password);
 
 					if (etPass.getText().length() == 0) {
@@ -87,20 +88,19 @@ public class MainActivity extends Activity {
 		});
 	}
 
-	private void setUpViews() {
-		final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this, R.array.arrayDepartments,
-				android.R.layout.simple_spinner_dropdown_item);
-
-		etPass = (EditText) findViewById(R.id.editText_password);
+    private void setUpViews() { 	
+    	final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this,R.array.arrayDepartments, android.R.layout.simple_spinner_dropdown_item);
+    	
+    	etPass = (EditText) findViewById(R.id.editText_password);
 		btnLogin = (Button) findViewById(R.id.btn_okay);
-		btnDepartments = (Button) findViewById(R.id.btnDepartments);
-
-		etPass.setGravity(Gravity.CENTER);
-		btnLogin.setGravity(Gravity.CENTER);
-		btnDepartments.setGravity(Gravity.CENTER);
-
-		btnDepartments.setText(service.getAdminDepartment().equals("") ? "Select Department" : service.getAdminDepartment());
-		btnDepartments.setOnClickListener(new OnClickListener() {
+		btnDepartment = (Button) findViewById(R.id.btnDepartments);
+		
+        etPass.setGravity(Gravity.CENTER);
+        btnLogin.setGravity(Gravity.CENTER);
+        btnDepartment.setGravity(Gravity.CENTER);
+        
+        btnDepartment.setText(localStorageService.getAdminDepartment().equals("") ? "Select Department" : localStorageService.getAdminDepartment());
+		btnDepartment.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -119,8 +119,8 @@ public class MainActivity extends Activity {
 							public void onClick(DialogInterface dialog, int which) {
 
 								String deptName = items[which];
-								btnDepartments.setText(deptName);
-								service.setAdminDepartment(btnDepartments.getText().toString());
+								btnDepartment.setText(deptName);
+								localStorageService.setAdminDepartment(btnDepartment.getText().toString());
 								dialog.dismiss();
 							}
 						}).create().show();
@@ -129,16 +129,15 @@ public class MainActivity extends Activity {
 	}
 
 	@Override
-	public void onBackPressed() {
-		this.finish();
-		return;
-	}
-
+    public void onBackPressed() {
+    	this.finish();
+    	   return;
+    }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }

@@ -2,12 +2,12 @@ package ajman.university.grad.project.eventshare.user;
 
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -20,14 +20,14 @@ import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
 	private static final String LOG_TAG = "Register Activity";
-
-	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
-
+	
+	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
+	
 	private Button btnDepartments;
 	private Button btnRegister;
 	private EditText etPass;
 	private String password;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,21 +37,20 @@ public class RegisterActivity extends Activity {
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
-
+	
 	}
 
 	private void setUpViews() {
-		final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this, R.array.arrayDepartments,
-				android.R.layout.simple_spinner_dropdown_item);
+    	final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this,R.array.arrayDepartments, android.R.layout.simple_spinner_dropdown_item);
 
 		etPass = (EditText) findViewById(R.id.editText_password);
 		btnDepartments = (Button) findViewById(R.id.btnDepartments);
 		btnRegister = (Button) findViewById(R.id.btn_register);
 		etPass.setGravity(Gravity.CENTER);
 		btnDepartments.setGravity(Gravity.CENTER);
-		btnRegister.setGravity(Gravity.CENTER);
-
-		btnDepartments.setOnClickListener(new OnClickListener() {
+	    btnRegister.setGravity(Gravity.CENTER);
+	    
+	    btnDepartments.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -67,10 +66,9 @@ public class RegisterActivity extends Activity {
 
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-
 								String deptName = items[which];
 								btnDepartments.setText(deptName);
-								service.setUserDepartment(btnDepartments.getText().toString());
+								localStorageService.setUserDepartment(btnDepartments.getText().toString());
 								dialog.dismiss();
 							}
 						}).create().show();
@@ -80,7 +78,7 @@ public class RegisterActivity extends Activity {
 		btnRegister.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				password = service.getAdminPassword();
+				password = localStorageService.getAdminPassword();
 
 				if (btnDepartments.getText().equals("Select Department")) {
 					Toast.makeText(getApplicationContext(), "Choose a department", Toast.LENGTH_SHORT).show();
@@ -93,7 +91,7 @@ public class RegisterActivity extends Activity {
 						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
 					}
 					else if (etPass.getText().toString().equals("neuro")) {
-						service.setRegistered(true);
+						localStorageService.setRegistered(true);
 						Intent intent = new Intent(RegisterActivity.this, ListActivity.class);
 						startActivity(intent);
 						finish();
@@ -109,7 +107,7 @@ public class RegisterActivity extends Activity {
 						Toast.makeText(getApplicationContext(), "No password has been entered!", Toast.LENGTH_SHORT).show();
 					}
 					else if (etPass.getText().toString().equals("card")) {
-						service.setRegistered(true);
+						localStorageService.setRegistered(true);
 						Intent intent = new Intent(RegisterActivity.this, ListActivity.class);
 						startActivity(intent);
 						finish();
@@ -122,19 +120,24 @@ public class RegisterActivity extends Activity {
 			}
 		});
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
+		return true;	
 	}
-
-	@Override
-	public void onBackPressed() {
+	
+	public void onDestroy() {
+		super.onDestroy();
+		localStorageService.setUserDepartment(btnDepartments.getText().toString());
+		localStorageService.setRegistered(true);
+	}
+    @Override
+    public void onBackPressed() {
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
-	}
+		startActivity(intent);	  
+    }
 }

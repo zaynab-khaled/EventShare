@@ -17,15 +17,15 @@
     <string name="title_about">About</string>
     <string name="title_userList">NFC Share</string>
     <string name="title_filter">Filter Events</string>
+    <string name="read_tag">Read from tag</string>
 
     <!-- Pictures -->
-    <string name="pic_writetotag">Tap to read tag!</string>
-    <string name="readtotag">Tap to read to tag!</string>
-    <string name="pic_erasecontent">Tap to erase all content on tag!</string>
-    <string name="pic_changepassword">Tap to change password of tag!</string>
+    <string name="pic_writetotag">Tap to write to tag.</string>
+    <string name="readtotag">Tap to read from tag.</string>
+    <string name="pic_erasecontent">Tap to erase all content on tag.\nThis may take up to a minute.</string>
     <string name="imLoginDescription">Start off image</string>
-    <string name="arrowDescription">Show how to start off by adding new events</string>
-    <string name="alarmClockDesc">Add an alarm to remind you of the surgery</string>
+    <string name="arrowDescription">How to start using the app</string>
+    <string name="alarmClockDesc">Send a notification to remind you of an event</string>
 
     <!-- For 'Cancel Done Menu' -->
     <string name="title_cancel">Cancel</string>
@@ -39,9 +39,6 @@
     <string name="hint_name">Event Name</string>
     <string name="hint_loc">Event Location</string>
     <string name="hint_desc">Description</string>
-    <string name="hint_cuPass">Current Password</string>
-    <string name="hint_nPass">New Password</string>
-    <string name="hint_coPass">Confirm Password</string>
 
     <!-- Detail Event Labels -->
     <string name="label_date">Date:</string>
@@ -59,7 +56,6 @@
     <!-- Add Event Buttons -->
     <string name="btn_Time">Time</string>
     <string name="btn_Date">Date</string>
-    <string name="button">Test</string>
 
     <!-- For single row list -->
     <string name="lText">Large Text</string>
@@ -93,7 +89,7 @@
         <item>Dr. Mohamed Hamdy Ibrahim</item>
         <item>Dr. Zulfa Omar Deesi</item>
         <item>Dr. Fahad Omar Baslaib</item>
-        <item>Filter All</item>
+        <item>Select All</item>
     </string-array>
     
 	<string-array name="arrayFilterC">
@@ -103,12 +99,8 @@
         <item>Dr. Mais M Mauwfak</item>
         <item>Dr. Mohamed Ahmed</item>
         <item>Dr. Omaia Siddig Bashir</item>
-        <item>Filter All</item>
+        <item>Select All</item>
     </string-array>
-    
-        
-    <string name="sort_doc">Sort</string>
-
 
     <!-- Automatic for manifest, change title on screen -->
     <string name="title_activity_add_event">Add Event</string>

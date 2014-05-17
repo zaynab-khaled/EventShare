@@ -1,7 +1,11 @@
 package ajman.university.grad.project.eventshare.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ajman.university.grad.project.eventshare.adapters.EventsAdapter;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
+import ajman.university.grad.project.eventshare.common.contracts.IRemoteNotificationService;
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
@@ -18,23 +22,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 public class ListActivity extends Activity implements OnItemClickListener {
 	private static final String LOG_TAG = "List Activity User";
 	
-	private ILocalStorageService service = ServicesFactory.getLocalStorageService();
+	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
+	private IRemoteNotificationService remoteNotificationService = ServicesFactory.getRemoteNotificationService();
 	
 	private ListView list;
 	private EventsAdapter adapter;
 	private TextView tvDepartment;
 	private TextView tvSchedule;
 	private ImageView startingImage;
+	private Boolean registered;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +51,19 @@ public class ListActivity extends Activity implements OnItemClickListener {
         getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
-		
-        startingImage = (ImageView) findViewById(R.id.start_image);
-		
-		if(list.getCount() != 0) {
-        	startingImage.setVisibility(View.GONE);
-        } else
-        	startingImage.setVisibility(View.VISIBLE);
+
+		List<String> channels = new ArrayList<String> ();
+		channels.add(localStorageService.getUserDepartment());
+		remoteNotificationService.subscribe(channels, new ListActivity());
 		
     }
     
 	private void setUpViews() {
-		String dept = service.getUserDepartment();
+		String dept = localStorageService.getUserDepartment();
 		
 		tvSchedule = (TextView) findViewById(R.id.tv_schedule);
 		tvDepartment = (TextView) findViewById(R.id.tv_department);
+		startingImage = (ImageView) findViewById(android.R.id.empty);
 		
         tvSchedule.setGravity(Gravity.CENTER);
         tvDepartment.setGravity(Gravity.CENTER);
@@ -72,6 +76,7 @@ public class ListActivity extends Activity implements OnItemClickListener {
         adapter = new EventsAdapter(this);
         list.setAdapter(adapter);
         list.setOnItemClickListener(this);
+        list.setEmptyView(startingImage);
 	}
 
 	@Override
@@ -91,6 +96,13 @@ public class ListActivity extends Activity implements OnItemClickListener {
         return super.onCreateOptionsMenu(menu);
     }
     
+	public void onPause() {
+		super.onPause();
+		localStorageService.setUserDepartment(localStorageService.getUserDepartment());
+		localStorageService.setRegistered(true);
+	}
+    
+	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	//return super.onOptionsItemSelected(item);
@@ -147,7 +159,7 @@ public class ListActivity extends Activity implements OnItemClickListener {
 		ArrayAdapter<?> adapterFilter = null;
     	String [] doctors = null;
     	
-		if(service.getUserDepartment().equals("Neurology")) {
+		if(localStorageService.getUserDepartment().equals("Neurology")) {
 			adapterFilter = ArrayAdapter.createFromResource(this,R.array.arrayFilterN, android.R.layout.simple_spinner_dropdown_item);
 			doctors = getResources().getStringArray(R.array.arrayFilterN);
 		} else {
@@ -161,12 +173,6 @@ public class ListActivity extends Activity implements OnItemClickListener {
 	private void readTag() {
 		Intent intent = new Intent(ListActivity.this, ReadTagActivity.class);
 		startActivity(intent);
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		this.onCreate(null);
 	}
 	
     @Override

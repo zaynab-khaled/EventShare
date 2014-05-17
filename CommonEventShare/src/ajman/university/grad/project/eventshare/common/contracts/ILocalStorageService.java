@@ -25,5 +25,9 @@ public interface ILocalStorageService {
 	public void setUserDepartment(String dept);
 	public String getUserDepartment();
 	public void setAdminDepartment(String dept);
-	public String getAdminDepartment();	
+	public String getAdminDepartment();
+	public void setPushMessage(String msg);
+	public String getPushMessage();
+	public void setPushChannel(String chnl);
+	public String getPushChannel();
 }

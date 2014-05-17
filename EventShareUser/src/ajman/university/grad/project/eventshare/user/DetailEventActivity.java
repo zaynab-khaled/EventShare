@@ -3,20 +3,13 @@ package ajman.university.grad.project.eventshare.user;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import ajman.university.grad.project.eventshare.common.models.Event;
-import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
-import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
-import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
-import android.os.Bundle;
+import ajman.university.grad.project.eventshare.common.models.Event;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 public class DetailEventActivity extends Activity {
