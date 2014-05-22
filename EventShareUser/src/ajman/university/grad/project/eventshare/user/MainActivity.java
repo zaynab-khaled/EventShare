@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 		registered = localStorageService.isRegistered();
 		
 		Log.d(LOG_TAG, "Registered? " + localStorageService.isRegistered());
-		if(registered.equals("true")){
+		if(registered){
 			Intent intent = new Intent(MainActivity.this, ListActivity.class);
 			startActivity(intent);
 		} 

@@ -48,6 +48,7 @@
             style="?android:attr/spinnerStyle"
             android:textSize="18sp"
             android:textAlignment="gravity"
+            android:paddingLeft="10dp"
             android:text="@string/btn_doctor" />
 	
 	    	    
@@ -68,6 +69,7 @@
             android:paddingTop="5dp"
             style="?android:attr/spinnerStyle"
             android:textSize="18sp"
+            android:paddingLeft="10dp"
             android:text="@string/btn_location" />
 
 	    <EditText

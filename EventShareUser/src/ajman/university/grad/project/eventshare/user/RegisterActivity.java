@@ -128,11 +128,6 @@ public class RegisterActivity extends Activity {
 		return true;	
 	}
 	
-	public void onDestroy() {
-		super.onDestroy();
-		localStorageService.setUserDepartment(btnDepartments.getText().toString());
-		localStorageService.setRegistered(true);
-	}
     @Override
     public void onBackPressed() {
 		Intent intent = new Intent(Intent.ACTION_MAIN);

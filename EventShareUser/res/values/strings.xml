@@ -7,7 +7,6 @@
 
     <!-- For action bar -->
     <string name="new_event">New Event</string>
-    <string name="read_tag">Read tag</string>
     <string name="overflow_icon">Open Menu</string>
 
     <!-- Menu list -->
@@ -27,6 +26,14 @@
     <string name="arrowDescription">How to start using the app</string>
     <string name="alarmClockDesc">Send a notification to remind you of an event</string>
 
+    <string name="about_title">NFC Share - User</string>
+    <string name="about_text1">NFC Share User lets the doctors of a hospital department easily retrieve and save the detailed operation schedule of their department by reading from a secure NFC tag.</string>
+    <string name="about_text2">NFC Share Users can view operation entries, filter entries according to doctor name, and set a notification for operations related to them.</string>
+    <string name="about_text4">NFC Share Users can also receive broadcast notifications sent by the admin of their department.</string>
+    <string name="about_dev">The Developers</string>
+    <string name="about_dev_text1">We are a team of graduating students from the AUST Information Technology College. Our main goal was to deliver a useful application that would integrate all our studies into one project.</string>
+    <string name="about_dev_text2">We hope that this project has been a success and that it achieves what it was aimed for; creating a paperless hospital environment by using the latest IT solutions.</string>
+    
     <!-- For 'Cancel Done Menu' -->
     <string name="title_cancel">Cancel</string>
     <string name="title_done">Done</string>

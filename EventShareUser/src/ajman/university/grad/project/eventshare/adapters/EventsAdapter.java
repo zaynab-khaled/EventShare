@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+
 import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.models.Event;
@@ -27,6 +29,8 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 	private Context context;
 	private int nrOfValidEvents;
 	private final static int tagSize = (256 - 40) * 16;
+	private boolean click = false;
+
 	// (nr of block - trailer blocks) * block size = 3456 bytes;
 
 	public EventsAdapter(Context c) {
@@ -38,7 +42,7 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		try {
 			List<Event> storedEvents = service.getAllEvents();
 			for (Event event : storedEvents) {
-				if(event.getDepartment().toString().equals(service.getUserDepartment().toString())) {
+				if (event.getDepartment().toString().equals(service.getUserDepartment().toString())) {
 					events.add(event);
 				}
 			}
@@ -48,7 +52,7 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 			eService.log(e);
 		}
 	}
-	
+
 	public EventsAdapter(Context c, String docName) {
 		context = c;
 		events = new ArrayList<Event>();
@@ -58,7 +62,7 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		try {
 			List<Event> storedEvents = service.filterByDoctorName(docName);
 			for (Event event : storedEvents) {
-				if(event.getDepartment().toString().equals(service.getUserDepartment().toString())) {
+				if (event.getDepartment().toString().equals(service.getUserDepartment().toString())) {
 					events.add(event);
 				}
 			}
@@ -111,10 +115,11 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		else {
 			row = inflater.inflate(R.layout.single_row_list, viewGroup, false);
 			event.setExpired(false);
-			
+
 			ImageView ivAddClock = (ImageView) row.findViewById(R.id.btnAddClock);
-			
-			// TRICKY: Attach an object to the button view so we an retrieve later 
+
+			// TRICKY: Attach an object to the button view so we an retrieve
+			// later
 			ivAddClock.setTag(event);
 			ivAddClock.setOnClickListener(this);
 		}
@@ -123,49 +128,58 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		TextView docname = (TextView) row.findViewById(R.id.textView2);
 		TextView location = (TextView) row.findViewById(R.id.textView3);
 		TextView dateTime = (TextView) row.findViewById(R.id.textView4);
-		
+
 		title.setText(event.getTitle());
 		docname.setText(event.getNameDoc());
 		location.setText(event.getLocation());
-		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "  /  " 
-				+ new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - " 
+		dateTime.setText(new SimpleDateFormat("EEE, dd MMM yyyy").format(fromCal.getTime()) + "  /  "
+				+ new SimpleDateFormat("HH:mm").format(fromCal.getTime()) + " - "
 				+ new SimpleDateFormat("HH:mm").format(toCal.getTime()));
-		
-		ImageView ivAddClock = (ImageView) row.findViewById(R.id.btnAddClock);	
-		if(event.isAlarmable()) {
+
+		ImageView ivAddClock = (ImageView) row.findViewById(R.id.btnAddClock);
+		if (event.isAlarmable()) {
 			ivAddClock.setImageDrawable(null);
 			ivAddClock.setBackgroundResource(R.drawable.ic_action_alarms);
 		}
 
 		return row; // return the rootView of the single_row_list.xml
 	}
-	
+
 	@Override
 	public void onClick(View view) {
-//		TRICKY: Detach a previously attached object to the image view
-		Event taggedEvent = (Event) view.getTag();
-		
-		if(taggedEvent != null){
-			if(taggedEvent.isAlarmable()) {
-				taggedEvent.setAlarmable(false);
-				((ImageView) view).setImageDrawable(null);
-				view.setBackgroundResource(R.drawable.ic_action_add_alarm);
-				Toast.makeText(context, "Notification has been removed" , Toast.LENGTH_SHORT).show();
-			} else {
-				taggedEvent.setAlarmable(true);
-				((ImageView) view).setImageDrawable(null);
-				view.setBackgroundResource(R.drawable.ic_action_alarms);
-				Toast.makeText(context, "Notification set 15 minutes before time of event", Toast.LENGTH_SHORT).show();
+		if (!click) {
+			click = true;
+			// TRICKY: Detach a previously attached object to the image view
+			Event taggedEvent = (Event) view.getTag();
+			if (taggedEvent != null) {
+				if (taggedEvent.isAlarmable()) {
+					taggedEvent.setAlarmable(false);
+					((ImageView) view).setImageDrawable(null);
+					view.setBackgroundResource(R.drawable.ic_action_add_alarm);
+					Toast.makeText(context, "Notification has been removed", Toast.LENGTH_SHORT).show();
+				} else {
+					taggedEvent.setAlarmable(true);
+					((ImageView) view).setImageDrawable(null);
+					view.setBackgroundResource(R.drawable.ic_action_alarms);
+					Toast.makeText(context, "Notification set 15 minutes before time of event", Toast.LENGTH_SHORT).show();
+
+				}
 				
+				ILocalStorageService service = ServicesFactory.getLocalStorageService();
+				try {
+					service.updateEvent(taggedEvent);
+				} catch (Exception e) {
+					Log.d(LOG_TAG, "Exception ocurred during event update: " + e.getMessage());
+				}
 			}
-			
-			ILocalStorageService service = ServicesFactory.getLocalStorageService();
-			try {
-			service.updateEvent(taggedEvent);
-			} catch (Exception e) {
-				Log.d(LOG_TAG, "Exception ocurred during event update: " + e.getMessage());
-			}
-		}	
+		}
+		try {
+		Timer time = new Timer();
+		time.wait(1000);
+		click = false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Final format should be 20140924185545
@@ -232,7 +246,7 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 		vCal += "</c>";
 		return vCal;
 	}
-		
+
 	private boolean isDeclined(Event event) {
 
 		Calendar toCal = Calendar.getInstance();
@@ -253,6 +267,5 @@ public class EventsAdapter extends BaseAdapter implements OnClickListener {
 	public int getValidCount() {
 		return nrOfValidEvents;
 	}
-
 
 }

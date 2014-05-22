@@ -19,6 +19,7 @@ import ajman.university.grad.project.eventshare.common.contracts.IErrorService;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.contracts.ITagService;
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.helpers.Utils;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
@@ -38,10 +39,10 @@ import android.widget.Toast;
 
 public class ReadTagActivity extends Activity {
 
-	private ITagService fakeTagService = ServicesFactory.getFakeNfcTagService();
 	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
+	private ITagService fakeTagService = ServicesFactory.getFakeNfcTagService();
 	private IErrorService errorService = ServicesFactory.getErrorService();
-	
+
 	static String separator = System.getProperty("line.separator");
 	public static String calString;
 
@@ -49,7 +50,7 @@ public class ReadTagActivity extends Activity {
 	private PendingIntent mPendingIntent;
 	private IntentFilter[] mIntentFilters;
 	private String[][] mNFCTechLists;
-	private static boolean read = false;	
+	private static boolean read = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +61,16 @@ public class ReadTagActivity extends Activity {
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
-		
-		//Get Fake events to test the functionality without actual NFC tags
-		/*List<Event> events = fakeTagService.readEvents();
-		for(Event event : events) {
+
+		// Get Fake events to test the functionality without actual NFC tags
+		List<Event> events = fakeTagService.readEvents();
+		for (Event event : events) {
 			try {
 				localStorageService.addEvent(event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 
 		mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -102,9 +103,8 @@ public class ReadTagActivity extends Activity {
 		// Ensure that the device supports NFC
 		ensureNfcIsAvailable(mNfcAdapter);
 		ensureSensorIsOn(mNfcAdapter);
-		
-		mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
 
+		mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, mIntentFilters, mNFCTechLists);
 
 		if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(getIntent().getAction())) {
 			if (!read) {
@@ -152,7 +152,7 @@ public class ReadTagActivity extends Activity {
 
 						try {
 							byte[] data = mfc.readBlock(bIndex);
-							if (byteArrayToHexString(data).equals("00000000000000000000000000000000")) {
+							if (Utils.byteArrayToHexString(data).equals("00000000000000000000000000000000")) {
 								System.out.println("stopped reading");
 								break outer;
 							}
@@ -165,7 +165,7 @@ public class ReadTagActivity extends Activity {
 						if ((bIndex + 1) % bCount != 0 && bIndex != 0) {
 							try {
 								byte[] data = mfc.readBlock(bIndex);
-								metaInfo += byteArrayToHexString(data);
+								metaInfo += Utils.byteArrayToHexString(data);
 							} catch (Exception e) {
 								System.out.println("Cound not read block nr: "
 										+ bIndex);
@@ -178,23 +178,24 @@ public class ReadTagActivity extends Activity {
 					System.out.println("Sector " + j + " could not be authenticated");
 				}
 			}
-			
+
 			mfc.close();
 			new AlertDialog.Builder(this).setMessage("Authentication failed!").setCancelable(false)
-			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialogInterface, int i) {
-					read = false;
-					startActivity();
-				}
-			}).show(); 
-			
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+							read = false;
+							Intent intent = new Intent(ReadTagActivity.this, ListActivity.class);
+							startActivity(intent);
+						}
+					}).show();
+
 			Event event;
 			try {
 
-				String xmlCalendar = hexToASCII(metaInfo);
+				String xmlCalendar = Utils.hexToASCII(metaInfo);
 				System.out.println(xmlCalendar);
-				
+
 				DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 				InputSource is = new InputSource();
 				is.setCharacterStream(new StringReader(xmlCalendar));
@@ -230,7 +231,7 @@ public class ReadTagActivity extends Activity {
 					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("p").item(0);
 					event.setNamePat(getCharacterDataFromElement(attr));
 					System.out.println("Patient: " + getCharacterDataFromElement(attr));
-					
+
 					attr = (Element) ((Element) nodes.item(i)).getElementsByTagName("a").item(0);
 					event.setDepartment(getCharacterDataFromElement(attr));
 					System.out.println("Department: " + getCharacterDataFromElement(attr));
@@ -275,23 +276,18 @@ public class ReadTagActivity extends Activity {
 			}
 
 			new AlertDialog.Builder(this).setMessage((metaInfo.length() == 0) ? "Tag is empty!" : "Tag successfully read!").setCancelable(false)
-			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialogInterface, int i) {
-					read = false;
-					startActivity();
-				}
-			}).show();
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialogInterface, int i) {
+							read = false;
+							Intent intent = new Intent(ReadTagActivity.this, ListActivity.class);
+							startActivity(intent);
+						}
+					}).show();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void startActivity() {
-		Intent intent = new Intent(ReadTagActivity.this, ListActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); 
-		startActivity(intent);
 	}
 
 	public static String getCharacterDataFromElement(Element e) {
@@ -303,7 +299,7 @@ public class ReadTagActivity extends Activity {
 		return "";
 	}
 
-	// *****  ****
+	// ***** ****
 	private void ensureSensorIsOn(NfcAdapter mNfcAdapter) {
 		if (mNfcAdapter == null) {
 			// Stop here, we definitely need NFC
@@ -345,39 +341,6 @@ public class ReadTagActivity extends Activity {
 								}
 							}).show();
 		}
-	}
-
-	private String hexToASCII(String hex) {
-		if (hex.length() % 2 != 0) {
-			System.err.println("requires EVEN number of chars");
-			return null;
-		}
-		StringBuilder sb = new StringBuilder();
-		// Convert Hex 0232343536AB into two characters stream.
-		for (int i = 0; i < hex.length() - 1; i += 2) {
-			/*
-			 * Grab the hex in pairs
-			 */
-			String output = hex.substring(i, (i + 2));
-			/*
-			 * Convert Hex to Decimal
-			 */
-			int decimal = Integer.parseInt(output, 16);
-			sb.append((char) decimal);
-		}
-		return sb.toString();
-	}
-
-	private String byteArrayToHexString(byte[] raw) {
-		final String HEXES = "0123456789ABCDEF";
-		if (raw == null) {
-			return null;
-		}
-		final StringBuilder hex = new StringBuilder(2 * raw.length);
-		for (final byte b : raw) {
-			hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
-		}
-		return hex.toString();
 	}
 
 	private byte[] getKey(String department) {

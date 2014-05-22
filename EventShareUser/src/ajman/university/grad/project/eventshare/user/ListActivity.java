@@ -40,7 +40,6 @@ public class ListActivity extends Activity implements OnItemClickListener {
 	private TextView tvDepartment;
 	private TextView tvSchedule;
 	private ImageView startingImage;
-	private Boolean registered;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {

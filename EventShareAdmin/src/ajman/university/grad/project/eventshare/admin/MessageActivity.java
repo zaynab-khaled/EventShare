@@ -27,20 +27,20 @@ public class MessageActivity extends SherlockActivity {
 	private ILocalStorageService localStorageService = ServicesFactory.getLocalStorageService();
 	private IRemoteNotificationService remoteNotifciationService = ServicesFactory.getRemoteNotificationService();
 	private IErrorService errorService = ServicesFactory.getErrorService();
-	
+
 	private Button btnDepartment;
 	private EditText etMessage;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message);
 		setUpViews();
-		
+
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xff33b5e5));
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(true);
-		
+
 		// BEGIN_INCLUDE (inflate_set_custom_view)
 		// Inflate a "Done/Cancel" custom action bar view.
 		final LayoutInflater inflater = (LayoutInflater) getSupportActionBar()
@@ -62,7 +62,7 @@ public class MessageActivity extends SherlockActivity {
 						actionCancel();
 					}
 				});
-		
+
 		// Show the custom action bar view and hide the normal Home icon and
 		// title.
 		final ActionBar bar = getSupportActionBar();
@@ -75,14 +75,15 @@ public class MessageActivity extends SherlockActivity {
 				ViewGroup.LayoutParams.MATCH_PARENT));
 		// END_INCLUDE (inflate_set_custom_view)
 	}
-	
+
 	private void setUpViews() {
-		final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this,R.array.arrayDepartments, android.R.layout.simple_spinner_dropdown_item);
-		
+		final ArrayAdapter<?> adapterDepartment = ArrayAdapter.createFromResource(this, R.array.arrayDepartments,
+				android.R.layout.simple_spinner_dropdown_item);
+
 		btnDepartment = (Button) findViewById(R.id.btn_dept);
 		etMessage = (EditText) findViewById(R.id.et_message);
 		btnDepartment.setTextColor(0xff888888);
-		
+
 		btnDepartment.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -112,21 +113,23 @@ public class MessageActivity extends SherlockActivity {
 	}
 
 	private void actionDone() {
-		if (etMessage.getText().length() > 0
-				&& !btnDepartment.getText().toString().equals("Select Department")) {
-			
-			String channel = btnDepartment.getText().toString();
-			String message = etMessage.getText().toString();
-			localStorageService.setPushMessage(message);
-			remoteNotifciationService.sendPushNotification(Constants.PARSE_APP_ID, Constants.PARSE_APP_REST_KEY, channel, message);
-			Intent intent = new Intent(this, ListActivity.class);
-			startActivity(intent);
+		try {
+			if (etMessage.getText().length() > 0 && !btnDepartment.getText().toString().trim().equals("Select Department")) {
 
-		} else {
-			errorService
-					.log("You cannot keep some fields empty, please fill them out!");
-			Toast.makeText(this, "Some fields cannot be empty!",
-					Toast.LENGTH_SHORT).show();
+				String channel = btnDepartment.getText().toString().trim();
+				String message = etMessage.getText().toString().trim();
+				localStorageService.setPushMessage(message);
+				remoteNotifciationService.sendPushNotification(Constants.PARSE_APP_ID, Constants.PARSE_APP_REST_KEY, channel, message);
+				Intent intent = new Intent(this, ListActivity.class);
+				Toast.makeText(this, "Notification sent!", Toast.LENGTH_SHORT).show();
+				startActivity(intent);
+
+			} else {
+				errorService.log("You cannot keep some fields empty, please fill them out!");
+				Toast.makeText(this, "Some fields cannot be empty!", Toast.LENGTH_SHORT).show();
+			}
+		} catch (Exception e) {
+			Toast.makeText(this, "Notification could not be sent, check your internet connection!", Toast.LENGTH_SHORT).show();
 		}
 	}
 

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ajman.university.grad.project.eventshare.common.contracts.ITagService;
-import ajman.university.grad.project.eventshare.common.helpers.ApplicationContextProvider;
 import ajman.university.grad.project.eventshare.common.models.Event;
-import android.content.Context;
 import android.util.Log;
 
 public class RealNfcTagService implements ITagService{

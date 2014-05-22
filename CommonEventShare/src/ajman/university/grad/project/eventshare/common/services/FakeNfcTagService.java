@@ -3,7 +3,6 @@ package ajman.university.grad.project.eventshare.common.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import ajman.university.grad.project.eventshare.common.contracts.IRemoteNotificationService;
 import ajman.university.grad.project.eventshare.common.contracts.ITagService;
 import ajman.university.grad.project.eventshare.common.models.Event;
 import android.util.Log;
@@ -24,7 +23,7 @@ public class FakeNfcTagService implements ITagService{
 		event.setLocation("OR 3");
 		event.setFromDay(14);
 		event.setFromMonth(4);
-		event.setFromYear(2014);
+		event.setFromYear(2015);
 		event.setFromDayHour(9);
 		event.setFromMinute(40);
 		event.setToDayHour(10);
@@ -43,7 +42,7 @@ public class FakeNfcTagService implements ITagService{
 		event.setLocation("OR 4");
 		event.setFromDay(14);
 		event.setFromMonth(4);
-		event.setFromYear(2014);
+		event.setFromYear(2015);
 		event.setFromDayHour(9);
 		event.setFromMinute(55);
 		event.setToDayHour(10);
@@ -81,7 +80,7 @@ public class FakeNfcTagService implements ITagService{
 		event.setLocation("OR 1");
 		event.setFromDay(16);
 		event.setFromMonth(4);
-		event.setFromYear(2014);
+		event.setFromYear(2015);
 		event.setFromDayHour(18);
 		event.setFromMinute(35);
 		event.setToDayHour(18);
@@ -101,7 +100,7 @@ public class FakeNfcTagService implements ITagService{
 		event.setLocation("OR 2");
 		event.setFromDay(16);
 		event.setFromMonth(4);
-		event.setFromYear(2014);
+		event.setFromYear(2015);
 		event.setFromDayHour(16);
 		event.setFromMinute(35);
 		event.setToDayHour(15);

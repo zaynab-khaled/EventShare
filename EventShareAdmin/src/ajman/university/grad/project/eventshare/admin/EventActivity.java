@@ -209,7 +209,7 @@ public class EventActivity extends SherlockActivity implements
 												int which) {
 											String locName = items[which];
 											event.setLocation(locName);
-											btnLocation.setText(" " + locName);
+											btnLocation.setText(locName);
 											btnLocation.setTextColor(0xff000000);
 											dialog.dismiss();
 										}
@@ -231,7 +231,7 @@ public class EventActivity extends SherlockActivity implements
 
 											String locName = items[which];
 											event.setLocation(locName);
-											btnLocation.setText(" " + locName);
+											btnLocation.setText(locName);
 											btnLocation.setTextColor(0xff000000);
 											dialog.dismiss();
 
@@ -266,7 +266,7 @@ public class EventActivity extends SherlockActivity implements
 											event.setNameDoc(docName);
 											System.out.println("Doctor Name in db: "
 													+ event.getNameDoc());
-											btnDoctor.setText(" " + docName);
+											btnDoctor.setText(docName);
 											btnDoctor.setTextColor(0xff000000);
 											dialog.dismiss();
 										}
@@ -286,7 +286,7 @@ public class EventActivity extends SherlockActivity implements
 												int which) {
 											String docName = items[which];
 											event.setNameDoc(docName);
-											btnDoctor.setText(" " + docName);
+											btnDoctor.setText(docName);
 											btnDoctor.setTextColor(0xff000000);
 											dialog.dismiss();
 										}
@@ -311,9 +311,9 @@ public class EventActivity extends SherlockActivity implements
 		etEventTitle.setText(event.getTitle());
 		etEventDesc.setText(event.getDescription());
 		etEventNamePat.setText(event.getNamePat());
-		btnDoctor.setText(" " + event.getNameDoc());
+		btnDoctor.setText(event.getNameDoc());
 		btnDoctor.setTextColor(0xff000000);
-		btnLocation.setText(" " + event.getLocation());
+		btnLocation.setText(event.getLocation());
 		btnLocation.setTextColor(0xff000000);
 
 		btnD1.setText(new SimpleDateFormat("yyyy-MM-dd").format(fromCal
@@ -334,8 +334,8 @@ public class EventActivity extends SherlockActivity implements
 
 		if (etEventTitle.getText().length() > 0
 				&& etEventNamePat.getText().length() > 0
-				&& !btnDoctor.getText().toString().equals("Select Doctor")
-				&& !btnLocation.getText().toString().equals("Select Operation Room")
+				&& !btnDoctor.getText().toString().trim().equals("Select Doctor")
+				&& !btnLocation.getText().toString().trim().equals("Select Operation Room")
 				&& event.getNameDoc() != null && event.getNamePat() != null
 				&& event.getFromDay() != -1 && event.getFromDayHour() != -1
 				&& event.getFromMinute() != -1 && event.getFromMonth() != -1
@@ -343,9 +343,9 @@ public class EventActivity extends SherlockActivity implements
 				&& event.getToMinute() != -1) {
 
 			// Get the events from the events repository
-			event.setTitle(etEventTitle.getText().toString());
-			event.setNamePat(etEventNamePat.getText().toString());
-			event.setDescription(etEventDesc.getText().toString());
+			event.setTitle(etEventTitle.getText().toString().trim());
+			event.setNamePat(etEventNamePat.getText().toString().trim());
+			event.setDescription(etEventDesc.getText().toString().trim());
 			event.setDepartment(localStorageService.getAdminDepartment());
 			event.setAlarmable(false);
 			if(event.getDescription().toString().equals(""))
@@ -549,8 +549,8 @@ class EventDatePickerFragment extends DialogFragment implements
 	}
 
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-		// btnD1.setText(String.valueOf(day) + " " + String.valueOf(month + 1) +
-		// " " + String.valueOf(year));
+		// btnD1.setText(String.valueOf(day) + String.valueOf(month + 1) +
+		// String.valueOf(year));
 
 		_innerEvent.setFromDay(day);
 		_innerEvent.setFromMonth(month);

@@ -2,27 +2,7 @@ package ajman.university.grad.project.eventshare.common.helpers;
 
 import java.util.Calendar;
 
-import ajman.university.grad.project.eventshare.common.models.Event;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.nfc.NfcAdapter;
-import android.widget.Toast;
-
-public class Utils {
-	public static String formatToUnixDate(Event event) {
-		String date = "UNKNOWN";
-		// TODO: Do something and return
-//		date += event.getToYear();
-//		date += (event.getToMonth() < 10 ? "0" + (event.getToMonth() + 1) : event.getToMonth() + 1);
-//		date += (event.getToDay() < 10 ? "0" + event.getToDay() : event.getToDay());
-//		date += (event.getToDayHour() < 10 ? "0" + event.getToDayHour() : event.getToDayHour());
-//		date += (event.getToMinute() < 10 ? "0" + event.getToMinute() : event.getToMinute());
-//		date += "00";
-		return date;
-	}
-	
+public class Utils {	
 	public static int getTimeDifferenceFromNow(int year, int month, int day, int hour, int minutes) {
 		Calendar eventCal = Calendar.getInstance();
 		eventCal.set(Calendar.YEAR, year);
@@ -34,5 +14,38 @@ public class Utils {
 		Calendar now = Calendar.getInstance();
 		
 		return (int)((eventCal.getTimeInMillis() - now.getTimeInMillis()) / 60000);
+	}
+	
+	public static String byteArrayToHexString(byte[] raw) {
+		final String HEXES = "0123456789ABCDEF";
+		if (raw == null) {
+			return null;
+		}
+		final StringBuilder hex = new StringBuilder(2 * raw.length);
+		for (final byte b : raw) {
+			hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
+		}
+		return hex.toString();
+	}
+	
+	public static String hexToASCII(String hex) {
+		if (hex.length() % 2 != 0) {
+			System.err.println("requires EVEN number of chars");
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		// Convert Hex 0232343536AB into two characters stream.
+		for (int i = 0; i < hex.length() - 1; i += 2) {
+			/*
+			 * Grab the hex in pairs
+			 */
+			String output = hex.substring(i, (i + 2));
+			/*
+			 * Convert Hex to Decimal
+			 */
+			int decimal = Integer.parseInt(output, 16);
+			sb.append((char) decimal);
+		}
+		return sb.toString();
 	}
 }

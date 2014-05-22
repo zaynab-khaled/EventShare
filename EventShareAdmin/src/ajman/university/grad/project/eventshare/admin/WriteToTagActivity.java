@@ -5,6 +5,7 @@ import java.io.IOException;
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.contracts.IRemoteNotificationService;
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.helpers.Utils;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -163,7 +164,7 @@ public class WriteToTagActivity extends Activity {
 
 						try {
 							byte[] data = mfc.readBlock(bIndex);
-							if (byteArrayToHexString(data).equals("00000000000000000000000000000000") && msgCount > calBlocks) {
+							if (Utils.byteArrayToHexString(data).equals("00000000000000000000000000000000") && msgCount > calBlocks) {
 								System.out.println("stopped writing");
 								break outer;
 							}
@@ -186,7 +187,7 @@ public class WriteToTagActivity extends Activity {
 
 						try {
 							byte[] data = mfc.readBlock(bIndex);
-							metaInfo += "Block " + bIndex + " : " + byteArrayToHexString(data) + "\n";
+							metaInfo += "Block " + bIndex + " : " + Utils.byteArrayToHexString(data) + "\n";
 						} catch (Exception e) {
 							System.out.println("Cound not read block nr: " + bIndex);
 						}
@@ -219,7 +220,7 @@ public class WriteToTagActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialogInterface, int i) {
 							write = false;
-							// finish();
+							finish();
 						}
 					}).show();
 
@@ -270,18 +271,6 @@ public class WriteToTagActivity extends Activity {
 								}
 							}).show();
 		}
-	}
-
-	private String byteArrayToHexString(byte[] raw) {
-		final String HEXES = "0123456789ABCDEF";
-		if (raw == null) {
-			return null;
-		}
-		final StringBuilder hex = new StringBuilder(2 * raw.length);
-		for (final byte b : raw) {
-			hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
-		}
-		return hex.toString();
 	}
 
 	private byte[] getKey(String department) {

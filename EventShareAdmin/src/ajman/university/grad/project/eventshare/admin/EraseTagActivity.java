@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import ajman.university.grad.project.eventshare.common.contracts.ILocalStorageService;
 import ajman.university.grad.project.eventshare.common.helpers.Constants;
+import ajman.university.grad.project.eventshare.common.helpers.Utils;
 import ajman.university.grad.project.eventshare.common.services.ServicesFactory;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -148,7 +149,7 @@ public class EraseTagActivity extends Activity {
 
 						try {
 							byte[] data = mfc.readBlock(bIndex);
-							metaInfo += "Block " + bIndex + " : " + byteArrayToHexString(data) + "\n";
+							metaInfo += "Block " + bIndex + " : " + Utils.byteArrayToHexString(data) + "\n";
 						} catch (Exception e) {
 							System.out.println("Cound not read block nr: " + bIndex);
 						}
@@ -225,18 +226,6 @@ public class EraseTagActivity extends Activity {
 								}
 							}).show();
 		}
-	}
-
-	private String byteArrayToHexString(byte[] raw) {
-		final String HEXES = "0123456789ABCDEF";
-		if (raw == null) {
-			return null;
-		}
-		final StringBuilder hex = new StringBuilder(2 * raw.length);
-		for (final byte b : raw) {
-			hex.append(HEXES.charAt((b & 0xF0) >> 4)).append(HEXES.charAt((b & 0x0F)));
-		}
-		return hex.toString();
 	}
 
 	private byte[] getKey(String department) {

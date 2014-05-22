@@ -27,16 +27,18 @@
 		    android:id="@+id/notifyInstructions"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:textSize="14sp"
+		    android:textSize="16sp"
+		    android:textAppearance="?android:attr/textAppearanceSmall"
 		    android:text="@string/notifyInstructions"/>
 	    
         <Button
             android:id="@+id/btn_dept"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
+            android:paddingTop="30dp"
             style="?android:attr/spinnerStyle"
             android:textSize="18sp"
+            android:paddingLeft="10dp"
             android:textAlignment="gravity"
             android:text="@string/btn_department" />
 
